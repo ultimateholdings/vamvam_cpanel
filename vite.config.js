@@ -5,5 +5,5 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   // base: "https://ultimateholdings.github.io/vamvam_panel"
-  // base:"./"
+  base:"./"
 })
