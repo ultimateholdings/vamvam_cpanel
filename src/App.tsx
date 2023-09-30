@@ -22,7 +22,6 @@ function App() {
   ) : (
     <>
     <Toaster position='top-right' reverseOrder={false} containerClassName='overflow-auto'/>
-  
       <Routes>
         <Route path="/auth/signin" element={<SignIn />} />
         <Route path="/auth/signup" element={<SignUp />} />

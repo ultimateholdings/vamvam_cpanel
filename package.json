@@ -16,7 +16,9 @@
     "url": "https://tailadmin.com"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^1.9.6",
     "apexcharts": "^3.41.0",
+    "axios": "^1.5.1",
     "headlessui": "^0.0.0",
     "jsvectormap": "^1.5.3",
     "match-sorter": "^6.3.1",
@@ -25,8 +27,11 @@
     "react-dom": "^18.2.0",
     "react-hot-toast": "^2.4.1",
     "react-icons": "^4.10.1",
+    "react-redux": "^8.1.2",
     "react-router-dom": "^6.14.2",
     "react-toastify": "^9.1.3",
+    "redux": "^4.2.1",
+    "redux-logger": "^3.0.6",
     "sort-by": "^0.0.2"
   },
   "devDependencies": {
