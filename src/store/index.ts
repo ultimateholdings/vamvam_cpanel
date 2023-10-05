@@ -1,12 +1,13 @@
 import configureStoreProd from "./configureStore.prod"
 import configureStoreDev from "./configureStore.dev"
+const MODE = import.meta.env.MODE
 
-let store;
+let store : any;
 
-if (process.env.NODE_ENV === 'production') {
+if (MODE === 'production') {
     store = configureStoreProd
 } else {
     store = configureStoreDev
 }
 
-export {store}
+export default store;

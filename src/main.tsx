@@ -5,17 +5,23 @@ import App from './App';
 import './index.css';
 import './satoshi.css';
 import { Provider } from 'react-redux';
-import { store } from './store/index';
+import store from './store/index';
+import { IoProvider } from 'socket.io-react-hook';
+const MODE = import.meta.env.MODE
 
-// console.log(store);
+const content = (<IoProvider>
+  <Provider store={store()}>
+    <App />
+  </Provider>
+</IoProvider>);
 
-ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <React.StrictMode>
-    {/* <Router basename='/vamvam_panel'> */}
-    <Router>
-      <Provider store={store()}>
-        <App />
-      </Provider>
-    </Router>
-  </React.StrictMode>
-);
+console.log(MODE);
+
+const toRender = 
+  MODE === 'production' 
+  ? <Router basename='/vamvam_panel'> {content} </Router> 
+  : <React.StrictMode> <Router> {content} </Router> </React.StrictMode>
+
+
+ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(toRender);
+ 

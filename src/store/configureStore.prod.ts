@@ -1,10 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit'
-import {rootReducer} from './reducers'
+import { rootReducer } from './reducers'
 
-const configureCustomStore = preloadedState => {
+const configureCustomStore = (preloadedState: any) => {
     const store = configureStore(
-        {reducer:rootReducer},
-        preloadedState,
+        { reducer: rootReducer, preloadedState }
     );
 
     return store
