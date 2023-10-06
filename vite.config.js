@@ -1,12 +1,18 @@
-import { defineConfig } from 'vite'
+import {
+  defineConfig
+} from 'vite'
 import react from '@vitejs/plugin-react'
-import path from 'path'
 
 // https://vitejs.dev/config/
-export default defineConfig({
-  plugins: [react(),],
-  // mode:''
-  
-  // base: "https://ultimateholdings.github.io/vamvam_panel"
-  // base:"./"
-})
+const config = defineConfig({
+  plugins: [react(), ],
+});
+
+const configProd = defineConfig({
+  plugins: [react(), ],
+  base: "./"
+});
+
+const  defaultConfig =  process.env.VITE_API_URL == 'production' ? configProd : config;
+
+export default defaultConfig
