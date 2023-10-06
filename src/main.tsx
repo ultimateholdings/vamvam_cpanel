@@ -7,21 +7,37 @@ import './satoshi.css';
 import { Provider } from 'react-redux';
 import store from './store/index';
 import { IoProvider } from 'socket.io-react-hook';
+import { ErrorBoundary } from 'react-error-boundary'
+import MyFallbackComponent from './utils/helpers/MyFallbackComponent';
+import LoggerService from './services/log/logger.service';
+
+
 const MODE = import.meta.env.MODE
+
 
 const content = (<IoProvider>
   <Provider store={store()}>
-    <App />
+
+    <ErrorBoundary
+      FallbackComponent={MyFallbackComponent}
+      onReset={() => { // reset the state of your app here
+      }}
+      resetKeys={['someKey']}
+      onError={LoggerService.logErrorToService}
+    >
+      <App />
+    </ErrorBoundary>
   </Provider>
 </IoProvider>);
 
-console.log(MODE);
+console.log("MODE", MODE);
+console.log("MODE",  import.meta.env.VITE_API_URL);
 
-const toRender = 
-  MODE === 'production' 
-  ? <Router basename='/vamvam_panel'> {content} </Router> 
-  : <React.StrictMode> <Router> {content} </Router> </React.StrictMode>
+// set Router config for dev or prod mode
+const toRender =
+  MODE === 'production'
+    ? <Router basename='/vamvam_panel'> {content} </Router>
+    : <React.StrictMode> <Router> {content} </Router> </React.StrictMode>
 
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(toRender);
- 
