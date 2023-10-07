@@ -35,7 +35,7 @@ console.log("MODE",  import.meta.env.VITE_API_URL);
 // set Router config for dev or prod mode
 const toRender =
   MODE === 'production'
-    ? <HashRouter basename='/vamvam_panel'><Router> {content} </Router></HashRouter> 
+    ? <Router basename='/vamvam_panel'> {content} </Router>
     : <React.StrictMode> <Router> {content} </Router> </React.StrictMode>
 
 
