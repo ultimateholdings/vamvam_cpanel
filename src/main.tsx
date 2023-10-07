@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { HashRouter, BrowserRouter as Router } from 'react-router-dom';
 import App from './App';
 import './index.css';
 import './satoshi.css';
@@ -35,7 +35,7 @@ console.log("MODE",  import.meta.env.VITE_API_URL);
 // set Router config for dev or prod mode
 const toRender =
   MODE === 'production'
-    ? <Router basename='/vamvam_panel'> {content} </Router>
+    ? <HashRouter basename='/vamvam_panel'>{content}</HashRouter> 
     : <React.StrictMode> <Router> {content} </Router> </React.StrictMode>
 
 
