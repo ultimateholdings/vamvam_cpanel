@@ -29,9 +29,6 @@ const content = (<IoProvider>
   </Provider>
 </IoProvider>);
 
-console.log("MODE", MODE);
-console.log("MODE",  import.meta.env.VITE_API_URL);
-
 // set Router config for dev or prod mode
 const toRender =
   MODE === 'production'
