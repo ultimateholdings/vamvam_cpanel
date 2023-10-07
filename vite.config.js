@@ -3,16 +3,20 @@ import {
 } from 'vite'
 import react from '@vitejs/plugin-react'
 
-// https://vitejs.dev/config/
-const config = defineConfig({
-  plugins: [react(), ],
-});
-
-const configProd = defineConfig({
-  plugins: [react(), ],
-  base: "./"
-});
-
-const  defaultConfig =  import.meta.env.MODE == 'production' ? configProd : config;
-
-export default defaultConfig
+export default defineConfig(({
+  command
+}) => {
+  if (command === 'serve') {
+    return {
+      // dev specific config
+      plugins: [react(), ],
+    }
+  } else {
+    // command === 'build'
+    return {
+      // build specific config
+      plugins: [react(), ],
+      base: "./"
+    }
+  }
+})
