@@ -13,6 +13,6 @@ const configProd = defineConfig({
   base: "./"
 });
 
-const  defaultConfig =  process.env.VITE_API_URL == 'production' ? configProd : config;
+const  defaultConfig =  import.meta.env.MODE == 'production' ? configProd : config;
 
 export default defaultConfig
