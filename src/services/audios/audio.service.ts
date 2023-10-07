@@ -1,7 +1,7 @@
 class AudiosService {
-    audios:  HTMLAudioElement[] = [];
+    static audios:  HTMLAudioElement[] = [];
 
-    public playAudio(path: string) {
+    public static playAudio(path: string) {
         this.removeAudio(path);
         let audio = new Audio();
         audio.src = path;
@@ -10,14 +10,14 @@ class AudiosService {
         this.audios.push(audio);
     }
 
-    public pauseAudio(path: string) {
+    public static pauseAudio(path: string) {
         let audioIndex: number = this.audios.findIndex((audio: HTMLAudioElement) => audio.src.includes(path));
         this.audios[audioIndex].pause();
         this.audios[audioIndex].currentTime = 0;
 
     }
 
-    public removeAudio(path: string) {
+    public static removeAudio(path: string) {
         let audioIndex: number = this.audios.findIndex((audio : HTMLAudioElement) => audio.src.includes(path));
 
         if (audioIndex != -1) {
@@ -25,7 +25,7 @@ class AudiosService {
         }
     }
 
-    public stopAllAudio() {
+    public static stopAllAudio() {
         this.audios.forEach(audio => { audio.pause(); audio.currentTime = 0 });
     }
 }

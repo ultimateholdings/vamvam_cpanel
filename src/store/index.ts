@@ -5,9 +5,9 @@ const MODE = import.meta.env.MODE
 let store : any;
 
 if (MODE === 'production') {
-    store = configureStoreProd
+    store = configureStoreProd()
 } else {
-    store = configureStoreDev
+    store = configureStoreDev()
 }
 
 export default store;

@@ -14,9 +14,8 @@ import LoggerService from './services/log/logger.service';
 
 const MODE = import.meta.env.MODE
 
-
 const content = (<IoProvider>
-  <Provider store={store()}>
+  <Provider store={store}>
 
     <ErrorBoundary
       FallbackComponent={MyFallbackComponent}

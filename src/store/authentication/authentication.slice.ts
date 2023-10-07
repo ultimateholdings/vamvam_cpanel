@@ -2,21 +2,35 @@ import {
     createSlice
 } from "@reduxjs/toolkit";
 
-import {actions} from './authentication.actions'
 
-const initialState = [{
-    name: "",
-}];
+import Admin from '../../modules/usersModule/model/admin'
+import { actions } from "./authentication.actions";
+
+
+export type AuthState = {
+    currentUser: Admin,
+    connected: boolean,
+    token: string,
+}
+
+const initialState: AuthState = {
+    currentUser: new Admin(),
+    connected: false,
+    token: "",
+};
 
 
 export const authSlice = createSlice({
-    name: "siceName",
-    initialState:initialState,
+    name: "auth",
+    initialState: initialState,
     reducers: actions
 });
 
 export const {
-    updateBoxValue
+    setToken,
+    setCurrentUser,
+    toogleConnect,
+    setAuthState
 } = authSlice.actions;
 
 export default authSlice.reducer;

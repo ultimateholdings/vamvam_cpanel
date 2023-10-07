@@ -1,13 +1,13 @@
 import  secureLocalStorage  from  "react-secure-storage";
 
 export const LocalStorage = {
-    get(key: string) {
+    getItem(key: string) {
         return secureLocalStorage.getItem(key);
     },
-    set(key: string, value: any) {
+    setItem(key: string, value: any) {
         secureLocalStorage.setItem(key, value);
     },
-    remove(key: string) {
+    removeItem(key: string) {
         secureLocalStorage.removeItem(key);
     },
     clear() {
