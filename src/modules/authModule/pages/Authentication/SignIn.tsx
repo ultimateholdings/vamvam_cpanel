@@ -1,8 +1,17 @@
 import { Link } from 'react-router-dom';
 import LogoDark from '../../../../images/logo/logo-dark.svg';
 import Logo from '../../../../images/logo/logo.svg';
+import { useForm } from 'react-hook-form';
+import { apiService } from '../../../../services/api/api.service'
 
-const SignIn = () => {
+export default function SignIn() {
+
+  const { register, handleSubmit, formState: { errors } } = useForm();
+
+  const onSubmit = (data: {}) => {
+    apiService.post('/auth/admin/login', data);
+  };
+
   return (
     <>
       <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
@@ -10,8 +19,8 @@ const SignIn = () => {
           <div className="hidden w-full xl:block xl:w-1/2">
             <div className="py-17.5 px-26 text-center">
               <Link className="mb-5.5 inline-block" to="/">
-                <img className="hidden dark:block" src={Logo} alt="Logo"  width="176" height="32" />
-                <img className="dark:hidden" src={LogoDark} alt="Logo"   width="176" height="32"/>
+                <img className="hidden dark:block" src={Logo} alt="Logo" width="176" height="32" />
+                <img className="dark:hidden" src={LogoDark} alt="Logo" width="176" height="32" />
               </Link>
 
               <p className="2xl:px-20">
@@ -151,14 +160,15 @@ const SignIn = () => {
                 Sign In to VAM-VAM
               </h2>
 
-              <form>
+              <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="mb-4">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
-                    Email
+                    Phone
                   </label>
                   <div className="relative">
                     <input
-                      type="email"
+                      type="phoneNumber"
+                      {...register("phoneNumber", { required: true})}
                       placeholder="Enter your email"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                     />
@@ -181,6 +191,7 @@ const SignIn = () => {
                       </svg>
                     </span>
                   </div>
+                  {errors.email && <p>Email is required and must be valid</p>}
                 </div>
 
                 <div className="mb-6">
@@ -190,6 +201,7 @@ const SignIn = () => {
                   <div className="relative">
                     <input
                       type="password"
+                      {...register("password", { required: true })}
                       placeholder="6+ Characters, 1 Capital letter"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                     />
@@ -216,6 +228,7 @@ const SignIn = () => {
                       </svg>
                     </span>
                   </div>
+                  {errors.password && <p>Password is required</p>}
                 </div>
 
                 <div className="mb-5">
@@ -242,5 +255,3 @@ const SignIn = () => {
     </>
   );
 };
-
-export default SignIn;

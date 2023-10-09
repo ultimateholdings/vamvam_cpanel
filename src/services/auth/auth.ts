@@ -1,3 +1,3 @@
-let getBearerAccessToken = () => "token";
+let getBearerAccessToken = () => undefined;
 
 export {getBearerAccessToken}

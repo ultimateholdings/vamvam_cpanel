@@ -15,7 +15,7 @@ export type AuthState = {
 
 const initialState: AuthState = {
     currentUser: new Admin(),
-    connected: false,
+    connected: true,
     token: "",
 };
 
