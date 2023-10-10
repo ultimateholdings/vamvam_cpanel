@@ -3,10 +3,12 @@ import LogoDark from '../../../../images/logo/logo-dark.svg';
 import Logo from '../../../../images/logo/logo.svg';
 import { useForm } from 'react-hook-form';
 import { apiService } from '../../../../services/api/api.service'
+import { useTranslation } from 'react-i18next'
 
 export default function SignIn() {
 
   const { register, handleSubmit, formState: { errors } } = useForm();
+  const { t } = useTranslation();
 
   const onSubmit = (data: {}) => {
     apiService.post('/auth/admin/login', data);
@@ -24,8 +26,7 @@ export default function SignIn() {
               </Link>
 
               <p className="2xl:px-20">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit
-                suspendisse.
+                {t('title')}
               </p>
 
               <span className="mt-15 inline-block">
@@ -168,7 +169,7 @@ export default function SignIn() {
                   <div className="relative">
                     <input
                       type="phoneNumber"
-                      {...register("phoneNumber", { required: true})}
+                      {...register("phoneNumber", { required: true })}
                       placeholder="Enter your email"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                     />
