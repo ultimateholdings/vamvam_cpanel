@@ -14,6 +14,7 @@ type ContentItem = {
     color?: string
     type?: TYPE_CONTENT[],
     isBadge?: boolean,
+    altContent?: string,
 }
 
 
