@@ -1,19 +1,16 @@
 import User from "./user";
 
-export default class Admin implements User {
+export default class Driver implements User {
     age?: string;
     avatar?: File;
+    deviceToken?: string;
     firstName?: string;
     lastName?: string;
     lang?: string;
-    phoneNumber?: string;
     gender?: string;
-    password?: string;
     email?: string;
     connected?: boolean;
-    
-    type?: string;
-    // deviceToken?: string;
 
-    // carInfos?: File;
+    carInfos?: File;
+    sponsorCode?: string;
 }

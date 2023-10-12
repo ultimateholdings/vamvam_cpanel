@@ -20,6 +20,16 @@ const axiosInstance = axios.create({
     baseURL: BASE_URL,
 });
 
+axiosInstance.interceptors.request.use(
+    function (config) {
+        // Do something before request is sent
+        if (config.baseURL == BASE_URL && BEARER_TOKEN != undefined) {
+            config.headers['Authorization'] = "Bearer " + BEARER_TOKEN;
+        }
+        return config;
+    }
+)
+
 
 axiosInstance.interceptors.response.use(
 
@@ -32,9 +42,10 @@ axiosInstance.interceptors.response.use(
     (error) => {
         if (error.response.status === 404) {
             // router.push({name: 'notfound' })
+            return Promise.reject(error)
         }
         else if (error.response.status === 401) {
-            throw new Error('You must log in!');
+            return Promise.reject(error)
         }
         else {
             return Promise.reject(error)

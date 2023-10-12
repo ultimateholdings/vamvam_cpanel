@@ -1,12 +1,15 @@
 export default interface User {
     age?: string;
     avatar?: File;
-    carInfos?: File;
-    deviceToken?: string;
     firstName?: string;
     lastName?: string;
     lang?: string;
+    phoneNumber?: string;
     gender?: string;
+    password?: string;
     email?: string;
     connected?: boolean;
+    
+    // deviceToken?: string;
+    // carInfos?: File;
 }

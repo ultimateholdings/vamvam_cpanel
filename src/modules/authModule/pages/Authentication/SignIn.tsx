@@ -1,18 +1,40 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import LogoDark from '../../../../images/logo/logo-dark.svg';
 import Logo from '../../../../images/logo/logo.svg';
 import { useForm } from 'react-hook-form';
-import { apiService } from '../../../../services/api/api.service'
 import { useTranslation } from 'react-i18next'
+import { useDispatch, useSelector } from 'react-redux';
+import { adminLogin } from '../../../../store/authentication/authentication.repository';
+import { AppDispatch } from '../../../../store';
+import { AuthState } from '../../../../store/authentication/authentication.slice';
+import { tcustom } from '../../../../utils/helpers/functions';
+import { useEffect } from 'react';
 
 export default function SignIn() {
 
   const { register, handleSubmit, formState: { errors } } = useForm();
   const { t } = useTranslation();
+  const dispatch = useDispatch<AppDispatch>();
+  const authState = useSelector((state: { auth: AuthState }) => state.auth);
+  const navigate = useNavigate();
 
-  const onSubmit = (data: {}) => {
-    apiService.post('/auth/admin/login', data);
+
+  const onSubmit = async (data: {}) => {
+    try {
+      dispatch(adminLogin(data));
+    } catch (error) {
+
+    }
   };
+
+  useEffect(() => {
+    if (authState.connected) {
+      navigate("/");
+    }
+    return () => {
+    }
+  }, [authState])
+
 
   return (
     <>
@@ -160,6 +182,7 @@ export default function SignIn() {
               <h2 className="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
                 Sign In to VAM-VAM
               </h2>
+              <span className='text-danger block mb-2'>{tcustom(authState.errorMessage)}</span>
 
               <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="mb-4">
@@ -229,14 +252,16 @@ export default function SignIn() {
                       </svg>
                     </span>
                   </div>
-                  {errors.password && <p>Password is required</p>}
+                  <span className='text-danger block mb-2'>{errors.password && <p>Password is required</p>}</span>
+
                 </div>
 
                 <div className="mb-5">
                   <input
                     type="submit"
                     value="Sign In"
-                    className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90"
+                    disabled={authState.loading}
+                    className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90 disabled:opacity-75"
                   />
                 </div>
 

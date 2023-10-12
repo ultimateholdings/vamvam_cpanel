@@ -1,10 +1,20 @@
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Outlet, Navigate } from 'react-router-dom';
+import { Outlet, Navigate, useNavigate } from 'react-router-dom';
+import { AuthState } from '../store/authentication/authentication.slice';
 
 export default function () {
-    const isAuth = useSelector((state: any) => {
-        return state.auth.connected
-    });
+    const authState = useSelector((state: { auth: AuthState }) => state.auth);
+    const navigate = useNavigate();
 
-    return isAuth ? <Outlet /> : <Navigate to="/auth/signin" replace />;
+    useEffect(() => {
+        if (!authState.connected) {
+            navigate("/auth/signin");
+        }
+        return () => {
+        }
+    }, [authState])
+    
+
+    return authState.connected ? <Outlet /> : <Navigate to="/auth/signin" replace />;
 }

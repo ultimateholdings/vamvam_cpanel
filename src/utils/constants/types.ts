@@ -17,5 +17,12 @@ type ContentItem = {
     altContent?: string,
 }
 
+type ErrorResponseApi ={
+    data:object,
+    message:{
+        en:string,
+        fr:string
+    },
+}
 
-export type { Header, Item, ContentItem, Line }
+export type { Header, Item, ContentItem, Line, ErrorResponseApi }

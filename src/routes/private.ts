@@ -18,7 +18,7 @@ const coreRoutes = [
     },
     {
         path: '/user-create',
-        title: 'Create new User',
+        title: 'Users - Create new User',
         component: UserCreate,
     },
 ];

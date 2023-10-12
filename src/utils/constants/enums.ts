@@ -1,7 +1,8 @@
-enum ROLE_ADMIN {
-    Manager,
-    ConflictManager,
-    registrationManager
+enum ROLE_USER {
+    Manager = 'Manager',
+    ConflictManager = 'ConflictManager',
+    RegistrationManager = 'RegistrationManager',
+    Driver = 'Driver',
 }
 
 enum ORDER {
@@ -24,4 +25,15 @@ enum TYPE_CONTENT {
     SUBTITLE
 }
 
-export { ROLE_ADMIN, ORDER, ACTION, TYPE_CONTENT }
+
+enum GENDER {
+    MALE = "M.",
+    FEMALE = "Mme."
+}
+
+enum LANG {
+    FR = "FR",
+    EN = "EN"
+}
+
+export { ROLE_USER, ORDER, ACTION, TYPE_CONTENT, GENDER, LANG }
