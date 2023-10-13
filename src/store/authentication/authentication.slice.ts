@@ -8,7 +8,7 @@ import { actions } from "./authentication.actions";
 import { adminLogin } from "./authentication.repository";
 import { ErrorResponseApi } from "../../utils/constants/types";
 import { getResponse } from "../../utils/helpers/functions";
-import { setBearerAccessToken } from "../../services/auth/auth";
+import { getStoreAuthState, localStoreAuthState, setBearerAccessToken } from "../../services/auth/auth";
 
 
 export type AuthState = {
@@ -20,19 +20,24 @@ export type AuthState = {
     errorMessage?: ErrorResponseApi,
 }
 
+const storedAuthState = getStoreAuthState();
+
+
 const initialState: AuthState = {
     currentUser: undefined,
-    connected: true,
+    connected: false,
     loading: false,
     token: "",
     error: undefined,
     errorMessage: undefined,
+
 };
+
 
 
 export const authSlice = createSlice({
     name: "auth",
-    initialState: initialState,
+    initialState: storedAuthState ? storedAuthState :  initialState,
     reducers: actions,
     extraReducers(builder) {
 
@@ -45,6 +50,7 @@ export const authSlice = createSlice({
                 state.token = action.payload.token;
                 setBearerAccessToken(action.payload.token);
                 state.connected = true;
+                localStoreAuthState(state);
             },),
             builder.addCase(adminLogin.rejected, (state: AuthState, action: any) => {
                 state.errorMessage = getResponse(action)
