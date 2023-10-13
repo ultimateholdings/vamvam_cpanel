@@ -47,9 +47,9 @@ export default function SignIn() {
                 <img className="dark:hidden" src={LogoDark} alt="Logo" width="176" height="32" />
               </Link>
 
-              <p className="2xl:px-20">
+              {/* <p className="2xl:px-20">
                 {t('title')}
-              </p>
+              </p> */}
 
               <span className="mt-15 inline-block">
                 <svg

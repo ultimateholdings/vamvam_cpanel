@@ -17,12 +17,13 @@ interface IFormInput {
     phoneNumber?: string,
     position?: string,
     role?: ROLE_USER,
-    avatar?: File,
+    avatar?: any,
     carInfos?: File,
     sponsorCode?: string,
     lang?: string,
     password?: string,
     cpassword?: string,
+
 }
 
 
@@ -50,7 +51,7 @@ export default function App() {
 
 
     React.useEffect(() => {
-        const subscription = watch((value) =>
+        const subscription = watch((value) => 
             setform(value)
         )
         return () => subscription.unsubscribe()
@@ -184,6 +185,10 @@ export default function App() {
                                             type="file"
                                             {...register("avatar", {
                                                 required: false,
+                                                validate: {
+                                                    lessThan10MB: (files: any) => (files[0]!.size < 10000000 || "Max 10MB"),
+                                                    acceptedFormats: (files: any) => (["image/jpeg", "image/png", "image/gif", "application/pdf"].includes(files[0]!.type))
+                                                },
                                             })}
                                             placeholder="Choice an avatar"
                                             className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
