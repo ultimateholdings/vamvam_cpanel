@@ -4,7 +4,7 @@ import { rootReducer } from './reducers'
 const configureCustomStore = (preloadedState?: any) => {
     const store = configureStore(
         {
-            reducer: rootReducer
+            reducer: rootReducer, middleware: []
         }
     );
 

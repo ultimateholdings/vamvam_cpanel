@@ -9,5 +9,5 @@ if (MODE === 'production') {
 } else {
     store = configureStoreDev()
 }
-export type AppDispatch = ReturnType<typeof store>["dispatch"];
+export type AppDispatch = ReturnType<typeof store.dispatch>;
 export default store;

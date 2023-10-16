@@ -7,8 +7,8 @@ import Admin from '../../modules/usersModule/model/admin'
 import { actions } from "./users.actions";
 import { ErrorResponseApi } from "../../utils/constants/types";
 import { getResponse } from "../../utils/helpers/functions";
-import { setBearerAccessToken } from "../../services/auth/auth";
 import { driverRegister } from "./users.repository";
+import { authStorage } from "../../services/auth/auth";
 
 
 export type UsersState = {
@@ -38,7 +38,7 @@ export const authSlice = createSlice({
         },),
             builder.addCase(driverRegister.fulfilled, (state: UsersState, action: any) => {
                 state.loading = false;
-                setBearerAccessToken(action.payload.token);
+                authStorage.setBearerAccessToken(action.payload.token);
             },),
             builder.addCase(driverRegister.rejected, (state: UsersState, action: any) => {
                 state.errorMessage = getResponse(action)
@@ -51,7 +51,7 @@ export const authSlice = createSlice({
         },),
             builder.addCase(driverRegister.fulfilled, (state: UsersState, action: any) => {
                 state.loading = false;
-                setBearerAccessToken(action.payload.token);
+                authStorage.setBearerAccessToken(action.payload.token);
             },),
             builder.addCase(driverRegister.rejected, (state: UsersState, action: any) => {
                 state.errorMessage = getResponse(action)

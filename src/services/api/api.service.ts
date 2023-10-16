@@ -1,7 +1,7 @@
 import axios from 'axios';
-import { getBearerAccessToken } from '../auth/auth';
+import { authStorage } from '../auth/auth';
 
-const BEARER_TOKEN: any | undefined = getBearerAccessToken();
+const BEARER_TOKEN: any | undefined = authStorage.getBearerAccessToken();
 const BASE_URL = import.meta.env.VITE_API_URL;
 
 console.log("BASE_URL", BASE_URL);

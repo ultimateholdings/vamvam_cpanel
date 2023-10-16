@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import Breadcrumb from '../../../components/Breadcrumb'
 import { GENDER, LANG, ROLE_USER } from "../../../utils/constants/enums";
 import { useState } from "react";

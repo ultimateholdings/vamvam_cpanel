@@ -1,5 +1,5 @@
 import { Suspense, lazy, useEffect, useState } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import ECommerce from './pages/Dashboard/ECommerce';
 import Loader from './common/Loader';
@@ -9,11 +9,15 @@ import privateRoutes from './routes/private';
 import SignIn from './modules/authModule/pages/Authentication/SignIn';
 import '../i18n'
 import i18n from '../i18n';
+import { useSelector } from 'react-redux';
+import { AuthState } from './store/authentication/authentication.slice';
 
 const DefaultLayout = lazy(() => import('./layout/DefaultLayout'));
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
+  const authState = useSelector((state: { auth: AuthState }) => state.auth);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setTimeout(() => setLoading(false), 1000);
@@ -24,6 +28,15 @@ function App() {
     const lng = navigator.language;
     i18n.changeLanguage(lng);
   }, []);
+
+  //if user logout get back to signIn
+  useEffect(() => {
+    if (!authState.connected) {
+      navigate("/auth/signin");
+    }
+    return () => {
+    }
+  }, [authState.connected])
 
 
 

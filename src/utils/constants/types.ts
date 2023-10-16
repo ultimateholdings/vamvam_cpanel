@@ -17,7 +17,7 @@ type ContentItem = {
     altContent?: string,
 }
 
-type ErrorResponseApi ={
+type ErrorResponseApi = {
     data:object,
     message:{
         en:string,

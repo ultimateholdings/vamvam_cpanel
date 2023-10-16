@@ -4,11 +4,11 @@ import {
 
 
 import Admin from '../../modules/usersModule/model/admin'
-import { actions } from "./authentication.actions";
+import { authReducers } from "./authentication.actions";
 import { adminLogin } from "./authentication.repository";
 import { ErrorResponseApi } from "../../utils/constants/types";
 import { getResponse } from "../../utils/helpers/functions";
-import { getStoreAuthState, localStoreAuthState, setBearerAccessToken } from "../../services/auth/auth";
+import { authStorage } from "../../services/auth/auth";
 
 
 export type AuthState = {
@@ -20,7 +20,7 @@ export type AuthState = {
     errorMessage?: ErrorResponseApi,
 }
 
-const storedAuthState = getStoreAuthState();
+const storedAuthState = authStorage.getStoreAuthState();
 
 
 const initialState: AuthState = {
@@ -38,7 +38,7 @@ const initialState: AuthState = {
 export const authSlice = createSlice({
     name: "auth",
     initialState: storedAuthState ? storedAuthState :  initialState,
-    reducers: actions,
+    reducers: authReducers,
     extraReducers(builder) {
 
         //adminLogin
@@ -48,9 +48,9 @@ export const authSlice = createSlice({
             builder.addCase(adminLogin.fulfilled, (state: AuthState, action: any) => {
                 state.loading = false;
                 state.token = action.payload.token;
-                setBearerAccessToken(action.payload.token);
+                authStorage.setBearerAccessToken(action.payload.token);
                 state.connected = true;
-                localStoreAuthState(state);
+                authStorage.localStoreAuthState(state);
             },),
             builder.addCase(adminLogin.rejected, (state: AuthState, action: any) => {
                 state.errorMessage = getResponse(action)
@@ -63,7 +63,10 @@ export const {
     setToken,
     setCurrentUser,
     toogleConnect,
-    setAuthState
+    setAuthState,
+    userLogOut
 } = authSlice.actions;
+
+export {initialState};
 
 export default authSlice.reducer;

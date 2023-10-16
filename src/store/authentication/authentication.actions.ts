@@ -1,8 +1,9 @@
-import { PayloadAction } from "@reduxjs/toolkit";
+import { PayloadAction, current } from "@reduxjs/toolkit";
 import User from "../../modules/usersModule/model/user";
-import { AuthState } from "./authentication.slice"
+import { AuthState, initialState } from "./authentication.slice"
+import { authStorage } from "../../services/auth/auth";
 
-export const actions = {
+export const authReducers = {
     setToken: (state: AuthState, action: PayloadAction<string>) => {
         state.token = action.payload;
     },
@@ -14,5 +15,9 @@ export const actions = {
     },
     setAuthState: (state: AuthState, action: PayloadAction<AuthState>) => {
         state = action.payload;
+    },
+    userLogOut: (state: AuthState) => {
+        Object.assign(state,{...initialState})
+        authStorage.removeStoreAuthState();
     },
 }
