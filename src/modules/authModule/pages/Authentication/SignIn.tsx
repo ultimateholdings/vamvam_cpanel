@@ -9,6 +9,8 @@ import { AppDispatch } from '../../../../store';
 import { AuthState } from '../../../../store/authentication/authentication.slice';
 import { tcustom } from '../../../../utils/helpers/functions';
 import { useEffect } from 'react';
+import ErrorLine from '../../../../components/customs/ErrorLine';
+import { STATUS } from '../../../../utils/constants/enums';
 
 export default function SignIn() {
 
@@ -27,7 +29,7 @@ export default function SignIn() {
     }
   };
 
-  useEffect(() => {
+  useEffect(() => {    
     if (authState.connected) {
       navigate("/");
     }
@@ -182,7 +184,7 @@ export default function SignIn() {
               <h2 className="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
                 Sign In to VAM-VAM
               </h2>
-              <span className='text-danger block mb-2'>{tcustom(authState.errorMessage)}</span>
+             <ErrorLine error={tcustom(authState.errorMessage)}></ErrorLine>
 
               <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="mb-4">
@@ -193,7 +195,7 @@ export default function SignIn() {
                     <input
                       type="phoneNumber"
                       {...register("phoneNumber", { required: true })}
-                      placeholder="Enter your phone email"
+                      placeholder="Enter your phone"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                     />
 
@@ -260,7 +262,7 @@ export default function SignIn() {
                   <input
                     type="submit"
                     value="Sign In"
-                    disabled={authState.loading}
+                    disabled={authState.signInstatus == STATUS.LOADING}
                     className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90 disabled:opacity-75"
                   />
                 </div>

@@ -1,11 +1,10 @@
-import { AuthState } from "../../store/authentication/authentication.slice";
-import { LocalStorage } from "../localStorage/localStorage.service";
+import { LocalStorage } from "../../../services/localStorage/localStorage.service";
+import { AuthState } from "../../../store/authentication/authentication.slice";
 
 
 const authStorage = {
     getBearerAccessToken() {
-        console.log('getBearerAccessToken',LocalStorage.getItem('token'));
-        
+        console.log(LocalStorage.getItem('token'));
         return LocalStorage.getItem('token');
     },
 
@@ -22,8 +21,8 @@ const authStorage = {
     },
 
     setBearerAccessToken(token: string) {
+        console.log(token);
         LocalStorage.setItem('token', token);
-        console.log('setBearerAccessToken',token);
     }
 }
 

@@ -7,17 +7,19 @@ import Admin from '../../modules/usersModule/model/admin'
 import { authReducers } from "./authentication.actions";
 import { adminLogin } from "./authentication.repository";
 import { ErrorResponseApi } from "../../utils/constants/types";
-import { getResponse } from "../../utils/helpers/functions";
-import { authStorage } from "../../services/auth/auth";
+import { getErrorResponse } from "../../utils/helpers/functions";
+import { authStorage } from "../../modules/authModule/helpers/auth";
+import { STATUS } from "../../utils/constants/enums";
 
 
 export type AuthState = {
     currentUser?: Admin,
     connected: boolean,
     token: string,
-    loading: boolean,
     error?: Error,
     errorMessage?: ErrorResponseApi,
+
+    signInstatus: STATUS,
 }
 
 const storedAuthState = authStorage.getStoreAuthState();
@@ -26,11 +28,11 @@ const storedAuthState = authStorage.getStoreAuthState();
 const initialState: AuthState = {
     currentUser: undefined,
     connected: false,
-    loading: false,
     token: "",
     error: undefined,
     errorMessage: undefined,
 
+    signInstatus: STATUS.IDLE
 };
 
 
@@ -43,19 +45,18 @@ export const authSlice = createSlice({
 
         //adminLogin
         builder.addCase(adminLogin.pending, (state: AuthState) => {
-            state.loading = true;
+            state.signInstatus = STATUS.LOADING;
         },),
-            builder.addCase(adminLogin.fulfilled, (state: AuthState, action: any) => {
-                state.loading = false;
-                state.token = action.payload.token;
-                authStorage.setBearerAccessToken(action.payload.token);
-                state.connected = true;
-                authStorage.localStoreAuthState(state);
-            },),
-            builder.addCase(adminLogin.rejected, (state: AuthState, action: any) => {
-                state.errorMessage = getResponse(action)
-                state.loading = false;
-            },)
+        builder.addCase(adminLogin.fulfilled, (state: AuthState, action: any) => {
+            state.signInstatus = STATUS.SUCCESS;
+            state.token = action.payload.token;
+            state.connected = true;
+            authStorage.localStoreAuthState(state);
+        },),
+        builder.addCase(adminLogin.rejected, (state: AuthState, action: any) => {
+            state.errorMessage = getErrorResponse(action.payload)
+            state.signInstatus = STATUS.FAIL;
+        },)
     },
 });
 

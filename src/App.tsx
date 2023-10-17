@@ -45,39 +45,37 @@ function App() {
   ) : (
     <>
       <Toaster position='top-right' reverseOrder={false} containerClassName='overflow-auto' />
-      <Routes>
-        <Route path="/auth/signin" element={<SignIn />} />
-        <Route element={<DefaultLayout />}>
-          <Route
-            path="/"
-            element={
-              <PrivateRoute />
-            }
-          >
-            {privateRoutes.map(({ path, component: Component }) => (
+      <Suspense fallback={<Loader />}>
+        <Routes>
+          <Route path="/auth/signin" element={<SignIn />} />
+          <Route element={<DefaultLayout />}>
+            <Route
+              path="/"
+              element={
+                <PrivateRoute />
+              }
+            >
+              {privateRoutes.map(({ path, component: Component }) => (
+                <Route
+                  path={path}
+                  element={
+                    <Component />
+                  }
+                />
+              ))}
+            </Route>
+            <Route index element={<ECommerce />} />
+            {routes.map(({ path, component: Component }) => (
               <Route
                 path={path}
                 element={
-                  <Suspense fallback={<Loader />}>
-                    <Component />
-                  </Suspense>
+                  <Component />
                 }
               />
             ))}
           </Route>
-          <Route index element={<ECommerce />} />
-          {routes.map(({ path, component: Component }) => (
-            <Route
-              path={path}
-              element={
-                <Suspense fallback={<Loader />}>
-                  <Component />
-                </Suspense>
-              }
-            />
-          ))}
-        </Route>
-      </Routes>
+        </Routes>
+      </Suspense>
     </>
   );
 }

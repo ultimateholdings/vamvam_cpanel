@@ -1,7 +1,7 @@
-import { PayloadAction, current } from "@reduxjs/toolkit";
+import { PayloadAction } from "@reduxjs/toolkit";
 import User from "../../modules/usersModule/model/user";
 import { AuthState, initialState } from "./authentication.slice"
-import { authStorage } from "../../services/auth/auth";
+import { authStorage } from "../../modules/authModule/helpers/auth";
 
 export const authReducers = {
     setToken: (state: AuthState, action: PayloadAction<string>) => {

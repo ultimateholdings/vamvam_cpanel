@@ -6,23 +6,25 @@ import {
 import Admin from '../../modules/usersModule/model/admin'
 import { actions } from "./users.actions";
 import { ErrorResponseApi } from "../../utils/constants/types";
-import { getResponse } from "../../utils/helpers/functions";
-import { driverRegister } from "./users.repository";
-import { authStorage } from "../../services/auth/auth";
+import { driverRegister, newAdmi } from "./users.repository";
+import { getErrorResponse } from "../../utils/helpers/functions";
+import { STATUS } from "../../utils/constants/enums";
 
 
 export type UsersState = {
     users?: Admin,
     error?: Error,
     errorMessage?: ErrorResponseApi,
-    loading: boolean,
+
+    createUserstatus: STATUS,
 }
 
 const initialState: UsersState = {
     users: undefined,
-    loading: false,
     error: undefined,
     errorMessage: undefined,
+
+    createUserstatus: STATUS.IDLE
 };
 
 
@@ -31,37 +33,39 @@ export const authSlice = createSlice({
     initialState: initialState,
     reducers: actions,
     extraReducers(builder) {
-        
+
         //driverRegister
         builder.addCase(driverRegister.pending, (state: UsersState) => {
-            state.loading = true;
+            state.createUserstatus = STATUS.LOADING;
         },),
-            builder.addCase(driverRegister.fulfilled, (state: UsersState, action: any) => {
-                state.loading = false;
-                authStorage.setBearerAccessToken(action.payload.token);
+            builder.addCase(driverRegister.fulfilled, (state: UsersState) => {
+                state.createUserstatus = STATUS.SUCCESS;
             },),
             builder.addCase(driverRegister.rejected, (state: UsersState, action: any) => {
-                state.errorMessage = getResponse(action)
-                state.loading = false;
+                state.errorMessage = getErrorResponse(action.payload);
+                state.createUserstatus = STATUS.FAIL;
             },),
 
-        //newAdmi
-        builder.addCase(driverRegister.pending, (state: UsersState) => {
-            state.loading = true;
-        },),
-            builder.addCase(driverRegister.fulfilled, (state: UsersState, action: any) => {
-                state.loading = false;
-                authStorage.setBearerAccessToken(action.payload.token);
+            //newAdmi
+            builder.addCase(newAdmi.pending, (state: UsersState) => {
+                state.createUserstatus = STATUS.LOADING;
             },),
-            builder.addCase(driverRegister.rejected, (state: UsersState, action: any) => {
-                state.errorMessage = getResponse(action)
-                state.loading = false;
+            builder.addCase(newAdmi.fulfilled, (state: UsersState) => {
+                state.createUserstatus = STATUS.SUCCESS;
+                state.errorMessage = undefined;
+            },),
+            builder.addCase(newAdmi.rejected, (state: UsersState, action: any) => {
+                state.errorMessage = getErrorResponse(action.payload)
+                state.createUserstatus = STATUS.FAIL;
             },)
     },
 });
 
 export const {
-    setUsersState
+    setUsersState,
+    resetCreateUserState
 } = authSlice.actions;
+
+export {initialState};
 
 export default authSlice.reducer;

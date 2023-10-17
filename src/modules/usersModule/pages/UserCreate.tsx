@@ -1,11 +1,14 @@
-import * as React from "react";
 import { useForm } from "react-hook-form";
 import Breadcrumb from '../../../components/Breadcrumb'
-import { GENDER, LANG, ROLE_USER } from "../../../utils/constants/enums";
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { GENDER, LANG, ROLE_USER, STATUS } from "../../../utils/constants/enums";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../../store";
 import { driverRegister, newAdmi } from "../../../store/users/users.repository";
+import { tcustom } from "../../../utils/helpers/functions";
+import ErrorLine from "../../../components/customs/ErrorLine";
+import { useNavigate } from "react-router-dom";
+import { UsersState, resetCreateUserState } from "../../../store/users/users.slice";
 
 
 interface IFormInput {
@@ -18,12 +21,11 @@ interface IFormInput {
     position?: string,
     role?: ROLE_USER,
     avatar?: any,
-    carInfos?: File,
+    carInfos?: any,
     sponsorCode?: string,
     lang?: string,
     password?: string,
     cpassword?: string,
-
 }
 
 
@@ -38,25 +40,59 @@ export default function App() {
         mode: "onTouched",
     });
     const dispatch = useDispatch<AppDispatch>();
+    const usersState = useSelector((state: { users: UsersState }) => state.users);
+    const navigate = useNavigate();
 
-    const onSubmit = (data: IFormInput) => {
+    const onSubmit = async (data: IFormInput) => {
+        if(data.avatar){
+            data.avatar = data.avatar[0];
+        }
+        if(data.carInfos){
+            data.carInfos = data.carInfos[0];
+        }
+
+        console.log(data);
+
         if (data.role == ROLE_USER.Driver) {
-            dispatch(driverRegister(data));
+            dispatch(driverRegister(
+               { age: data.age, 
+                carInfos: data.carInfos, 
+                firstName: data.firstName, 
+                email: data.email,
+                gender: data.gender,
+                lang: data.lang,
+                lastName: data.email,
+                password: data.password,
+                phoneNumber: data.phoneNumber,
+                sponsorCode: data.sponsorCode,}
+            ))
         } else {
-            dispatch(newAdmi(data));
+            dispatch(newAdmi({ 
+                type: data.role, 
+                phoneNumber: data.phoneNumber, 
+                password: data.password, 
+                email: data.email }));
         }
     };
 
     const [form, setform] = useState<IFormInput>()
 
 
-    React.useEffect(() => {
-        const subscription = watch((value) => 
+    useEffect(() => {
+        const subscription = watch((value) =>
             setform(value)
         )
         return () => subscription.unsubscribe()
-    }, [watch])
+    }, [watch]);
 
+    useEffect(() => {
+        if(usersState.createUserstatus == STATUS.SUCCESS){
+            navigate("/users");
+        }
+        dispatch(resetCreateUserState());
+        
+    }, [usersState]);
+    
 
     return (
         <>
@@ -151,18 +187,6 @@ export default function App() {
                                 <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
                                     <div className="w-full xl:w-1/2">
                                         <label className="mb-2.5 block text-black dark:text-white">
-                                            Gender
-                                        </label>
-                                        <select {...register("gender")} className="relative z-20 w-full appearance-none rounded border border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary">
-                                            {Object.values(GENDER).map((gender) => {
-                                                if (typeof gender === "string") {
-                                                    return <option value={gender}>{gender}</option>
-                                                }
-                                            })}
-                                        </select>
-                                    </div>
-                                    <div className="w-full xl:w-1/2">
-                                        <label className="mb-2.5 block text-black dark:text-white">
                                             Role
                                         </label>
                                         <select {...register("role")} className="relative z-20 w-full appearance-none rounded border border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary">
@@ -174,26 +198,42 @@ export default function App() {
                                         </select>
                                     </div>
 
+                                    {form?.role == ROLE_USER.Driver &&
+                                        <div className=" xl:w-1/2">
+                                            <label className="mb-2.5 block text-black dark:text-white">
+                                                Avatar
+                                            </label>
+                                            <input
+                                                type="file"
+                                                {...register("avatar", {
+                                                    required: false,
+                                                    validate: {
+                                                        lessThan10MB: (files: any) => ((files[0] && files[0]!.size < 10000000) || "Max 10MB"),
+                                                        acceptedFormats: (files: any) => (["image/jpeg", "image/png", "image/gif", "application/pdf"].includes(files[0]!.type))
+                                                    },
+                                                })}
+                                                placeholder="Choice an avatar"
+                                                className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                                            />
+                                        </div>
+                                    }
+
                                 </div>
 
-                                <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
-                                    <div className="mb-4.5  xl:w-1/2">
+                                {form?.role == ROLE_USER.Driver && <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
+                                    <div className="w-full xl:w-1/2">
                                         <label className="mb-2.5 block text-black dark:text-white">
-                                            Avatar
+                                            Gender
                                         </label>
-                                        <input
-                                            type="file"
-                                            {...register("avatar", {
-                                                required: false,
-                                                validate: {
-                                                    lessThan10MB: (files: any) => (files[0]!.size < 10000000 || "Max 10MB"),
-                                                    acceptedFormats: (files: any) => (["image/jpeg", "image/png", "image/gif", "application/pdf"].includes(files[0]!.type))
-                                                },
+                                        <select {...register("gender")} className="relative z-20 w-full appearance-none rounded border border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary">
+                                            {Object.values(GENDER).map((gender) => {
+                                                if (typeof gender === "string") {
+                                                    return <option value={gender}>{gender}</option>
+                                                }
                                             })}
-                                            placeholder="Choice an avatar"
-                                            className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-                                        />
+                                        </select>
                                     </div>
+
                                     <div className="w-full xl:w-1/2">
                                         <label className="mb-2.5 block text-black dark:text-white">
                                             Age
@@ -209,7 +249,7 @@ export default function App() {
                                         />
                                     </div>
 
-                                </div>
+                                </div>}
                                 {form?.role == ROLE_USER.Driver && <div className=" flex flex-col gap-6 xl:flex-row">
                                     <div className="mb-4.5 w-full xl:w-1/2">
                                         <label className="mb-2.5 block text-black dark:text-white">
@@ -233,6 +273,10 @@ export default function App() {
                                             type="file"
                                             {...register("carInfos", {
                                                 required: false,
+                                                validate: {
+                                                    lessThan10MB: (files: any) => ((files[0] && files[0]!.size < 10000000) || "Max 10MB"),
+                                                    acceptedFormats: (files: any) => (["image/jpeg", "image/png", "image/gif", "application/pdf"].includes(files[0]!.type))
+                                                },
                                             })}
                                             placeholder="Choice a File"
                                             className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
@@ -269,11 +313,11 @@ export default function App() {
                                             placeholder="Enter your Password"
                                             className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                                         />
+                                        {errors.cpassword && <ErrorLine error={errors.cpassword.message}></ErrorLine>}
                                     </div>
-                                    {errors.cpassword && <p>{errors.cpassword.message}</p>}
                                 </div>
                                 <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
-                                    <div className="w-full xl:w-1/2">
+                                    {form?.role == ROLE_USER.Driver && <div className="w-full xl:w-1/2">
                                         <label className="mb-2.5 block text-black dark:text-white">
                                             Langue
                                         </label>
@@ -284,11 +328,12 @@ export default function App() {
                                                 }
                                             })}
                                         </select>
-                                    </div>
+                                    </div>}
                                 </div>
-
+                                        
+                                <span className='px-6.5 py-0 text-danger block mb-2'>{tcustom(usersState.errorMessage)}</span>
                                 {/* <input type="submit" className="flex justify-center rounded bg-primary p-3 font-medium text-gray float-right" style={{ margin: "10px" }} value='En' /> */}
-                                <button type="submit" className="flex justify-center rounded bg-primary p-3 font-medium text-gray float-right" style={{ margin: "10px" }}>
+                                <button type="submit" className="flex justify-center rounded bg-primary p-3 font-medium text-gray float-right disabled:opacity-75" style={{ margin: "10px" }} disabled={usersState.createUserstatus == STATUS.LOADING}>
                                     Enregistrer
                                 </button>
                             </div>

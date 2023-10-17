@@ -3,8 +3,18 @@ import { ErrorResponseApi } from "../constants/types"
 
 
 
-function getResponse(action: any): ErrorResponseApi {
-    return JSON.parse(action.error.message).data;
+function getErrorResponse(payload: any): ErrorResponseApi {
+    return payload.response.data;
+}
+
+function objectToFormData(payload: any): FormData {
+    let form_data = new FormData();
+
+    for ( let key in payload ) {
+        form_data.append(key, payload[key]);
+    }
+
+    return form_data;
 }
 
 function tcustom(errorResponseApi?: ErrorResponseApi) {
@@ -24,4 +34,4 @@ function tcustom(errorResponseApi?: ErrorResponseApi) {
     return ''
 }
 
-export { getResponse, tcustom }
+export { getErrorResponse, tcustom , objectToFormData}

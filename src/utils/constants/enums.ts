@@ -1,8 +1,8 @@
 enum ROLE_USER {
-    Manager = 'Manager',
-    ConflictManager = 'ConflictManager',
-    RegistrationManager = 'RegistrationManager',
-    Driver = 'Driver',
+    Manager = 'admin',
+    ConflictManager = 'conflict',
+    RegistrationManager = 'registration-manager',
+    Driver = 'driver',
 }
 
 enum ORDER {
@@ -27,8 +27,8 @@ enum TYPE_CONTENT {
 
 
 enum GENDER {
-    MALE = "M.",
-    FEMALE = "Mme."
+    MALE = "M",
+    FEMALE = "F"
 }
 
 enum LANG {
@@ -36,4 +36,11 @@ enum LANG {
     EN = "EN"
 }
 
-export { ROLE_USER, ORDER, ACTION, TYPE_CONTENT, GENDER, LANG }
+enum STATUS {
+    IDLE,
+    LOADING,
+    FAIL,
+    SUCCESS
+}
+
+export { ROLE_USER, ORDER, ACTION, TYPE_CONTENT, GENDER, LANG, STATUS }

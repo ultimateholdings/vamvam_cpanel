@@ -1,23 +1,24 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { apiService } from "../../services/api/api.service";
-import CustomErrorApi from "../../common/models/CustomErrorApi";
+import { objectToFormData } from "../../utils/helpers/functions";
 
-const driverRegister = createAsyncThunk('driverRegister', async (data: any) => {
+const driverRegister = createAsyncThunk('driverRegister', async (data: any, thunkAPI) => {
     try {
-        const response = await apiService.post("/driver/register", data);
+        const response = await apiService.post("/driver/register-intern", objectToFormData(data));
         return response.data;
     } catch (error: any) {
-        throw new CustomErrorApi(error.response);
+        throw thunkAPI.rejectWithValue(error);
     }
 });
 
-const newAdmi = createAsyncThunk('newAdmi', async (data: any) => {
+const newAdmi = createAsyncThunk('newAdmi', async (data: any, thunkAPI) => {
     try {
         const response = await apiService.post("/admin/new-admin", data);
         return response.data;
     } catch (error: any) {
-        throw new CustomErrorApi(error.response);
+        throw thunkAPI.rejectWithValue(error);
     }
 });
+
 
 export { driverRegister, newAdmi }
