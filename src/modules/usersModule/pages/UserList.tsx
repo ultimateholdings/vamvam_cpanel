@@ -1,11 +1,26 @@
 import { Link } from 'react-router-dom'
 import Breadcrumb from '../../../components/Breadcrumb'
-import { ACTION, ROLE_USER } from '../../../utils/constants/enums'
+import { ACTION, ROLE_USER, STATUS } from '../../../utils/constants/enums'
 import { Header } from '../../../utils/constants/types'
+import { UsersState } from '../../../store/users/users.slice'
+import { AppDispatch } from '../../../store'
+import { userAll } from '../../../store/users/users.repository'
+import { useDispatch, useSelector } from 'react-redux'
+import { useEffect } from 'react'
+import { COLORS } from '../../../utils/constants/constants'
 
 type Props = {}
 
 export default function UserList({ }: Props) {
+
+    const usersState = useSelector((state: { users: UsersState }) => state.users);
+    const dispatch = useDispatch<AppDispatch>();
+
+
+    useEffect(() => {
+        dispatch(userAll({}));
+    }, [])
+
     const TiltePage = 'Liste des utilisateurs';
 
     function titleRender(title: string, color?: string) {
@@ -25,29 +40,42 @@ export default function UserList({ }: Props) {
     };
 
     function badgeRender(title: string, color?: string) {
-        return (<p className={`inline-flex rounded-full bg-success bg-opacity-10 py-1 px-3 text-sm font-medium ${color ? color : ''}`}>{title}</p>)
+        return (<p className={`inline-flex rounded-full bg-success bg-opacity-10 py-1 px-3 text-sm font-medium bg-[${color ? color : ''}]`}>{title}</p>)
     };
 
     function headerContentPart(header: Header) {
         return (
-            <th className={`w-${header.width}  py-4 px-4 font-medium text-black dark:text-white `} style={{ width: `${header.width}%` }}>
+            <th className={`w-${header.width}  py-4 px-4 font-medium text-black dark:text-white uppercase `} style={{ width: `${header.width}%` }}>
                 {header.title}
             </th>
         )
     }
 
     const actions: ACTION[] = [ACTION.READ, ACTION.DELETE, ACTION.EDIT];
+
+    // const headers: Header2[] =  
     const headers: Header[] = [
         {
-            title: 'Product Name',
-            width: 40
+            title: '',
         },
         {
-            title: 'Invoice date',
+            title: 'email',
         },
         {
-            title: 'Status',
-        }
+            title: 'phone',
+        },
+        {
+            title: 'gender',
+        },
+        {
+            title: 'role',
+        },
+        {
+            title: 'internal',
+        },
+        {
+            title: 'status',
+        },
     ]
 
 
@@ -144,8 +172,8 @@ export default function UserList({ }: Props) {
                 <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
                     <div className="py-6 px-4 flex items-center justify-between"><h4 className="text-xl font-semibold text-black dark:text-white">{TiltePage}</h4>
                         <Link
-                            to="#"
-                            onClick={(e) => { }}
+                            to="/user-create"
+                            onClick={() => { }}
                             className="inline-flex items-center justify-center rounded-full bg-primary py-4 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
                         >
                             Ajouter
@@ -210,11 +238,16 @@ export default function UserList({ }: Props) {
                                 </tr>
                             </thead>
                             <tbody>
-                                {
 
-                                    (<tr>
-                                        (<td className='border-b border-[#eee] py-5 px-4 dark:border-strokedark'>{titleRender('Bonjour')}</td>)
-
+                                {usersState.users && usersState.users.map((user,index) =>
+                                    <tr>
+                                        <td className='border-b border-[#eee] py-5 px-4 dark:border-strokedark'>{index}</td>
+                                        <td className='border-b border-[#eee] py-5 px-4 dark:border-strokedark'>{user.email}</td>
+                                        <td className='border-b border-[#eee] py-5 px-4 dark:border-strokedark'>{user.phone}</td>
+                                        <td className='border-b border-[#eee] py-5 px-4 dark:border-strokedark'>{user.gender}</td>
+                                        <td className='border-b border-[#eee] py-5 px-4 dark:border-strokedark'>{user.role}</td>
+                                        <td className='border-b border-[#eee] py-5 px-4 dark:border-strokedark'> {badgeRender(user.internal ? 'Oui' : 'NON', user.internal ? COLORS.red : COLORS.green)}</td>
+                                        <td className='border-b border-[#eee] py-5 px-4 dark:border-strokedark'>{user.status}</td>
 
                                         {
                                             actions.length &&
@@ -226,9 +259,8 @@ export default function UserList({ }: Props) {
                                                 </div>
                                             </td>
                                         }
-
-                                    </tr>)
-                                }
+                                    </tr>
+                                )}
                             </tbody>
                         </table>
                     </div>

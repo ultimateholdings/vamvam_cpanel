@@ -5,4 +5,6 @@ const COLORS = {
     yellow: 'rgb(211 64 83)',
 }
 
-export { COLORS }
+const AGE_SLICES = ["18-24", "25-34", "35-44", "45-54", "55-64","64+"]
+
+export { COLORS , AGE_SLICES}

@@ -1,7 +1,7 @@
 enum ROLE_USER {
     Manager = 'admin',
     ConflictManager = 'conflict',
-    RegistrationManager = 'registration-manager',
+    RegistrationManager = 'registration',
     Driver = 'driver',
 }
 

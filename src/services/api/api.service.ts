@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { authStorage } from '../../modules/authModule/helpers/auth';
 
-const BEARER_TOKEN: any | undefined = authStorage.getStoreAuthState().token;
+const BEARER_TOKEN: any | undefined = authStorage.getStoreAuthState() ?  authStorage.getStoreAuthState().token : null;
 const BASE_URL = import.meta.env.VITE_API_URL;
 
 console.log("BASE_URL", BASE_URL);
@@ -23,6 +23,8 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
     function (config) {
         // Do something before request is sent
+        console.log('BEARER_TOKEN',BEARER_TOKEN);
+        
         if (config.baseURL == BASE_URL && BEARER_TOKEN != undefined) {
             config.headers['Authorization'] = "Bearer " + BEARER_TOKEN;
             console.log(config.headers);

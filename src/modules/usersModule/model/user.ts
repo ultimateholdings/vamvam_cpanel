@@ -1,4 +1,5 @@
 export default interface User {
+    id?: string;
     age?: string;
     avatar?: File;
     firstName?: string;
@@ -9,6 +10,10 @@ export default interface User {
     password?: string;
     email?: string;
     connected?: boolean;
+    role?: string;
+    status?: string;
+    phone?: string;
+    internal?: string;
     
     // deviceToken?: string;
     // carInfos?: File;

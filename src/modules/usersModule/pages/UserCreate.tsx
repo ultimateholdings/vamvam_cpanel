@@ -9,6 +9,7 @@ import { tcustom } from "../../../utils/helpers/functions";
 import ErrorLine from "../../../components/customs/ErrorLine";
 import { useNavigate } from "react-router-dom";
 import { UsersState, resetCreateUserState } from "../../../store/users/users.slice";
+import { AGE_SLICES } from "../../../utils/constants/constants";
 
 
 interface IFormInput {
@@ -55,23 +56,25 @@ export default function App() {
 
         if (data.role == ROLE_USER.Driver) {
             dispatch(driverRegister(
-               { age: data.age, 
+               { 
+                // age: data.age, 
                 carInfos: data.carInfos, 
-                firstName: data.firstName, 
-                email: data.email,
-                gender: data.gender,
+                firstName: data.firstName?.trim(), 
+                email: data.email?.trim(),
+                gender: data.gender?.trim(),
                 lang: data.lang,
-                lastName: data.email,
+                lastName: data.lastName?.trim(),
                 password: data.password,
-                phoneNumber: data.phoneNumber,
-                sponsorCode: data.sponsorCode,}
+                age: data.age,
+                phoneNumber: data.phoneNumber?.trim(),
+                sponsorCode: data.sponsorCode?.trim(),}
             ))
         } else {
             dispatch(newAdmi({ 
-                type: data.role, 
-                phoneNumber: data.phoneNumber, 
+                type: data.role?.trim(), 
+                phoneNumber: data.phoneNumber?.trim(), 
                 password: data.password, 
-                email: data.email }));
+                email: data.email?.trim()}));
         }
     };
 
@@ -87,16 +90,16 @@ export default function App() {
 
     useEffect(() => {
         if(usersState.createUserstatus == STATUS.SUCCESS){
+            dispatch(resetCreateUserState());
             navigate("/users");
         }
-        dispatch(resetCreateUserState());
         
     }, [usersState]);
     
 
     return (
         <>
-            <Breadcrumb pageName="Create new user" />
+            <Breadcrumb pageName="Créer un utilisateur" />
 
             <div className="grid">
                 <div className="flex flex-col gap-9">
@@ -238,7 +241,7 @@ export default function App() {
                                         <label className="mb-2.5 block text-black dark:text-white">
                                             Age
                                         </label>
-                                        <input
+                                        {/* <input
                                             type="number"
                                             {...register("age", {
                                                 required: false,
@@ -246,7 +249,15 @@ export default function App() {
                                             })}
                                             placeholder="Enter a age"
                                             className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-                                        />
+                                        /> */}
+
+                                    <select {...register("age")} className="relative z-20 w-full appearance-none rounded border border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary">
+                                            {AGE_SLICES.map((slice) => {
+                                                if (typeof slice === "string") {
+                                                    return <option value={slice}>{slice}</option>
+                                                }
+                                            })}
+                                        </select>
                                     </div>
 
                                 </div>}

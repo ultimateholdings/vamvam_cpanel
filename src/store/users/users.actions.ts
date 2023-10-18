@@ -1,7 +1,7 @@
 import { PayloadAction } from "@reduxjs/toolkit";
 import { UsersState, initialState } from "./users.slice"
 
-export const actions = {
+export const reducers = {
     setUsersState: (state: UsersState, action: PayloadAction<UsersState>) => {
         state = action.payload;
     },
