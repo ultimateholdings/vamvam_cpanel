@@ -17,7 +17,15 @@ export const authReducers = {
         state = action.payload;
     },
     userLogOut: (state: AuthState) => {
-        Object.assign(state,{...initialState})
+        Object.assign(state, { ...initialState })
         authStorage.removeStoreAuthState();
     },
+    clearFailAdminLogin(state: AuthState) {
+        state.errorMessage = initialState.errorMessage;
+        state.signInStatus = initialState.signInStatus;
+    },
+    clearFailUserInfos(state: AuthState) {
+        state.errorMessage = initialState.errorMessage;
+        state.userInfosStatus = initialState.userInfosStatus;
+    }
 }

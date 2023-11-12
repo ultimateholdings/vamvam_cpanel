@@ -4,7 +4,7 @@ import Logo from '../../../../images/logo/logo.svg';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux';
-import { adminLogin } from '../../../../store/authentication/authentication.repository';
+import { adminLogin, userInfos } from '../../../../store/authentication/authentication.repository';
 import { AppDispatch } from '../../../../store';
 import { AuthState } from '../../../../store/authentication/authentication.slice';
 import { tcustom } from '../../../../utils/helpers/functions';
@@ -12,25 +12,41 @@ import { useEffect } from 'react';
 import ErrorLine from '../../../../components/customs/ErrorLine';
 import { STATUS } from '../../../../utils/constants/enums';
 
+
+interface IFormInput {
+  loginInput?: string,
+  password?: string,
+  email?: string,
+  phoneNumber?: string,
+}
+
+
 export default function SignIn() {
 
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const { register, handleSubmit, formState: { errors } } = useForm<IFormInput>();
   const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
   const authState = useSelector((state: { auth: AuthState }) => state.auth);
   const navigate = useNavigate();
 
 
-  const onSubmit = async (data: {}) => {
+  const onSubmit = async (data: IFormInput) => {
+    let dataToSend;
     try {
-      dispatch(adminLogin(data));
+      if (data.loginInput?.includes('@')) {
+        dataToSend = { email: data.loginInput, password: data.password };
+      } else {
+        dataToSend = { phoneNumber: data.loginInput, password: data.password };
+      }
+      dispatch(adminLogin(dataToSend));
     } catch (error) {
 
     }
   };
 
-  useEffect(() => {    
+  useEffect(() => {
     if (authState.connected) {
+      dispatch(userInfos(null));
       navigate("/");
     }
     return () => {
@@ -184,18 +200,18 @@ export default function SignIn() {
               <h2 className="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
                 Sign In to VAM-VAM
               </h2>
-             <ErrorLine error={tcustom(authState.errorMessage)}></ErrorLine>
+              <ErrorLine error={tcustom(authState.errorMessage)}></ErrorLine>
 
               <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="mb-4">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
-                    Phone
+                    Phone or Email
                   </label>
                   <div className="relative">
                     <input
-                      type="phoneNumber"
-                      {...register("phoneNumber", { required: true })}
-                      placeholder="Enter your phone"
+                      type="loginInput"
+                      {...register("loginInput", { required: true })}
+                      placeholder="Enter your phone or email address"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                     />
 
@@ -262,7 +278,7 @@ export default function SignIn() {
                   <input
                     type="submit"
                     value="Sign In"
-                    disabled={authState.signInstatus == STATUS.LOADING}
+                    disabled={authState.signInStatus == STATUS.LOADING}
                     className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90 disabled:opacity-75"
                   />
                 </div>

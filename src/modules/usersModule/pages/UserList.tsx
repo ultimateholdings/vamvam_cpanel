@@ -2,26 +2,61 @@ import { Link } from 'react-router-dom'
 import Breadcrumb from '../../../components/Breadcrumb'
 import { ACTION, ROLE_USER, STATUS } from '../../../utils/constants/enums'
 import { Header } from '../../../utils/constants/types'
-import { UsersState } from '../../../store/users/users.slice'
+import { UsersState, clearUsers, setUsersState } from '../../../store/users/users.slice'
 import { AppDispatch } from '../../../store'
 import { userAll } from '../../../store/users/users.repository'
 import { useDispatch, useSelector } from 'react-redux'
-import { useEffect } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { COLORS } from '../../../utils/constants/constants'
+import { useForm } from 'react-hook-form'
+import Pagination from '../../../components/customs/Pagination'
+import User from '../model/user'
 
 type Props = {}
+
+const TiltePage = 'Liste des utilisateurs';
 
 export default function UserList({ }: Props) {
 
     const usersState = useSelector((state: { users: UsersState }) => state.users);
+    const [users, setusers] = useState<User[]>([]);
+    const [currentPage, setcurrentPage] = useState<number>(1);
+    const [searchParams, setsearchParams] = useState({ params: { maxPageSize: 2 } });
     const dispatch = useDispatch<AppDispatch>();
+    const { register, watch } = useForm();
 
 
     useEffect(() => {
-        dispatch(userAll({}));
+        dispatch(userAll(searchParams));
     }, [])
 
-    const TiltePage = 'Liste des utilisateurs';
+
+    useEffect(() => {
+        const subscription = watch((value) => {
+            console.log(value);
+            const newsearchParams = Object.assign({...searchParams},{params:{...searchParams.params,role: value.role}})
+            setsearchParams(newsearchParams)
+            dispatch(clearUsers());
+            dispatch(userAll({ ...newsearchParams, headers: { 'page-token': usersState.nextTokenPageUserList } }));
+        });
+        return () => subscription.unsubscribe();
+    }, [watch]);
+
+
+    useEffect(() => {
+        if (usersState.users) {
+            // const usersToshow = usersState.users;
+            const startSlice = searchParams.params.maxPageSize * (currentPage - 1);
+            const endSlice = startSlice + searchParams.params.maxPageSize;
+            const usersToshow = usersState.users.slice(startSlice, endSlice);
+            console.log('usersToshow', usersToshow, startSlice, endSlice);
+            console.log('usersState.users', usersState.users);
+
+            if (usersToshow) setusers(usersToshow)
+        }
+    }, [usersState.users, currentPage]);
+
+
 
     function titleRender(title: string, color?: string) {
         return (<p className={`text-sm  ${color ? color : 'text-black dark:text-white'}`}>
@@ -165,6 +200,26 @@ export default function UserList({ }: Props) {
             </button>)
     };
 
+    // function goToPage(page: number, params: any, callback: Function) {
+    //     callback({ 'page-token': page })
+    // }
+
+    // function goToNextPage(token: string, callback: Function) {
+    //     callback({ 'page-token': token })
+    // }
+
+    // function nextPage() {
+    //     dispatch(userAll({ params: { maxPageSize: 2 }, headers: { 'page-token': usersState.nextTokenPageUserList } }));
+    // }
+
+    function gotoPageByNumber(pageNumber: number) {
+        // dispatch(userAll({ ...searchParams, headers: { 'page-token': token } }));
+        if ((pageNumber > currentPage) && usersState.nextTokenPageUserList) {
+            dispatch(userAll({ ...searchParams, headers: { 'page-token': usersState.nextTokenPageUserList } }));
+        }
+        setcurrentPage(pageNumber);
+    }
+
     return (
         <>
             <Breadcrumb pageName={TiltePage} />
@@ -211,7 +266,8 @@ export default function UserList({ }: Props) {
                             </span> */}
                         </div>
 
-                        <select className="uppercase relative z-20 w-1/5 appearance-none rounded border border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input">
+                        <select {...register("role")} className="uppercase relative z-20 w-1/5 appearance-none rounded border border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input">
+                            <option value="">All</option>
                             {Object.values(ROLE_USER).map((role) => {
                                 if (typeof role === "string") {
                                     return <option value={role} className='uppercase'>{role}</option>
@@ -239,7 +295,7 @@ export default function UserList({ }: Props) {
                             </thead>
                             <tbody>
 
-                                {usersState.users && usersState.users.map((user,index) =>
+                                {users && users.map((user, index) =>
                                     <tr>
                                         <td className='border-b border-[#eee] py-5 px-4 dark:border-strokedark'>{index}</td>
                                         <td className='border-b border-[#eee] py-5 px-4 dark:border-strokedark'>{user.email}</td>
@@ -266,6 +322,26 @@ export default function UserList({ }: Props) {
                     </div>
                 </div>
             </div>
+
+            {/* nextToken={usersState.nextTokenPageUserList}  */}
+            {/* searchParams={searchParams} */}
+
+            <Pagination nextToken={usersState.nextTokenPageUserList} searchParams={searchParams} onNext={(nextPage: number) => { gotoPageByNumber(nextPage) }} onPrevious={(previousPage: number) => { gotoPageByNumber(previousPage) }} onclearPagination={(pageNumber: number)=> setcurrentPage(pageNumber)} ></Pagination>
+
+
+            {/* <div className='pagination flex items-center justify-center gap-5 my-10'>
+                <button type="button" className='dark:bg-boxdark rounded-full hover:dark:bg-white' >
+                    <svg width="40px" height="40px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M14.2893 5.70708C13.8988 5.31655 13.2657 5.31655 12.8751 5.70708L7.98768 10.5993C7.20729 11.3805 7.2076 12.6463 7.98837 13.427L12.8787 18.3174C13.2693 18.7079 13.9024 18.7079 14.293 18.3174C14.6835 17.9269 14.6835 17.2937 14.293 16.9032L10.1073 12.7175C9.71678 12.327 9.71678 11.6939 10.1073 11.3033L14.2893 7.12129C14.6799 6.73077 14.6799 6.0976 14.2893 5.70708Z" fill="#0F0F0F" />
+                    </svg>
+                </button>
+                <span><span className='text-bold'>Page 2</span></span>
+                <button type="button" disabled={!usersState.nextTokenPageUserList} className='dark:bg-boxdark rounded-full hover:dark:bg-white' onClick={nextPage}>
+                    <svg width="40px" height="40px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z" fill="#0F0F0F" />
+                    </svg>
+                </button>
+            </div> */}
         </>
     )
 }

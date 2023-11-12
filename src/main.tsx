@@ -33,7 +33,10 @@ const content = (<IoProvider>
 const toRender =
   MODE === 'production'
     ? <HashRouter basename='/'> {content} </HashRouter>
-    : <React.StrictMode> <Router> {content} </Router> </React.StrictMode>
+    : 
+    // <React.StrictMode> 
+      <Router> {content} </Router> 
+      // </React.StrictMode>
 
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(toRender);

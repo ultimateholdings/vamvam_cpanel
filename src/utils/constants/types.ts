@@ -25,4 +25,9 @@ type ErrorResponseApi = {
     },
 }
 
-export type { Header, Item, ContentItem, Line, ErrorResponseApi }
+type TokenPage = {
+    page:number,
+    token:string
+}
+
+export type { Header, Item, ContentItem, Line, ErrorResponseApi,TokenPage }

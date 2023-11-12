@@ -2,15 +2,18 @@ import { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import UserOne from '../images/user/user-01.png';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from '../store';
-import { userLogOut } from '../store/authentication/authentication.slice';
+import { AuthState } from '../store/authentication/authentication.slice';
+import { userLogOutApi } from '../store/authentication/authentication.repository';
 
 const DropdownUser = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const trigger = useRef<any>(null);
   const dropdown = useRef<any>(null);
+
+  const authState = useSelector((state: { auth: AuthState }) => state.auth);
 
   // close on click outside
   useEffect(() => {
@@ -41,7 +44,7 @@ const DropdownUser = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   function logOut() {
-    dispatch(userLogOut());
+    dispatch(userLogOutApi(null));
   }
 
   return (
@@ -54,9 +57,9 @@ const DropdownUser = () => {
       >
         <span className="hidden text-right lg:block">
           <span className="block text-sm font-medium text-black dark:text-white">
-            Thomas Anree
+            {authState.currentUser?.firstName} {authState.currentUser?.lastName}
           </span>
-          <span className="block text-xs">UX Designer</span>
+          <span className="block text-xs">{authState.currentUser?.role}</span>
         </span>
 
         <span className="h-12 w-12 rounded-full">

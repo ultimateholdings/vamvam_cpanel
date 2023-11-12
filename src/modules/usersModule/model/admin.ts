@@ -13,6 +13,7 @@ export default class Admin implements User {
     connected?: boolean;
     
     type?: string;
+    role?: string;
     // deviceToken?: string;
 
     // carInfos?: File;

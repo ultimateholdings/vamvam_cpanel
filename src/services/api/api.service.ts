@@ -1,17 +1,13 @@
 import axios from 'axios';
 import { authStorage } from '../../modules/authModule/helpers/auth';
 
-const BEARER_TOKEN: any | undefined = authStorage.getStoreAuthState() ?  authStorage.getStoreAuthState().token : null;
+
 const BASE_URL = import.meta.env.VITE_API_URL;
+let BEARER_TOKEN: any | undefined = authStorage.getStoreAuthState() ? authStorage.getStoreAuthState().token : null;
 
 console.log("BASE_URL", BASE_URL);
 
-
 let headers: any = {}
-
-if (BEARER_TOKEN) {
-    headers['Authorization'] = "Bearer " + BEARER_TOKEN;
-}
 
 const axiosInstance = axios.create({
     url: BASE_URL,
@@ -23,8 +19,8 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
     function (config) {
         // Do something before request is sent
-        console.log('BEARER_TOKEN',BEARER_TOKEN);
-        
+        console.log('BEARER_TOKEN', BEARER_TOKEN);
+
         if (config.baseURL == BASE_URL && BEARER_TOKEN != undefined) {
             config.headers['Authorization'] = "Bearer " + BEARER_TOKEN;
             console.log(config.headers);
@@ -56,6 +52,27 @@ axiosInstance.interceptors.response.use(
     }
 )
 
+function setAuthorizationToInterceptor() {
+    if (!BEARER_TOKEN) {
+        BEARER_TOKEN = authStorage.getStoreAuthState() ? authStorage.getStoreAuthState().token : null;
+    }
+    axiosInstance.interceptors.request.use(
+        function (config) {
+            // Do something before request is sent
+            console.log('BEARER_TOKEN', BEARER_TOKEN);
+
+            if (config.baseURL == BASE_URL && BEARER_TOKEN != undefined) {
+                config.headers['Authorization'] = "Bearer " + BEARER_TOKEN;
+                console.log(config.headers);
+            }
+            return config;
+        }
+    )
+}
+
+setAuthorizationToInterceptor();
+
 export {
-    axiosInstance as apiService
+    axiosInstance as apiService,
+    setAuthorizationToInterceptor
 };

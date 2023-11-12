@@ -45,10 +45,10 @@ export default function App() {
     const navigate = useNavigate();
 
     const onSubmit = async (data: IFormInput) => {
-        if(data.avatar){
+        if (data.avatar) {
             data.avatar = data.avatar[0];
         }
-        if(data.carInfos){
+        if (data.carInfos) {
             data.carInfos = data.carInfos[0];
         }
 
@@ -56,25 +56,27 @@ export default function App() {
 
         if (data.role == ROLE_USER.Driver) {
             dispatch(driverRegister(
-               { 
-                // age: data.age, 
-                carInfos: data.carInfos, 
-                firstName: data.firstName?.trim(), 
-                email: data.email?.trim(),
-                gender: data.gender?.trim(),
-                lang: data.lang,
-                lastName: data.lastName?.trim(),
-                password: data.password,
-                age: data.age,
-                phoneNumber: data.phoneNumber?.trim(),
-                sponsorCode: data.sponsorCode?.trim(),}
+                {
+                    // age: data.age, 
+                    carInfos: data.carInfos,
+                    firstName: data.firstName?.trim(),
+                    email: data.email?.trim(),
+                    gender: data.gender?.trim(),
+                    lang: data.lang,
+                    lastName: data.lastName?.trim(),
+                    password: data.password,
+                    age: data.age,
+                    phoneNumber: data.phoneNumber?.trim(),
+                    sponsorCode: data.sponsorCode?.trim(),
+                }
             ))
         } else {
-            dispatch(newAdmi({ 
-                type: data.role?.trim(), 
-                phoneNumber: data.phoneNumber?.trim(), 
-                password: data.password, 
-                email: data.email?.trim()}));
+            dispatch(newAdmi({
+                type: data.role?.trim(),
+                phoneNumber: data.phoneNumber?.trim(),
+                password: data.password,
+                email: data.email?.trim()
+            }));
         }
     };
 
@@ -89,13 +91,12 @@ export default function App() {
     }, [watch]);
 
     useEffect(() => {
-        if(usersState.createUserstatus == STATUS.SUCCESS){
+        if (usersState.createUserstatus == STATUS.SUCCESS) {
             dispatch(resetCreateUserState());
             navigate("/users");
         }
-        
+
     }, [usersState]);
-    
 
     return (
         <>
@@ -251,7 +252,7 @@ export default function App() {
                                             className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                                         /> */}
 
-                                    <select {...register("age")} className="relative z-20 w-full appearance-none rounded border border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary">
+                                        <select {...register("age")} className="relative z-20 w-full appearance-none rounded border border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary">
                                             {AGE_SLICES.map((slice) => {
                                                 if (typeof slice === "string") {
                                                     return <option value={slice}>{slice}</option>
@@ -341,7 +342,7 @@ export default function App() {
                                         </select>
                                     </div>}
                                 </div>
-                                        
+
                                 <span className='px-6.5 py-0 text-danger block mb-2'>{tcustom(usersState.errorMessage)}</span>
                                 {/* <input type="submit" className="flex justify-center rounded bg-primary p-3 font-medium text-gray float-right" style={{ margin: "10px" }} value='En' /> */}
                                 <button type="submit" className="flex justify-center rounded bg-primary p-3 font-medium text-gray float-right disabled:opacity-75" style={{ margin: "10px" }} disabled={usersState.createUserstatus == STATUS.LOADING}>

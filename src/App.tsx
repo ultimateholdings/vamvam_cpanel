@@ -9,18 +9,24 @@ import privateRoutes from './routes/private';
 import SignIn from './modules/authModule/pages/Authentication/SignIn';
 import '../i18n'
 import i18n from '../i18n';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { AuthState } from './store/authentication/authentication.slice';
+import { AppDispatch } from './store';
+import { userInfos } from './store/authentication/authentication.repository';
 
 const DefaultLayout = lazy(() => import('./layout/DefaultLayout'));
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
   const authState = useSelector((state: { auth: AuthState }) => state.auth);
+  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
   useEffect(() => {
     setTimeout(() => setLoading(false), 1000);
+    if(authState.connected){
+      dispatch(userInfos(null));
+    }
   }, []);
 
   //default language change hook

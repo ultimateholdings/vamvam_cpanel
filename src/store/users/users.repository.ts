@@ -29,5 +29,14 @@ const userAll = createAsyncThunk('userAll', async (data: any, thunkAPI) => {
     }
 });
 
+const driverNewRegistrations = createAsyncThunk('driverNewRegistrations', async (data: any, thunkAPI) => {
+    try {
+        const response = await apiService.get("/driver/new-registrations",data);
+        return response.data;
+    } catch (error: any) {
+        throw thunkAPI.rejectWithValue(error);
+    }
+});
 
-export { driverRegister, newAdmi, userAll }
+
+export { driverRegister, newAdmi, userAll, driverNewRegistrations }

@@ -19,7 +19,6 @@ const authStorage = {
     removeStoreAuthState() {
         return LocalStorage.removeItem('authState');
     },
-
     setBearerAccessToken(token: string) {
         console.log(token);
         LocalStorage.setItem('token', token);
