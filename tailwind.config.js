@@ -1,7 +1,8 @@
-const defaultTheme = require('tailwindcss/defaultTheme')
+/* eslint-disable @typescript-eslint/no-var-requires */
+import defaultTheme from 'tailwindcss/defaultTheme';
 
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   darkMode: 'class',
   theme: {
@@ -251,4 +252,4 @@ module.exports = {
     },
   },
   plugins: [],
-}
+};

@@ -3,23 +3,17 @@ import { initReactI18next } from 'react-i18next';
 
 import Backend from 'i18next-http-backend';
 import LanguageDetector from 'i18next-browser-languagedetector';
-// don't want to use this?
-// have a look at the Quick start guide 
-// for passing in lng and translations on init
 
+import { default as translationEN } from './src/locales/en.json';
+import { default as translationFR } from './src/locales/fr.json';
 
-// ...
-import { default as translationEN } from './public/locales/en/translation.json';
-import { default as translationFR } from './public/locales/fr/translation.json';
-
-// the translations
 const resources = {
   en: {
-    translation: translationEN
+    translation: translationEN,
   },
   fr: {
-    translation: translationFR
-  }
+    translation: translationFR,
+  },
 };
 
 i18n
@@ -36,13 +30,12 @@ i18n
   // for all options read: https://www.i18next.com/overview/configuration-options
   .init({
     fallbackLng: 'en',
-    debug: true,
+    // debug: true,
 
     interpolation: {
       escapeValue: false, // not needed for react as it escapes by default
     },
-    resources: resources
+    resources: resources,
   });
-
 
 export default i18n;
