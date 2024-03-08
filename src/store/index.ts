@@ -1,13 +1,15 @@
-import configureStoreProd from "./configureStore.prod"
-import configureStoreDev from "./configureStore.dev"
-const MODE = import.meta.env.MODE
+import { configureStore } from '@reduxjs/toolkit';
+import profileReducer from './profile/profile-slice';
+import uiReducer from './ui/ui-slice';
 
-let store : any;
+const store = configureStore({
+  reducer: {
+    profile: profileReducer,
+    ui: uiReducer,
+  },
+});
 
-if (MODE === 'production') {
-    store = configureStoreProd()
-} else {
-    store = configureStoreDev()
-}
-export type AppDispatch = ReturnType<typeof store.dispatch>;
 export default store;
+
+export type AppDispatch = typeof store.dispatch;
+export type RootState = ReturnType<typeof store.getState>;

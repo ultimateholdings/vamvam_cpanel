@@ -9,7 +9,6 @@ lerna-debug.log*
 
 node_modules
 dist
-package-lock.json
 dist-ssr
 *.local
 
@@ -23,8 +22,3 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-
-.env*
-
-endpoints.yaml
-admin-endpoint.yaml
