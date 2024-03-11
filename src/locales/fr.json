@@ -1,3 +1,10 @@
 {
-  "title": "Se connecter à"
+  "title": "Se connecter à",
+  "login_heading": "Connecter vous à votre compte administrateur",
+  "phone_or_email": "Numéro de téléphone ou Email",
+  "remember_me": "Se souvenir de moi",
+  "sign_in": "Se connecter",
+  "forgot_password": "Mot de passe oublié ?"
+
+
 }

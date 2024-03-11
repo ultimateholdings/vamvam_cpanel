@@ -70,7 +70,7 @@ export default function SignInPage() {
                 <Stack spacing="8">
                     <Stack spacing="6">
                         <Logo />
-                        <Heading size={{ base: 'xs', md: 'sm' }}>Log in to your account</Heading>
+                        <Heading size={{ base: 'xs', md: 'sm' }}>{t("login_heading")}</Heading>
                     </Stack>
                     <Box
                         py={{ base: '0', sm: '8' }}
@@ -82,18 +82,18 @@ export default function SignInPage() {
                         <Stack spacing="6">
                             <Stack spacing="5">
                                 <FormControl>
-                                    <FormLabel htmlFor="email">Phone number or Email</FormLabel>
+                                    <FormLabel htmlFor="email">{t("phone_or_email")}</FormLabel>
                                     <Input id="email" type="text" name="phoneOrMail" required/>
                                 </FormControl>
                                 <PasswordField />
                             </Stack>
                             <HStack justify="space-between">
-                                <Checkbox defaultChecked>Remember me</Checkbox>
+                                <Checkbox defaultChecked>{t("remember_me")}</Checkbox>
                                 <Button variant="text" size="sm">
-                                    Forgot password?
+                                    {t("forgot_password")}
                                 </Button>
                             </HStack>
-                            <Button type="submit">Sign in</Button>
+                            <Button type="submit">{t("sign_in")}</Button>
                         </Stack>
                     </Box>
                 </Stack>
