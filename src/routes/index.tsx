@@ -1,16 +1,20 @@
-import { RouteObject, createBrowserRouter, Navigate } from 'react-router-dom';
-import adminRoute from './admin.route';
-import { logoutAction, tokenLoader } from '../api/auth/loader';
-import { getUserRole } from '../helper/utils';
-import Layout from '../components/UI/Layout';
-import SignInPage from '../pages/SignIn';
-import registrationRoute from './registration.route';
-import conflictRoute from './conflict.route';
-import ErrorPage from '../pages/ErrorPage';
+import { RouteObject, createBrowserRouter, Navigate } from "react-router-dom";
+import adminRoute from "./admin.route";
+import {
+  authenticationLoader,
+  logoutAction,
+  tokenLoader,
+} from "../api/auth/loader";
+import { getUserRole } from "../helper/utils";
+import Layout from "../components/UI/Layout";
+import SignInPage from "../pages/SignIn";
+import registrationRoute from "./registration.route";
+import conflictRoute from "./conflict.route";
+import ErrorPage from "../pages/Error";
 
 const routes: RouteObject[] = [
   {
-    path: '/',
+    path: "/",
     element: <Layout />,
     loader: tokenLoader,
     errorElement: <ErrorPage />,
@@ -24,12 +28,14 @@ const routes: RouteObject[] = [
       conflictRoute,
     ],
   },
+
   {
-    path: '/signing',
+    path: "/signing",
+    loader: authenticationLoader,
     element: <SignInPage />,
   },
   {
-    path: '/logout',
+    path: "/logout",
     loader: logoutAction,
   },
 ];

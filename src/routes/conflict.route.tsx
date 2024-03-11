@@ -1,8 +1,9 @@
-import { RouteObject } from 'react-router-dom';
-import { conflictLoader } from '../api/auth/loader';
+import { RouteObject } from "react-router-dom";
+import { conflictLoader } from "../api/auth/loader";
+import ProfilePage from "../pages/Profile";
 
 const conflictRoute: RouteObject = {
-  path: 'conflict',
+  path: "conflict",
   loader: conflictLoader,
   children: [
     {
@@ -10,7 +11,11 @@ const conflictRoute: RouteObject = {
       // element: <HomePage />
     },
     {
-      path: 'users',
+      path: "users",
+    },
+    {
+      path: "profile",
+      element: <ProfilePage />,
     },
   ],
 };

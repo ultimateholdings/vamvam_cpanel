@@ -1,9 +1,12 @@
-import { RouteObject } from 'react-router-dom';
-import { adminLoader } from '../api/auth/loader';
-import HomePage from '../pages/admin/Home';
+import { RouteObject } from "react-router-dom";
+import { adminLoader } from "../api/auth/loader";
+import HomePage from "../pages/admin/Home";
+import UsersPage from "../pages/admin/Users";
+import CreateUserPage from "../pages/admin/CreateUser";
+import ProfilePage from "../pages/Profile";
 
 const adminRoute: RouteObject = {
-  path: 'admin',
+  path: "admin",
   loader: adminLoader,
   children: [
     {
@@ -11,19 +14,28 @@ const adminRoute: RouteObject = {
       element: <HomePage />,
     },
     {
-      path: 'users',
+      path: "users",
+      element: <UsersPage />,
     },
     {
-      path: 'sponsors',
+      path: "create-user",
+      element: <CreateUserPage />,
     },
     {
-      path: 'deliveries',
+      path: "profile",
+      element: <ProfilePage />,
     },
     {
-      path: 'recharges',
+      path: "sponsors",
     },
     {
-      path: 'subscriptions',
+      path: "deliveries",
+    },
+    {
+      path: "recharges",
+    },
+    {
+      path: "subscriptions",
     },
   ],
 };
