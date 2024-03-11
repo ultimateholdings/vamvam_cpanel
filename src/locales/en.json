@@ -1,3 +1,8 @@
 {
-  "title": "Sign In to"
+ "login_heading": "Sign in to your administration account",
+ "phone_or_email": "Phone number or Email",
+ "remember_me": "Remember me",
+ "sign_in": "Sign in",
+ "forgot_password": "Forgot password ?"
+
 }
