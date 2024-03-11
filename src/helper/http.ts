@@ -5,7 +5,7 @@ import { getAuthToken } from './utils';
 const BASE_URL = import.meta.env.VITE_API_URL;
 
 const queryClient = new QueryClient();
-
+console.log(BASE_URL);
 const axiosInstance = axios.create({
   method: 'GET',
   headers: {
