@@ -11,19 +11,21 @@ import { PasswordField } from "./PasswordField.tsx";
 import SidebarLinkGroup from "./Sidebar/SidebarLinkGroup.tsx";
 import Sidebar from "./Sidebar/Sidebar.tsx";
 import LoadingButton from "./LoadingButton.tsx";
+import { OverviewTable } from "./overview-table.tsx";
 
 export {
-  LoadingButton,
-  CircularLoader,
-  DarkModeSwitcher,
-  DropdownNotification,
-  DropdownUser,
-  Icons,
-  Layout,
-  LinearLoader,
-  Logo,
-  OAuthButtonGroup,
-  PasswordField,
-  Sidebar,
-  SidebarLinkGroup,
+    LoadingButton,
+    CircularLoader,
+    DarkModeSwitcher,
+    DropdownNotification,
+    DropdownUser,
+    Icons,
+    Layout,
+    LinearLoader,
+    Logo,
+    OAuthButtonGroup,
+    OverviewTable,
+    PasswordField,
+    Sidebar,
+    SidebarLinkGroup,
 };

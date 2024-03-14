@@ -19,11 +19,17 @@ import CircularLoader from "./components/UI/CircularLoader";
 import { getAuthToken } from "./helper/utils";
 
 const customTheme = extendTheme(
+<<<<<<< HEAD
   {
     colors: {
       brand: {
         100: "#3C50E0",
       },
+=======
+    {
+        initialColorMode: "system",
+        useSystemColorMode: true
+>>>>>>> f883234 (feat(UI): implement the listing rendering)
     },
   },
   withDefaultColorScheme({
