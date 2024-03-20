@@ -86,7 +86,7 @@ export const OverviewTable = (props: any) => {
                     <HStack spacing="3" justify="space-between">
                         {!isMobile && (
                             <Text color="fg.muted" textStyle="sm">
-                                Showing 1 to 5 of 42 results
+                                Showing 1 to 5 of {props.items.length} results
                             </Text>
                         )}
                         <ButtonGroup

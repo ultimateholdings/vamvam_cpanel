@@ -1,6 +1,6 @@
 export const members = [
   {
-    id: '1',
+    id: '1-eipwei-ewiweo',
     name: 'Christian Nwamba',
     handle: '@christian',
     email: 'christian@chakra-ui.com',
@@ -10,7 +10,7 @@ export const members = [
     rating: 4,
   },
   {
-    id: '2',
+    id: '2-eipwei-ewiweo',
     name: 'Kent C. Dodds',
     handle: '@kent',
     email: 'kent@chakra-ui.com',
@@ -19,7 +19,7 @@ export const members = [
     rating: 4,
   },
   {
-    id: '3',
+    id: '3-eipwei-ewiweo',
     name: 'Prosper Otemuyiwa',
     handle: '@prosper',
     email: 'prosper@chakra-ui.com',
@@ -29,7 +29,7 @@ export const members = [
     rating: 4,
   },
   {
-    id: '4',
+    id: '4-eipwei-ewiweo',
     name: 'Ryan Florence',
     handle: '@ryan',
     email: 'ryan@chakra-ui.com',
@@ -39,7 +39,7 @@ export const members = [
     rating: 4,
   },
   {
-    id: '5',
+    id: '5-eipwei-ewiweo',
     name: 'Segun Adebayo',
     handle: '@segun',
     email: 'segun@chakra-ui.com',

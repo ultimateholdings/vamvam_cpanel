@@ -19,6 +19,7 @@ const useThemeMode = () => {
     const bodyClass = window.document.body.classList;
     mode === 'dark' ? bodyClass.add(className) : bodyClass.remove(className);
     localStorage.setItem(STORAGE_KEY.theme, mode);
+    localStorage.setItem("chakra-ui-color-mode", mode);
   }
 
   return [theme, setThemeMode];
