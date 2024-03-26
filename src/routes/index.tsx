@@ -7,10 +7,13 @@ import {
 } from "../api/auth/loader";
 import { getUserRole } from "../helper/utils";
 import Layout from "../components/UI/Layout";
-import SignInPage from "../pages/SignIn";
+import SignInPage from "../pages/auth/SignIn";
 import registrationRoute from "./registration.route";
 import conflictRoute from "./conflict.route";
 import ErrorPage from "../pages/Error";
+import ForgotPasswordPage from "../pages/auth/ForgotPassword";
+import ResetPasswordPage from "../pages/auth/ResetPassword";
+import ValidateCodePage from "../pages/auth/ValidateCode";
 
 const routes: RouteObject[] = [
   {
@@ -33,6 +36,21 @@ const routes: RouteObject[] = [
     path: "/signing",
     loader: authenticationLoader,
     element: <SignInPage />,
+  },
+  {
+    path: "/forgot-password",
+    loader: authenticationLoader,
+    element: <ForgotPasswordPage />,
+  },
+  {
+    path: "/validate-code",
+    loader: authenticationLoader,
+    element: <ValidateCodePage />,
+  },
+  {
+    path: "/reset-password",
+    loader: authenticationLoader,
+    element: <ResetPasswordPage />,
   },
   {
     path: "/logout",

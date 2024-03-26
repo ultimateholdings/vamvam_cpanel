@@ -2,10 +2,13 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
 import UserOne from "../../images/user/user-01.png";
-import { getUserRole } from "../../helper/utils";
+import { getUserRole, toCapitalize } from "../../helper/utils";
+import { RootState } from "../../store";
+import { useSelector } from "react-redux";
 
 const DropdownUser = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const { userData } = useSelector((state: RootState) => state.profile);
 
   const trigger = useRef<any>(null);
   const dropdown = useRef<any>(null);
@@ -46,13 +49,10 @@ const DropdownUser = () => {
       >
         <span className="hidden text-right lg:block">
           <span className="block text-sm font-medium text-black dark:text-white">
-            {/* "{authState.currentUser?.firstName} {authState.currentUser?.lastName}" */}
-            Dima test
+            {toCapitalize(userData?.firstName ?? "")}{" "}
+            {toCapitalize(userData?.lastName ?? "")}
           </span>
-          <span className="block text-xs">
-            {/* "{authState.currentUser?.role}" */}
-            Role
-          </span>
+          <span className="block text-xs">{toCapitalize(userData?.role)}</span>
         </span>
 
         <span className="h-12 w-12 rounded-full">
