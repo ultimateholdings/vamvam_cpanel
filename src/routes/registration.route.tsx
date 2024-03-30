@@ -1,6 +1,7 @@
 import { RouteObject } from "react-router-dom";
 import { registrationLoader } from "../api/auth/loader";
 import ProfilePage from "../pages/Profile";
+import ChangePasswordPage from "../pages/auth/ChangePassword";
 
 const registrationRoute: RouteObject = {
   path: "registration",
@@ -16,6 +17,10 @@ const registrationRoute: RouteObject = {
     {
       path: "profile",
       element: <ProfilePage />,
+    },
+    {
+      path: "change-password",
+      element: <ChangePasswordPage />,
     },
   ],
 };

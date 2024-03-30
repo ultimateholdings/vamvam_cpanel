@@ -4,6 +4,9 @@ import HomePage from "../pages/admin/Home";
 import UsersPage from "../pages/admin/Users";
 import CreateUserPage from "../pages/admin/CreateUser";
 import ProfilePage from "../pages/Profile";
+import ChangePasswordPage from "../pages/auth/ChangePassword";
+import SettingsPage from "../pages/admin/Settings";
+import { loadSettings } from "../api/admin/loader";
 
 const adminRoute: RouteObject = {
   path: "admin",
@@ -24,6 +27,15 @@ const adminRoute: RouteObject = {
     {
       path: "profile",
       element: <ProfilePage />,
+    },
+    {
+      path: "settings",
+      element: <SettingsPage />,
+      loader: loadSettings,
+    },
+    {
+      path: "change-password",
+      element: <ChangePasswordPage />,
     },
     {
       path: "sponsors",

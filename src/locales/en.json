@@ -22,5 +22,36 @@
     "password_update_success": "Password updated successfully",
     "password_length": "Password should be at least 8 characters long"
   },
-  "loading": "Loading"
+  "loading": "Loading",
+  "appbar": {
+    "english": "English",
+    "french": "French",
+    "logout": "Log out",
+    "edit_profile": "Edit my profile",
+    "change_password": "Change Password"
+  },
+  "settings": {
+    "title": "Settings",
+    "new": "New",
+    "page": "Settings Page",
+    "not_found": "No settings found",
+    "delay_for_otp": "delay for SMS OTP in seconds",
+    "enter_ttl": "Enter TTL",
+    "update_otp": "Update OTP Settings",
+    "delay_to_accept": "delay to accept a delivery in seconds",
+    "enter_ttl_seconds": "Enter TTL in seconds",
+    "search_radius": "Search radius",
+    "search_radius_info": "for searching driver in meter",
+    "enter_search_radius": "Enter search radius",
+    "conflict_type": "conflict type",
+    "conflict_types": "Conflict types",
+    "package_type": "package type",
+    "package_types": "Package types",
+    "update_delivery": "Update Delivery Settings",
+    "otp_update_success": "OTP settings updated successfully",
+    "delivery_update_success": "Delivery settings updated successfully",
+    "title_en": "Title in English",
+    "title_fr": "Title in French",
+    "delete_item": "Delete Item"
+  }
 }

@@ -1,5 +1,5 @@
-import { Box, Center, Heading, Stack } from "@chakra-ui/react";
-import { LoadingButton, Logo, PasswordField } from "../../components/UI";
+import { Box, Heading, Stack } from "@chakra-ui/react";
+import { LoadingButton, PasswordField } from "../../components/UI";
 import { useTranslation } from "react-i18next";
 import { useMutation } from "@tanstack/react-query";
 import { FormEvent } from "react";
@@ -12,14 +12,10 @@ export default function ChangePasswordPage() {
   const { mutate, isPending } = useMutation({
     mutationFn: changePassword,
     onSuccess: () => {
-      toast.success(t("auth.password_update_success"), {
-        position: "bottom-center",
-      });
+      toast.success(t("auth.password_update_success"));
     },
     onError: (error) => {
-      toast.error(error.message, {
-        position: "bottom-center",
-      });
+      toast.error(error.message);
     },
   });
 
@@ -32,16 +28,12 @@ export default function ChangePasswordPage() {
       const cpassword = data.confirmPassword;
 
       if (password.length < 8) {
-        toast.error(t("auth.password_length"), {
-          position: "bottom-center",
-        });
+        toast.error(t("auth.password_length"));
         return;
       }
 
       if (password != cpassword) {
-        toast.error(t("auth.password_should_match"), {
-          position: "bottom-center",
-        });
+        toast.error(t("auth.password_should_match"));
         return;
       }
       mutate({ oldPassword: data.currPassword, newPassword: password });
@@ -58,16 +50,20 @@ export default function ChangePasswordPage() {
   }
 
   return (
-    <Center h="100vh">
-      <Box w={{ md: "20rem", sm: "70%" }}>
+    <Box p="6">
+      <Heading size="xl" textAlign="left" mb="8">
+        {t("auth.change_password")}
+      </Heading>
+      <Box
+        borderWidth="1px"
+        borderColor="gray.600"
+        borderRadius="md"
+        w={{ base: "100%", md: "50%" }}
+        p="6"
+        mb="4"
+      >
         <form onSubmit={handleSubmit}>
           <Stack spacing="9">
-            <Stack justify="center" align="center" spacing="4">
-              <Logo />
-              <Heading size="md" textAlign="center">
-                {t("auth.change_password")}
-              </Heading>
-            </Stack>
             <PasswordField
               name="currPassword"
               label={t("auth.current_password")}
@@ -85,6 +81,6 @@ export default function ChangePasswordPage() {
           </Stack>
         </form>
       </Box>
-    </Center>
+    </Box>
   );
 }

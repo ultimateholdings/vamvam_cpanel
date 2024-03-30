@@ -23,5 +23,36 @@
     "password_update_success": "Mot de passe mis à jour avec succès",
     "password_length": "Le mot de passe doit contenir au moins 8 caractères"
   },
-  "loading": "En cours"
+  "loading": "En cours",
+  "appbar": {
+    "english": "Anglais",
+    "french": "Francais",
+    "logout": "Se deconnecter",
+    "edit_profile": "Modifier mon profil",
+    "change_password": "Changer le mot de passe"
+  },
+  "settings": {
+    "title": "Paramètres",
+    "new": "Nouveau",
+    "page": "Page de Paramètres",
+    "not_found": "Pas de paramètres trouvés",
+    "delay_for_otp": "Délai pour renvoyer SMS OTP en secondes",
+    "enter_ttl": "Entrez TTL",
+    "update_otp": "Mettre à jour",
+    "delay_to_accept": "Délai pour accepter la livraison en secondes",
+    "enter_ttl_seconds": "Enter TTL in seconds",
+    "search_radius": "Rayon de recherche",
+    "search_radius_info": "Rayon de recherche de livreur en mètres",
+    "enter_search_radius": "Entrez le rayon de recherche",
+    "conflict_type": "type de conflit",
+    "conflict_types": "Types de conflit",
+    "package_type": "type de colis",
+    "package_types": "Types de colis",
+    "update_delivery": "Mettre à jour",
+    "otp_update_success": "Paramètres OTP mis à jour avec succès",
+    "delivery_update_success": "Paramètres de livraison mis à jour avec succès",
+    "title_en": "Titre en anglais",
+    "title_fr": "Titre en français",
+    "delete_item": "Supprimer l'élément"
+  }
 }

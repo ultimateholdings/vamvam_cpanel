@@ -1,5 +1,5 @@
-import { createSlice } from '@reduxjs/toolkit';
-import UserData from '../../models/auth/user-data';
+import { createSlice } from "@reduxjs/toolkit";
+import UserData from "../../models/auth/user-data";
 
 interface ProfileState {
   userData?: UserData;
@@ -14,7 +14,7 @@ const initialState: ProfileState = {
 };
 
 const profileSlice = createSlice({
-  name: 'profile',
+  name: "profile",
   initialState: initialState,
   reducers: {
     changeUserData(state, action) {
@@ -28,6 +28,15 @@ const profileSlice = createSlice({
     changeError(state, action) {
       state.error = action.payload.error;
       state.loading = false;
+    },
+    updateProfile(state, action) {
+      state.userData = { ...state.userData, ...action.payload.userData };
+    },
+    deleteAvatar(state) {
+      const avatar = state.userData?.avatar;
+      if (avatar) {
+        state.userData!.avatar = undefined;
+      }
     },
   },
 });

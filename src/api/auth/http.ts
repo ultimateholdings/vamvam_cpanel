@@ -1,4 +1,4 @@
-import { axios } from "../../helper/http";
+import { axios, mockApiCall } from "../../helper/http";
 import LoginData from "../../models/auth/login-data";
 import { handleApiError } from "../../helper/utils";
 import UserData from "../../models/auth/user-data";
@@ -28,14 +28,14 @@ export async function sendResetOtp({
   email?: string;
 }) {
   try {
-    const response = await axios.post("/auth/send-reset-otp", {
-      phoneNumber,
-      email,
-    });
-    const ttl = response.data.ttl;
-    return ttl;
-    // console.log(phoneNumber ?? "" + email);
-    // await mockApiCall();
+    // const response = await axios.post("/auth/send-reset-otp", {
+    //   phoneNumber,
+    //   email,
+    // });
+    // const ttl = response.data.ttl;
+    // return ttl;
+    console.log(phoneNumber ?? "" + email);
+    await mockApiCall();
     return 180;
   } catch (error: any) {
     throw handleApiError({
@@ -58,17 +58,17 @@ export async function verifyResetCode({
   code: string;
 }) {
   try {
-    const response = await axios.post("/auth/verify-reset", {
-      phoneNumber,
-      email,
-      code,
-    });
-    const resetToken = response.data.resetToken;
-    return resetToken;
+    // const response = await axios.post("/auth/verify-reset", {
+    //   phoneNumber,
+    //   email,
+    //   code,
+    // });
+    // const resetToken = response.data.resetToken;
+    // return resetToken;
 
-    // console.log(phoneNumber ?? "" + email + " " + code);
-    // await mockApiCall();
-    // return "resetToken";
+    console.log(phoneNumber ?? "" + email + " " + code);
+    await mockApiCall();
+    return "resetToken";
   } catch (error: any) {
     throw handleApiError({
       error,
@@ -88,12 +88,12 @@ export async function resetPassword({
   resetToken: string;
 }) {
   try {
-    await axios.post("/auth/reset-password", {
-      password,
-      key: resetToken,
-    });
-    // console.log(password + " " + resetToken);
-    // await mockApiCall();
+    // await axios.post("/auth/reset-password", {
+    //   password,
+    //   key: resetToken,
+    // });
+    console.log(password + " " + resetToken);
+    await mockApiCall();
   } catch (error: any) {
     throw handleApiError({
       error,
@@ -142,6 +142,35 @@ export async function getUserInfo(): Promise<UserData | undefined> {
       defaultMessage: {
         en: "Failed to get your info",
         fr: "Echec de la recuperation des donnees",
+      },
+    });
+  }
+}
+
+export async function updateProfile(data: any): Promise<Partial<UserData>> {
+  try {
+    const response = await axios.post("/user/update", { data });
+    return response.data;
+  } catch (error) {
+    throw handleApiError({
+      error,
+      defaultMessage: {
+        en: "Failed to update profile",
+        fr: "Echec de la mise a jour du profile",
+      },
+    });
+  }
+}
+
+export async function deleteAvatar() {
+  try {
+    await axios.post("/user/avatar");
+  } catch (error) {
+    throw handleApiError({
+      error,
+      defaultMessage: {
+        en: "Failed to delete avatar",
+        fr: "Echec de la suppression de l'avatar",
       },
     });
   }

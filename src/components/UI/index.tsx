@@ -11,6 +11,7 @@ import { PasswordField } from "./PasswordField.tsx";
 import SidebarLinkGroup from "./Sidebar/SidebarLinkGroup.tsx";
 import Sidebar from "./Sidebar/Sidebar.tsx";
 import LoadingButton from "./LoadingButton.tsx";
+import LangSwitcher from "./LangSwitcher.tsx";
 
 export {
   LoadingButton,
@@ -25,5 +26,6 @@ export {
   OAuthButtonGroup,
   PasswordField,
   Sidebar,
+  LangSwitcher,
   SidebarLinkGroup,
 };

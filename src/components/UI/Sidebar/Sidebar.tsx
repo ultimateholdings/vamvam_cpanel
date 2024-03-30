@@ -5,7 +5,7 @@ import SidebarLinkGroup from "./SidebarLinkGroup";
 import { AppDispatch, RootState } from "../../../store";
 import { useDispatch, useSelector } from "react-redux";
 import { uiActions } from "../../../store/ui/ui-slice";
-import { IoPersonOutline } from "react-icons/io5";
+import { IoPersonOutline, IoSettingsOutline } from "react-icons/io5";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import SidebarOpener from "./SidebarOpener";
 import { getUserRole } from "../../../helper/utils";
@@ -76,6 +76,16 @@ const Sidebar = () => {
         {
           name: "Create",
           link: "create-user",
+        },
+      ],
+    },
+    {
+      name: "Settings",
+      icon: <IoSettingsOutline />,
+      children: [
+        {
+          name: "View",
+          link: "settings",
         },
       ],
     },

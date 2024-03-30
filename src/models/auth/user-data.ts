@@ -6,7 +6,7 @@ export default interface UserData {
   email?: string;
   phone?: string;
   age?: string;
-  avatar?: File;
+  avatar?: string | File;
   firstName?: string;
   lastName?: string;
   lang?: string;
