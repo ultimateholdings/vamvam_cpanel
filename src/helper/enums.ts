@@ -1,14 +1,14 @@
 enum USER_ROLE {
-  manager = "admin",
-  conflictManager = "conflict",
-  registrationManager = "registration",
+    manager = 'admin',
+    conflictManager = 'conflict',
+    registrationManager = 'registration',
 }
 
 enum STORAGE_KEY {
-  token = "token",
-  role = "role",
-  lang = "i18nextLng",
-  theme = "theme",
+    token = 'token',
+    role = 'role',
+    lang = 'i18nextLng',
+    theme = 'theme',
 }
 
 enum DELIVERY_STATUS {
@@ -23,3 +23,4 @@ enum DELIVERY_STATUS {
 }
 
 export { DELIVERY_STATUS, USER_ROLE, STORAGE_KEY };
+

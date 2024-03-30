@@ -4,7 +4,7 @@ import {axios, handleApiError} from "../../helper";
 export async function getAllDeliveries(params: any): Promise<PaginatedResponse<DeliveryData> | undefined> {
     let result;
     try {
-       result = await axios.get<PaginatedResponse<DeliveryData>>("/delivery/all" + params ?? "");
+       result = await axios.get<PaginatedResponse<DeliveryData>>("/delivery/all" + (params ?? ""));
        return result.data;
     } catch (error) {
         throw handleApiError({

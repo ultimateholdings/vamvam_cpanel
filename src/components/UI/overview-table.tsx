@@ -1,6 +1,4 @@
 import {
-    Avatar,
-    Badge,
     Box,
     Button,
     ButtonGroup,
@@ -9,54 +7,10 @@ import {
     InputGroup,
     InputLeftElement,
     Stack,
-    Table,
     Text,
-    Tbody,
-    Td,
-    Thead,
-    Th,
-    Tr,
     useBreakpointValue,
 } from '@chakra-ui/react'
 
-
-const MemberTable = (props: any) => (
-    <Table >
-        <Thead>
-            <Tr>
-                {(props.colNames ?? []).map((colName: any) => (
-                    <Th>{colName}</Th>
-                ))
-                }
-            </Tr>
-        </Thead>
-        <Tbody>
-            {(props.dataSource ?? []).map(props.dataBuilder)}
-        </Tbody>
-    </Table>
-);
-
-export const DefaultBuilder = (member: any) => (
-    <Tr key={member.id}>
-        <Td>
-            <HStack spacing="3">
-                <Avatar name={member.name} src={member.avatarUrl} boxSize="10" />
-                <Text fontWeight="medium">{member.name}</Text>
-            </HStack>
-        </Td>
-        <Td>
-            <Badge size="sm" colorScheme={member.status === 'active' ? 'green' : 'red'}>
-                {member.status}
-            </Badge>
-        </Td>
-        <Td>
-            <Text color="fg.muted">{member.email}</Text>
-        </Td>
-        <Td>
-            <Text color="fg.muted">{member.role}</Text>
-        </Td>
-    </Tr>
-);
 
 export const OverviewTable = (props: any) => {
     const isMobile = useBreakpointValue({ base: true, md: false })
@@ -80,7 +34,7 @@ export const OverviewTable = (props: any) => {
                     </Stack>
                 </Box>
                 <Box overflowX="auto">
-                    <MemberTable colNames={props.headerNames} dataSource={props.items} dataBuilder={props.itemBuilder}/>
+                    {props.children}
                 </Box>
                 <Box px={{ base: '4', md: '6' }} pb="5">
                     <HStack spacing="3" justify="space-between">
