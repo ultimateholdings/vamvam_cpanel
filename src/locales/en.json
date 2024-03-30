@@ -1,8 +1,26 @@
 {
- "login_heading": "Sign in to your administration account",
- "phone_or_email": "Phone number or Email",
- "remember_me": "Remember me",
- "sign_in": "Sign in",
- "forgot_password": "Forgot password ?"
-
+  "auth": {
+    "login_heading": "Sign in to your administration account",
+    "phone_or_email": "Phone number or Email",
+    "remember_me": "Remember me",
+    "sign_in": "Sign in",
+    "forgot_password": "Forgot password",
+    "password": "Password",
+    "send": "Send",
+    "validate_code": "Validate Code",
+    "validate": "Validate",
+    "dont_receive_code": "Don't receive the code?",
+    "resend": "Resend",
+    "new_password": "New Password",
+    "confirm_password": "Confirm Password",
+    "reset_password": "Reset Password",
+    "change_password": "Change Password",
+    "current_password": "Current Password",
+    "change": "Change",
+    "reset": "Reset",
+    "password_should_match": "Passwords do not match",
+    "password_update_success": "Password updated successfully",
+    "password_length": "Password should be at least 8 characters long"
+  },
+  "loading": "Loading"
 }

@@ -1,7 +1,7 @@
-import Header from './Header';
-import { Outlet } from 'react-router-dom';
-import Sidebar from './Sidebar';
-import LinearLoader from './LinearLoader';
+import Header from "./Header";
+import { Outlet } from "react-router-dom";
+import Sidebar from "./Sidebar/Sidebar";
+import LinearLoader from "./LinearLoader";
 
 const Layout = () => {
   return (

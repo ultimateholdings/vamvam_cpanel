@@ -8,7 +8,7 @@ import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../store';
 import { fetchUserData } from '../store/profile/profile-actions';
 import { getUserRole } from '../helper/utils';
-import {FormEvent} from "react";
+import { FormEvent } from "react";
 
 import {
     Box,
@@ -29,7 +29,7 @@ export default function SignInPage() {
     const dispatch = useDispatch<AppDispatch>();
     const navigate = useNavigate();
 
-    const { mutate, isPending } = useMutation({
+    const { mutate } = useMutation({
         mutationFn: login,
         onSuccess: async () => {
             await dispatch(fetchUserData());
@@ -43,11 +43,11 @@ export default function SignInPage() {
 
     function parseLoginData(data: any) {
         const loginInput = data.phoneOrMail?.value;
-        const dataToSend = {password: data?.password?.value};
+        const dataToSend = { password: data?.password?.value };
         if (loginInput.includes("@")) {
-            Object.assign(dataToSend, {email: loginInput});
+            Object.assign(dataToSend, { email: loginInput });
         } else {
-            Object.assign(dataToSend, {phoneNumber: loginInput});
+            Object.assign(dataToSend, { phoneNumber: loginInput });
         }
         return new LoginData(dataToSend);
     }
@@ -56,7 +56,7 @@ export default function SignInPage() {
         let form = event.target as HTMLFormElement;
         event.preventDefault();
         if (form.checkValidity()) {
-           mutate(parseLoginData(form.elements));
+            mutate(parseLoginData(form.elements));
         } else {
             form.reportValidity();
         }
@@ -83,7 +83,7 @@ export default function SignInPage() {
                             <Stack spacing="5">
                                 <FormControl>
                                     <FormLabel htmlFor="email">{t("phone_or_email")}</FormLabel>
-                                    <Input id="email" type="text" name="phoneOrMail" required/>
+                                    <Input id="email" type="text" name="phoneOrMail" required />
                                 </FormControl>
                                 <PasswordField />
                             </Stack>

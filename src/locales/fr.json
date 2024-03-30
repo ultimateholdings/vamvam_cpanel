@@ -1,10 +1,27 @@
 {
-  "title": "Se connecter à",
-  "login_heading": "Connecter vous à votre compte administrateur",
-  "phone_or_email": "Numéro de téléphone ou Email",
-  "remember_me": "Se souvenir de moi",
-  "sign_in": "Se connecter",
-  "forgot_password": "Mot de passe oublié ?"
-
-
+  "auth": {
+    "title": "Se connecter à",
+    "login_heading": "Connecter vous à votre compte administrateur",
+    "phone_or_email": "Numéro de téléphone ou Email",
+    "remember_me": "Se souvenir de moi",
+    "sign_in": "Se connecter",
+    "forgot_password": "Mot de passe oublié",
+    "password": "Mot de passe",
+    "send": "Envoyer",
+    "reset_password": "Réinitialiser le mot de passe",
+    "new_password": "Nouveau mot de passe",
+    "confirm_password": "Confirmer le mot de passe",
+    "current_password": "Mot de passe actuel",
+    "change_password": "Modifier le mot de passe",
+    "validate_code": "Valider le code",
+    "validate": "Valider",
+    "dont_receive_code": "Vous n'avez pas reçu le code ?",
+    "resend": "Renvoyer",
+    "change": "Modifier",
+    "reset": "Réinitialiser",
+    "password_should_match": "Les mots de passe ne correspondent pas !",
+    "password_update_success": "Mot de passe mis à jour avec succès",
+    "password_length": "Le mot de passe doit contenir au moins 8 caractères"
+  },
+  "loading": "En cours"
 }

@@ -1,14 +1,14 @@
-import { Toaster } from 'react-hot-toast';
-import useThemeMode from '../../hooks/useThemeMode';
+import { Toaster } from "react-hot-toast";
+import useThemeMode from "../../hooks/useThemeMode";
 
 const Toast = () => {
   const [theme] = useThemeMode();
-  const isDarkTheme = theme === 'dark';
+  const isDarkTheme = theme === "dark";
 
   const style = isDarkTheme
     ? {
-        background: '#333',
-        color: '#fff',
+        background: "#333",
+        color: "#fff",
       }
     : undefined;
 
@@ -22,14 +22,15 @@ const Toast = () => {
         error: {
           style: {
             ...style,
-            color: isDarkTheme ? '#ff7f7f' : 'red',
+            color: isDarkTheme ? "#ff7f7f" : "red",
             // border: '1px solid red',
           },
         },
         success: {
+          duration: 5000,
           style: {
             ...style,
-            color: isDarkTheme ? '#afe1af' : 'green',
+            color: isDarkTheme ? "#afe1af" : "green",
             // border: '1px solid green',
           },
         },
