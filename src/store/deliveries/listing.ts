@@ -4,13 +4,11 @@ import {
     PaginatedResponse,
     DeliveryData,
     RequestState,
-    RequestResult,
-    RequestError,
-    RequestSuccess
+    RequestResult
 } from "../../models/delivery.ts";
 import { getAllDeliveries } from "../../api/deliveries/http.ts";
 
-const initialListing: RequestState = {
+const initialListing: RequestState<PaginatedResponse<DeliveryData>, Error> = {
     result: RequestResult.initial
 };
 
@@ -19,24 +17,16 @@ const listingSlice = createSlice({
     initialState: initialListing,
     reducers: {
         fulfill(state, action) {
-            const result: RequestSuccess<PaginatedResponse<DeliveryData>> = {
-                data: action.payload,
-                result: RequestResult.resolved
-            };
-            state = result;
+            state.result = RequestResult.resolved;
+            state.data = action.payload;
         },
         raiseError(state, action) {
-            const result: RequestError<Error> = {
-                result: RequestResult.error,
-                data: action.payload
-            };
-            state = result;
+            state.result = RequestResult.error;
+            state.error = action.payload;
+            state.data = undefined;
         },
         waitResponse(state) {
-            const result: RequestState = {
-                result: RequestResult.pending
-            };
-            state = result;
+            state.result = RequestResult.pending;
         }
     }
 });
