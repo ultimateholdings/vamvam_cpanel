@@ -36,7 +36,7 @@ export const PasswordField = forwardRef<HTMLInputElement, PasswordProps>(
     const label = props.label ?? t("auth.password");
 
     return (
-      <FormControl>
+      <FormControl isRequired>
         <FormLabel htmlFor="password">{label}</FormLabel>
         <InputGroup>
           <InputRightElement>

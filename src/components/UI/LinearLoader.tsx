@@ -1,14 +1,14 @@
-import { LinearProgress } from '@mui/material';
-import { useSelector } from 'react-redux';
-import { useNavigation } from 'react-router-dom';
-import { RootState } from '../../store';
+import { useSelector } from "react-redux";
+import { useNavigation } from "react-router-dom";
+import { RootState } from "../../store";
+import { Progress } from "@chakra-ui/react";
 
 const LinearLoader = () => {
   const { state } = useNavigation();
   const { linearLoaderVisible } = useSelector((state: RootState) => state.ui);
-  const isLoading = state === 'loading' || linearLoaderVisible;
+  const isLoading = state === "loading" || linearLoaderVisible;
 
-  return isLoading ? <LinearProgress /> : <></>;
+  return isLoading ? <Progress height="2px" isIndeterminate /> : <></>;
 };
 
 export default LinearLoader;

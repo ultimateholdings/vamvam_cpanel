@@ -35,6 +35,10 @@ export function registrationLoader() {
 }
 
 export async function logoutAction() {
-  await logout();
-  return redirect("/");
+  const token = getAuthToken();
+  if (token) {
+    await logout();
+  }
+
+  return redirect("/signing");
 }

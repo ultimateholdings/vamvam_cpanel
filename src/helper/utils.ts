@@ -70,5 +70,13 @@ export function getUserRole() {
 }
 
 export function toCapitalize(str: string) {
-  return str.length === 0 ? "" : str.charAt(0).toUpperCase() + str.slice(1);
+  return (str ?? "").length === 0
+    ? ""
+    : str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+export function getImagePath(image?: string) {
+  return (image?.length ?? "") === ""
+    ? ""
+    : import.meta.env.VITE_API_URL + image;
 }

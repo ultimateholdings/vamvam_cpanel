@@ -31,7 +31,6 @@ const routes: RouteObject[] = [
       conflictRoute,
     ],
   },
-
   {
     path: "/signing",
     loader: authenticationLoader,
@@ -58,4 +57,6 @@ const routes: RouteObject[] = [
   },
 ];
 
-export const router = createBrowserRouter(routes);
+const router = createBrowserRouter(routes);
+
+export default router;
