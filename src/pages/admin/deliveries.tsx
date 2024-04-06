@@ -158,4 +158,3 @@ function Deliveries() {
 }
 
 export default Deliveries;
-

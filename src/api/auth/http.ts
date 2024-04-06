@@ -34,9 +34,6 @@ export async function sendResetOtp({
     });
     const ttl = response.data.ttl;
     return ttl;
-    // console.log(phoneNumber ?? "" + email);
-    // await mockApiCall();
-    return 180;
   } catch (error: any) {
     throw handleApiError({
       error,
@@ -65,10 +62,6 @@ export async function verifyResetCode({
     });
     const resetToken = response.data.resetToken;
     return resetToken;
-
-    // console.log(phoneNumber ?? "" + email + " " + code);
-    // await mockApiCall();
-    // return "resetToken";
   } catch (error: any) {
     throw handleApiError({
       error,
@@ -92,8 +85,6 @@ export async function resetPassword({
       password,
       key: resetToken,
     });
-    // console.log(password + " " + resetToken);
-    // await mockApiCall();
   } catch (error: any) {
     throw handleApiError({
       error,
@@ -142,6 +133,39 @@ export async function getUserInfo(): Promise<UserData | undefined> {
       defaultMessage: {
         en: "Failed to get your info",
         fr: "Echec de la recuperation des donnees",
+      },
+    });
+  }
+}
+
+export async function updateProfile(data: any): Promise<Partial<UserData>> {
+  try {
+    const response = await axios.post("/user/update-profile", data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    throw handleApiError({
+      error,
+      defaultMessage: {
+        en: "Failed to update profile",
+        fr: "Echec de la mise a jour du profile",
+      },
+    });
+  }
+}
+
+export async function deleteAvatar() {
+  try {
+    await axios.post("/user/delete-avatar");
+  } catch (error) {
+    throw handleApiError({
+      error,
+      defaultMessage: {
+        en: "Failed to delete avatar",
+        fr: "Echec de la suppression de l'avatar",
       },
     });
   }

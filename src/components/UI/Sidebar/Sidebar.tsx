@@ -5,14 +5,22 @@ import SidebarLinkGroup from "./SidebarLinkGroup";
 import { AppDispatch, RootState } from "../../../store";
 import { useDispatch, useSelector } from "react-redux";
 import { uiActions } from "../../../store/ui/ui-slice";
-import { IoPersonOutline } from "react-icons/io5";
+import {
+  IoPersonOutline,
+  IoSettingsOutline,
+  IoDocumentTextOutline,
+} from "react-icons/io5";
+import { CgProfile } from "react-icons/cg";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import SidebarOpener from "./SidebarOpener";
 import { getUserRole } from "../../../helper/utils";
+import { USER_ROLE } from "../../../helper";
+import { useTranslation } from "react-i18next";
 
 const Sidebar = () => {
   const location = useLocation();
   const { pathname } = location;
+  const { t } = useTranslation();
 
   const trigger = useRef<any>(null);
   const sidebar = useRef<any>(null);
@@ -64,22 +72,78 @@ const Sidebar = () => {
     }
   }, [sidebarExpanded]);
 
-  const sidebarItems = [
-    {
-      name: "Users",
-      icon: <IoPersonOutline />,
-      children: [
-        {
-          name: "List",
-          link: "users",
-        },
-        {
-          name: "Create",
-          link: "create-user",
-        },
-      ],
-    },
-  ];
+  const adminRole = getUserRole();
+  const profileRoute = {
+    name: t("sidebar.profile"),
+    icon: <CgProfile />,
+    children: [
+      {
+        name: t("sidebar.update_profile"),
+        link: "profile",
+      },
+      {
+        name: t("auth.change_password"),
+        link: "change-password",
+      },
+      {
+        name: t("appbar.logout"),
+        link: "logout",
+      },
+    ],
+  };
+
+  const sidebarItems =
+    adminRole === USER_ROLE.manager
+      ? [
+          {
+            name: t("sidebar.users"),
+            icon: <IoPersonOutline />,
+            children: [
+              {
+                name: t("sidebar.list"),
+                link: "users",
+              },
+              {
+                name: t("sidebar.create"),
+                link: "create-user",
+              },
+            ],
+          },
+          {
+            name: t("settings.title"),
+            icon: <IoSettingsOutline />,
+            children: [
+              {
+                name: t("sidebar.view"),
+                link: "settings",
+              },
+            ],
+          },
+          profileRoute,
+        ]
+      : adminRole === USER_ROLE.registrationManager
+      ? [
+          {
+            name: t("sidebar.registrations"),
+            icon: <IoDocumentTextOutline />,
+            children: [
+              {
+                name: t("settings.new"),
+                link: "new-registrations",
+              },
+              {
+                name: t("settings.settled"),
+                link: "settled-registrations",
+              },
+              {
+                name: t("settings.create_internal_driver"),
+                link: "create-internal-driver",
+              },
+            ],
+          },
+          profileRoute,
+        ]
+      : [profileRoute];
 
   return (
     <aside
@@ -147,7 +211,11 @@ const Sidebar = () => {
                                 return (
                                   <NavLink
                                     key={index}
-                                    to={`${getUserRole()}/${child.link}`}
+                                    to={
+                                      child.link === "logout"
+                                        ? "/logout"
+                                        : `${adminRole}/${child.link}`
+                                    }
                                     className={({ isActive }) =>
                                       "group ml-6 relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white " +
                                       (isActive && "!text-white")

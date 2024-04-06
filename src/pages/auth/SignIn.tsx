@@ -85,9 +85,7 @@ export default function SignInPage() {
             <Stack spacing="6">
               <Stack spacing="5">
                 <FormControl>
-                  <FormLabel htmlFor="email">
-                    {t("auth.phone_or_email")}
-                  </FormLabel>
+                  <FormLabel htmlFor="email">{t("auth.phone")}</FormLabel>
                   <Input id="email" type="text" name="phoneOrMail" required />
                 </FormControl>
                 <PasswordField name="password" />

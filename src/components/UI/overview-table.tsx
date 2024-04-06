@@ -46,5 +46,5 @@ export const OverviewTable = (props: any) => {
                 </Box>
             </Stack>
         </Box>
-    )
+  );
 };

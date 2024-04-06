@@ -1,0 +1,79 @@
+import {
+  Box,
+  Button,
+  ButtonGroup,
+  HStack,
+  Heading,
+  Stack,
+  Text,
+  useBreakpointValue,
+} from "@chakra-ui/react";
+import { FC } from "react";
+import { PAGE_LIMIT } from "../../helper";
+
+type Props = {
+  onPrevious?: VoidFunction;
+  onNext?: VoidFunction;
+  children?: React.ReactNode;
+  headerTrailer?: React.ReactNode;
+  currentPage: number;
+  items: any[];
+  title: string;
+};
+
+const OverviewTableTyped: FC<Props> = (props) => {
+  const isMobile = useBreakpointValue({ base: true, md: false });
+  const currentPage = props.currentPage;
+  return (
+    <Box
+      bg="bg.surface"
+      boxShadow={{ base: "sm", md: "md" }}
+      borderRadius={{ base: "none", md: "lg" }}
+    >
+      <Stack spacing="5">
+        <Box px={{ base: "4", md: "6" }} pt="5">
+          <Stack
+            direction={{ base: "column", md: "row" }}
+            justify="space-between"
+          >
+            <Heading size="xl" textAlign="left">
+              {props.title}
+            </Heading>
+            {props.headerTrailer}
+          </Stack>
+        </Box>
+        <Box overflowX="auto">{props.children}</Box>
+        <Box px={{ base: "4", md: "6" }} pb="5">
+          <HStack spacing="3" justify="space-between">
+            {!isMobile && (
+              <Text color="fg.muted" textStyle="sm">
+                Showing{" "}
+                {currentPage <= 1
+                  ? currentPage
+                  : Math.min(
+                      (currentPage - 1) * PAGE_LIMIT,
+                      props.items.length
+                    )}{" "}
+                to {Math.min(currentPage * PAGE_LIMIT, props.items.length)} of{" "}
+                {props.items.length} results
+              </Text>
+            )}
+            <ButtonGroup
+              spacing="3"
+              justifyContent="space-between"
+              width={{ base: "full", md: "auto" }}
+              variant="secondary"
+            >
+              {props.onPrevious && (
+                <Button onClick={props.onPrevious}>Previous</Button>
+              )}
+              {props.onNext && <Button onClick={props.onNext}>Next</Button>}
+            </ButtonGroup>
+          </HStack>
+        </Box>
+      </Stack>
+    </Box>
+  );
+};
+
+export default OverviewTableTyped;

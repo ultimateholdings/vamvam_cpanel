@@ -1,8 +1,18 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
+
+type UiState = {
+  linearLoaderVisible: boolean;
+  sidebarOpen: boolean;
+};
+
+const initialState: UiState = {
+  linearLoaderVisible: false,
+  sidebarOpen: false,
+};
 
 const uiSlice = createSlice({
-  name: 'ui',
-  initialState: { linearLoaderVisible: false, sidebarOpen: false },
+  name: "ui",
+  initialState: initialState,
   reducers: {
     showLinearLoader(state, action) {
       state.linearLoaderVisible = action.payload;
