@@ -50,18 +50,11 @@ export default function ChangePasswordPage() {
   }
 
   return (
-    <Box p="6">
+    <Box p="6" maxWidth="500px" margin="auto">
       <Heading size="xl" textAlign="left" mb="8">
         {t("auth.change_password")}
       </Heading>
-      <Box
-        borderWidth="1px"
-        borderColor="gray.600"
-        borderRadius="md"
-        w={{ base: "100%", md: "50%" }}
-        p="6"
-        mb="4"
-      >
+      <Box borderRadius="md" p="6" mb="4">
         <form onSubmit={handleSubmit}>
           <Stack spacing="9">
             <PasswordField

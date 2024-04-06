@@ -4,10 +4,10 @@ import {
   extendTheme,
   withDefaultColorScheme,
 } from "@chakra-ui/react";
-import { router } from "./routes";
+import router from "./routes";
 import "../i18n";
 import i18n from "../i18n";
-import { useEffect, StrictMode } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { STORAGE_KEY } from "./helper/enums";
 import useThemeMode from "./hooks/useThemeMode";
@@ -24,6 +24,8 @@ const customTheme = extendTheme(
       brand: {
         100: "#3C50E0",
       },
+      initialColorMode: "system",
+      useSystemColorMode: true,
     },
   },
   withDefaultColorScheme({
@@ -72,12 +74,10 @@ function App() {
   }
 
   return (
-    <StrictMode>
-      <ChakraProvider theme={customTheme}>
-        <Toast />
-        {mainContent}
-      </ChakraProvider>
-    </StrictMode>
+    <ChakraProvider theme={customTheme}>
+      <Toast />
+      {mainContent}
+    </ChakraProvider>
   );
 }
 

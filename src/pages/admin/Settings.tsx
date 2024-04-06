@@ -4,8 +4,8 @@ import {
   OTPSettingsData,
 } from "../../models/admin/settings";
 import { Box, Heading, VStack } from "@chakra-ui/react";
-import DeliverySettingsForm from "../../components/settings/DeliverySettingsForm";
-import OTPSettingsForm from "../../components/settings/OTPSettingsForm";
+import DeliverySettingsForm from "../../components/Settings/DeliverySettingsForm";
+import OTPSettingsForm from "../../components/Settings/OTPSettingsForm";
 import { useTranslation } from "react-i18next";
 
 const SettingsPage = () => {
@@ -26,7 +26,7 @@ const SettingsPage = () => {
 
   return (
     <Box p="6">
-      <VStack spacing="6" align="start" justify="start">
+      <VStack spacing="6" align="center" justify="start">
         <Heading size="xl" textAlign="left">
           {t("settings.title")}
         </Heading>

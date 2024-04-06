@@ -1,4 +1,4 @@
-import { axios, mockApiCall } from "../../helper/http";
+import { axios } from "../../helper/http";
 import LoginData from "../../models/auth/login-data";
 import { handleApiError } from "../../helper/utils";
 import UserData from "../../models/auth/user-data";
@@ -28,15 +28,12 @@ export async function sendResetOtp({
   email?: string;
 }) {
   try {
-    // const response = await axios.post("/auth/send-reset-otp", {
-    //   phoneNumber,
-    //   email,
-    // });
-    // const ttl = response.data.ttl;
-    // return ttl;
-    console.log(phoneNumber ?? "" + email);
-    await mockApiCall();
-    return 180;
+    const response = await axios.post("/auth/send-reset-otp", {
+      phoneNumber,
+      email,
+    });
+    const ttl = response.data.ttl;
+    return ttl;
   } catch (error: any) {
     throw handleApiError({
       error,
@@ -58,17 +55,13 @@ export async function verifyResetCode({
   code: string;
 }) {
   try {
-    // const response = await axios.post("/auth/verify-reset", {
-    //   phoneNumber,
-    //   email,
-    //   code,
-    // });
-    // const resetToken = response.data.resetToken;
-    // return resetToken;
-
-    console.log(phoneNumber ?? "" + email + " " + code);
-    await mockApiCall();
-    return "resetToken";
+    const response = await axios.post("/auth/verify-reset", {
+      phoneNumber,
+      email,
+      code,
+    });
+    const resetToken = response.data.resetToken;
+    return resetToken;
   } catch (error: any) {
     throw handleApiError({
       error,
@@ -88,12 +81,10 @@ export async function resetPassword({
   resetToken: string;
 }) {
   try {
-    // await axios.post("/auth/reset-password", {
-    //   password,
-    //   key: resetToken,
-    // });
-    console.log(password + " " + resetToken);
-    await mockApiCall();
+    await axios.post("/auth/reset-password", {
+      password,
+      key: resetToken,
+    });
   } catch (error: any) {
     throw handleApiError({
       error,
@@ -149,7 +140,11 @@ export async function getUserInfo(): Promise<UserData | undefined> {
 
 export async function updateProfile(data: any): Promise<Partial<UserData>> {
   try {
-    const response = await axios.post("/user/update", { data });
+    const response = await axios.post("/user/update-profile", data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
     return response.data;
   } catch (error) {
     throw handleApiError({
@@ -164,7 +159,7 @@ export async function updateProfile(data: any): Promise<Partial<UserData>> {
 
 export async function deleteAvatar() {
   try {
-    await axios.post("/user/avatar");
+    await axios.post("/user/delete-avatar");
   } catch (error) {
     throw handleApiError({
       error,

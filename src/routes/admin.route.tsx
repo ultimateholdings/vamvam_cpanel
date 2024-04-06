@@ -1,12 +1,12 @@
 import { RouteObject } from "react-router-dom";
 import { adminLoader } from "../api/auth/loader";
-import HomePage from "../pages/admin/Home";
-import UsersPage from "../pages/admin/Users";
+import UsersPage from "../pages/admin/UsersList";
 import CreateUserPage from "../pages/admin/CreateUser";
 import ProfilePage from "../pages/Profile";
 import ChangePasswordPage from "../pages/auth/ChangePassword";
 import SettingsPage from "../pages/admin/Settings";
 import { loadSettings } from "../api/admin/loader";
+import { Home, Deliveries } from "../pages/admin";
 
 const adminRoute: RouteObject = {
   path: "admin",
@@ -14,7 +14,7 @@ const adminRoute: RouteObject = {
   children: [
     {
       index: true,
-      element: <HomePage />,
+      element: <Home />,
     },
     {
       path: "users",
@@ -42,6 +42,7 @@ const adminRoute: RouteObject = {
     },
     {
       path: "deliveries",
+      element: <Deliveries />,
     },
     {
       path: "recharges",

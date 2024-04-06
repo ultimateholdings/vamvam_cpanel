@@ -2,7 +2,7 @@ import { ChangeEvent, FC, FormEvent, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { updateSettingsData } from "../../api/admin/http";
-import { LoadingButton } from "../../components/UI";
+import { LoadingButton } from "../UI";
 import { DeliverySettingsValue, TypeItem } from "../../models/admin/settings";
 import {
   Box,

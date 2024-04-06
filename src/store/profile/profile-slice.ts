@@ -38,6 +38,9 @@ const profileSlice = createSlice({
         state.userData!.avatar = undefined;
       }
     },
+    updateAvatar(state, action) {
+      state.userData!.avatar = action.payload.avatar;
+    },
   },
 });
 

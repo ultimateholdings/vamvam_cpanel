@@ -1,7 +1,8 @@
 {
   "auth": {
+    "title": "Log in to your account",
     "login_heading": "Sign in to your administration account",
-    "phone_or_email": "Phone number or Email",
+    "phone": "Phone number",
     "remember_me": "Remember me",
     "sign_in": "Sign in",
     "forgot_password": "Forgot password",
@@ -23,6 +24,10 @@
     "password_length": "Password should be at least 8 characters long"
   },
   "loading": "Loading",
+  "cancel": "Cancel",
+  "confirm": "Confirm",
+  "close": "Close",
+  "dashboard_home": "Dashboard home",
   "appbar": {
     "english": "English",
     "french": "French",
@@ -33,6 +38,8 @@
   "settings": {
     "title": "Settings",
     "new": "New",
+    "delete": "Delete",
+    "add": "Add",
     "page": "Settings Page",
     "not_found": "No settings found",
     "delay_for_otp": "delay for SMS OTP in seconds",
@@ -53,5 +60,51 @@
     "title_en": "Title in English",
     "title_fr": "Title in French",
     "delete_item": "Delete Item"
+  },
+  "sidebar": {
+    "update_profile": "Update profile",
+    "list": "List",
+    "create": "Create",
+    "view": "View",
+    "registrations": "Registrations",
+    "settled": "Settled",
+    "profile": "Profile",
+    "users": "Users",
+    "create_internal_driver": "Create Internal Driver"
+  },
+  "users": {
+    "name": "Name",
+    "phone": "Phone",
+    "role": "Role",
+    "user_details": "User details",
+    "status": "Status",
+    "users_list": "List of Users",
+    "first_name": "First name",
+    "last_name": "Last name",
+    "gender": "Gender",
+    "age_range": "Age range",
+    "update": "Update",
+    "edit_photo": "Edit photo",
+    "delete_photo": "Delete photo",
+    "delete_photo_warning": "Are you sure you want to delete this photo?",
+    "update_success": "Profile updated successfully",
+    "photo_delete_success": "Photo deleted successfully",
+    "add_or_remove_bonus": "Add or Remove bonus points",
+    "male": "Male",
+    "female": "Female",
+    "user_type": "User type",
+    "driver": "Driver",
+    "all": "All",
+    "filter_by_role": "Filter par role",
+    "registration_manager": "Registration Manager",
+    "conflict_manager": "Conflict Manager",
+    "create_admin_user": "Create Admin User",
+    "create_user_success": "User created successfully",
+    "disconnect_all": "Disconnect all",
+    "disconnect_all_users": "Disconnect all users",
+    "disconnect_all_warning": "Are you sure you want to disconnect all users?",
+    "disconnect_all_success": "All users disconnected successfully",
+    "deactivate": "Deactivate",
+    "activate": "Activate"
   }
 }

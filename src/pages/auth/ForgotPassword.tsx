@@ -68,7 +68,7 @@ export default function ForgotPasswordPage() {
               <Heading size="md">{t("auth.forgot_password")}</Heading>
             </Stack>
             <FormControl>
-              <FormLabel htmlFor="email">{t("auth.phone_or_email")}</FormLabel>
+              <FormLabel htmlFor="email">{t("auth.phone")}</FormLabel>
               <Input id="email" type="text" name="phoneOrMail" required />
             </FormControl>
             <LoadingButton

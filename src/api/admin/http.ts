@@ -1,3 +1,4 @@
+import { PAGE_LIMIT } from "../../helper";
 import { axios } from "../../helper/http";
 import { getAuthToken, handleApiError } from "../../helper/utils";
 import { CreateAdminData, GetUserArgs } from "../../models/admin/admin";
@@ -76,7 +77,34 @@ async function activateUser(id: string) {
   }
 }
 
-async function blockAllUsers() {
+async function updateBonus({
+  bonus,
+  driverId,
+  type,
+}: {
+  bonus: number;
+  driverId: string;
+  type: string;
+}) {
+  try {
+    const response = await axios.post("/transaction/handle-bonus", {
+      bonus,
+      driverId,
+      type,
+    });
+    console.log(response);
+  } catch (error: any) {
+    throw handleApiError({
+      error,
+      defaultMessage: {
+        en: "Failed to update driver bonus",
+        fr: "Échec de la mise à jour du bonus du conducteur",
+      },
+    });
+  }
+}
+
+async function revokeAllUsersToken() {
   try {
     const response = await axios.post("/admin/revoke-all");
     console.log(response);
@@ -93,7 +121,7 @@ async function blockAllUsers() {
 
 async function createAdmin(data: CreateAdminData) {
   try {
-    const response = await axios.post("/admin/create-admin", data);
+    const response = await axios.post("/admin/new-admin", data);
     console.log(response);
   } catch (error: any) {
     throw handleApiError({
@@ -107,14 +135,12 @@ async function createAdmin(data: CreateAdminData) {
 }
 
 async function getAllUsers({ skip, pageToken, role }: GetUserArgs) {
-  const urlQuery = pageToken
-    ? ""
-    : skip
-    ? `?maxPageSize=${skip}&skip=1`
-    : `?maxPageSize=15`;
+  const urlQuery = `?maxPageSize=${PAGE_LIMIT}`
+    .concat(skip ? `&skip=${skip}` : "")
+    .concat(role ? `&role=${role}` : "");
 
   const response = await axios.get(
-    `/user/all${urlQuery}${role ? `&role=${role}` : ""}`,
+    `/user/all${urlQuery}`,
     pageToken
       ? {
           headers: {
@@ -124,6 +150,7 @@ async function getAllUsers({ skip, pageToken, role }: GetUserArgs) {
         }
       : {}
   );
+  // await mockApiCall();
   const data = response.data;
   return {
     users: data.results as UserData[],
@@ -137,7 +164,8 @@ export {
   getSettingsData,
   blockUser,
   activateUser,
-  blockAllUsers,
+  updateBonus,
+  revokeAllUsersToken,
   createAdmin,
   getAllUsers,
 };

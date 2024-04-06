@@ -6,12 +6,14 @@ import DropdownUser from "./DropdownUser";
 import { uiActions } from "../../store/ui/ui-slice";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store";
-import { Text } from "@chakra-ui/react";
+import { Heading } from "@chakra-ui/react";
 import { LangSwitcher } from ".";
+import { useTranslation } from "react-i18next";
 
 const Header = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { sidebarOpen } = useSelector((state: RootState) => state.ui);
+  const { t } = useTranslation();
 
   function setSidebarOpen(value: boolean) {
     dispatch(uiActions.showSidebar(value));
@@ -67,10 +69,13 @@ const Header = () => {
             <img src={Logo} alt="Logo" width={35} />
           </Link>
         </div>
-
-        <div className="hidden sm:block">
-          <Text size="24px">Vam Vam Dashboard</Text>
-        </div>
+        <Link to="/">
+          <div className="hidden sm:block">
+            <Heading size="md" textAlign="left">
+              {t("dashboard_home")}
+            </Heading>
+          </div>
+        </Link>
 
         <div className="flex items-center gap-3 2xsm:gap-7">
           <ul className="flex items-center gap-2 2xsm:gap-4">

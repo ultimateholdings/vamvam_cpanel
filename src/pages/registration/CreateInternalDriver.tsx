@@ -14,7 +14,7 @@ import { useMutation } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { createAdmin } from "../../api/admin/http";
 
-function CreateUserPage() {
+function CreateInternalDriverPage() {
   const { t } = useTranslation();
 
   const { mutate, isPending } = useMutation({
@@ -67,23 +67,37 @@ function CreateUserPage() {
             <Input type="tel" name="phoneNumber" />
           </FormControl>
           <FormControl isRequired>
-            <FormLabel> {t("users.user_type")}</FormLabel>
+            <FormLabel> {t("users.age_range")}</FormLabel>
             <Select name="type">
-              <option value="registration">
-                {t("users.registration_manager")}
-              </option>
-              <option value="conflict">{t("users.conflict_manager")}</option>
+              {["18-24", "25-34", "35-44", "45-54", "55-64", "64+"].map(
+                (age) => (
+                  <option key={age} value={age}>
+                    {age}
+                  </option>
+                )
+              )}
             </Select>
           </FormControl>
           <PasswordField name="password" label={t("auth.password")} />
           <PasswordField name="cpassword" label={t("auth.confirm_password")} />
+          <FormControl>
+            <FormLabel> {t("users.gender")}</FormLabel>
+            <Select name="gender">
+              <option value="M">{t("users.male")}</option>
+              <option value="F">{t("users.female")}</option>
+            </Select>
+          </FormControl>
+          <FormControl>
+            <FormLabel> {t("users.sponsor_code")}</FormLabel>
+            <Input type="text" name={t("users.sponsor_code")} />
+          </FormControl>
           <LoadingButton
             type="submit"
             mt="4"
             w="100%"
             colorScheme="blue"
             loading={isPending}
-            title="Create User"
+            title="Create driver"
           />
         </VStack>
       </form>
@@ -91,4 +105,4 @@ function CreateUserPage() {
   );
 }
 
-export default CreateUserPage;
+export default CreateInternalDriverPage;

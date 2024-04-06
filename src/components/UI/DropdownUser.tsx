@@ -1,16 +1,15 @@
 import { Link } from "react-router-dom";
-import UserOne from "../../images/user/user-01.png";
-import { getUserRole, toCapitalize } from "../../helper/utils";
+import { getImagePath, getUserRole, toCapitalize } from "../../helper/utils";
 import { RootState } from "../../store";
 import { useSelector } from "react-redux";
 import {
   HStack,
-  Image,
   Text,
   Menu,
   MenuButton,
   MenuList,
   MenuItem,
+  Avatar,
 } from "@chakra-ui/react";
 import { IoPersonOutline } from "react-icons/io5";
 import { SlArrowDown } from "react-icons/sl";
@@ -52,11 +51,9 @@ const DropdownUser = () => {
       <Menu>
         <MenuButton>
           <HStack _hover={{ cursor: "pointer" }}>
-            <Image
-              borderRadius="full"
-              boxSize={45}
-              src={UserOne}
-              alt="Profile Image"
+            <Avatar
+              src={getImagePath((userData?.avatar ?? "") as string | undefined)}
+              boxSize="10"
             />
             <SlArrowDown size={12} />
           </HStack>

@@ -12,6 +12,8 @@ import SidebarLinkGroup from "./Sidebar/SidebarLinkGroup.tsx";
 import Sidebar from "./Sidebar/Sidebar.tsx";
 import LoadingButton from "./LoadingButton.tsx";
 import LangSwitcher from "./LangSwitcher.tsx";
+import { OverviewTable } from "./overview-table.tsx";
+import OverviewTableTyped from "./OverviewTableTyped.tsx";
 
 export {
   LoadingButton,
@@ -28,4 +30,6 @@ export {
   Sidebar,
   LangSwitcher,
   SidebarLinkGroup,
+  OverviewTable,
+  OverviewTableTyped,
 };
