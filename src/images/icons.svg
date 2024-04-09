@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+    <symbol viewBox="0 0 24 24" id="right_arrow">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M9.53151 6.41438C9.20806 6.67313 9.15562 7.1451 9.41438 7.46855L13.0396 12L9.41438 16.5315C9.15562 16.855 9.20806 17.3269 9.53151 17.5857C9.85495 17.8444 10.3269 17.792 10.5857 17.4685L14.5857 12.4685C14.8048 12.1946 14.8048 11.8054 14.5857 11.5315L10.5857 6.53151C10.3269 6.20806 9.85495 6.15562 9.53151 6.41438Z" style="fill: var(--icon-fill, currentColor);"/>
+    </symbol>
+    <symbol viewBox="0 0 34 24" id="checked">
+        <path d="m10.37 9.54 3.8 3.8L21.5 6" id="check-path" style="stroke:var(--icon-fill, #fafafa);stroke-opacity:1;stroke-width: 1.11;"/>
+    </symbol>
+    <symbol viewBox="0 0 24 24" id="star">
+        <path d="M10.03 3.27C10.84 1.58 13.16 1.58 13.97 3.27L15.36 6.2C15.68 6.87 16.3 7.34 17.01 7.45L20.12 7.92C21.92 8.19 22.64 10.49 21.34 11.81L19.08 14.09C18.57 14.61 18.33 15.37 18.45 16.11L18.99 19.33C19.29 21.19 17.41 22.61 15.8 21.73L13.02 20.21C12.38 19.86 11.62 19.86 10.98 20.21L8.2 21.73C6.59 22.61 4.71 21.19 5.01 19.33L5.55 16.11C5.67 15.37 5.43 14.61 4.92 14.09L2.66 11.81C1.36 10.49 2.08 8.19 3.88 7.92L6.99 7.45C7.7 7.34 8.32 6.87 8.64 6.2L10.03 3.27Z" style="fill: var(--icon-fill, currentColor);"/>
+    </symbol>
+    <symbol viewBox="0 0 24 24" id="empty">
+        <path opacity=".4" d="M20 16.76V8l-8 2-8-2v8.76a2 2 0 0 0 1.1 1.8l6 3a2 2 0 0 0 1.8 0l6-3a2 2 0 0 0 1.1-1.8Z" fill="#28303f" id="path1" style="fill:#3f3028;fill-opacity:1"/>
+        <path opacity=".4" d="M19.99 16.78V8.02l-8 2-8-2v8.76a2 2 0 0 0 1.1 1.8l6 3a2 2 0 0 0 1.79 0l6-3a2 2 0 0 0 1.1-1.8z" fill="#28303f" id="path2" style="fill:#3f3028;fill-opacity:1"/>
+        <path opacity=".4" d="m20 6-7.1-3.55a2 2 0 0 0-1.8 0L4 6l8 4Z" fill="#28303f" id="path3" style="fill:#3f3028;fill-opacity:1"/>
+        <path d="m20 6-8 4 2 3 8-4z" fill="#28303f" id="path4" style="fill:#3f3028;fill-opacity:1"/>
+        <path d="m4 6 8 4-2 3-8-4z" fill="#28303f" id="path5" style="fill:#3f3028;fill-opacity:1"/>
+    </symbol>
+</svg>

@@ -46,7 +46,7 @@ const DropdownUser = () => {
           {toCapitalize(userData?.firstName ?? "")}{" "}
           {toCapitalize(userData?.lastName ?? "")}
         </span>
-        <span className="block text-xs">{toCapitalize(userData!.role)}</span>
+        <span className="block text-xs">{toCapitalize(userData?.role ?? "")}</span>
       </span>
       <Menu>
         <MenuButton>
