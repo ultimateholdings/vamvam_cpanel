@@ -1,11 +1,11 @@
 import CreateInternalDriverPage from "./CreateInternalDriver";
 import NewRegistrationsList from "./NewRegistrationsList";
-import UpdateRegistrationPage from "./UpdateRegistration";
 import SettledRegistrationsList from "./SettledRegistrationsList";
+import RegistrationDetails from "./RegistrationDetails";
 
 export {
   CreateInternalDriverPage,
-  UpdateRegistrationPage,
   NewRegistrationsList,
+  RegistrationDetails,
   SettledRegistrationsList,
 };

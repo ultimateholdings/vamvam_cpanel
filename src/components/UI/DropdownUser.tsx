@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { getImagePath, getUserRole, toCapitalize } from "../../helper/utils";
+import { getFilePath, getUserRole, toCapitalize } from "../../helper/utils";
 import { RootState } from "../../store";
 import { useSelector } from "react-redux";
 import {
@@ -52,7 +52,7 @@ const DropdownUser = () => {
         <MenuButton>
           <HStack _hover={{ cursor: "pointer" }}>
             <Avatar
-              src={getImagePath((userData?.avatar ?? "") as string | undefined)}
+              src={getFilePath((userData?.avatar ?? "") as string | undefined)}
               boxSize="10"
             />
             <SlArrowDown size={12} />

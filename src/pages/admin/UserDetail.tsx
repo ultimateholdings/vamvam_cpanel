@@ -15,7 +15,7 @@ import {
 } from "@chakra-ui/react";
 import { FC } from "react";
 import UserData from "../../models/auth/user-data";
-import { getImagePath, toCapitalize } from "../../helper/utils";
+import { getFilePath, toCapitalize } from "../../helper/utils";
 import { useMutation } from "@tanstack/react-query";
 import { AppDispatch } from "../../store";
 import { useDispatch } from "react-redux";
@@ -73,7 +73,7 @@ const UserDetailPage: FC<Props> = ({ isOpen, onClose, user }) => {
           <ModalHeader>{t("users.user_details")}</ModalHeader>
           <ModalBody p={8}>
             <VStack spacing={8} align="start">
-              <Avatar src={getImagePath(user.avatar as string)} boxSize="32" />
+              <Avatar src={getFilePath(user.avatar as string)} boxSize="32" />
               <HStack w="full" justify="space-between">
                 <VStack align="start">
                   <HStack>

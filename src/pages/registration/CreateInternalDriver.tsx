@@ -1,26 +1,33 @@
-import { FormEvent } from "react";
+import { FormEvent, useState } from "react";
 import {
   Box,
   FormControl,
   FormLabel,
+  HStack,
   Heading,
   Input,
   Select,
   VStack,
+  // useBreakpointValue,
 } from "@chakra-ui/react";
 import { LoadingButton, PasswordField } from "../../components/UI";
 import { useTranslation } from "react-i18next";
 import { useMutation } from "@tanstack/react-query";
 import toast from "react-hot-toast";
-import { createAdmin } from "../../api/admin/http";
+import UploadFileBox from "../../components/registrations/UploadFileBox";
+import {
+  createInternalDriver,
+  // createRegistration,
+} from "../../api/registration/http";
 
 function CreateInternalDriverPage() {
   const { t } = useTranslation();
+  const [file, setFile] = useState<File>();
 
   const { mutate, isPending } = useMutation({
-    mutationFn: createAdmin,
+    mutationFn: createInternalDriver,
     onSuccess: async () => {
-      toast.success(t("users.create_user_success"));
+      toast.success(t("users.create_driver_success"));
     },
     onError: (error) => {
       toast.error(error.message);
@@ -40,61 +47,99 @@ function CreateInternalDriverPage() {
         return;
       }
 
+      if (!file) {
+        toast.error(t("users.car_infos_required"));
+        return;
+      }
+
       mutate({
         email: data.email.value,
         phoneNumber: data.phoneNumber.value,
         password,
-        type: data.type.value,
+        age: data.age.value,
+        firstName: data.firstName.value,
+        lastName: data.lastName.value,
+        gender: data.gender.value,
+        carInfos: file,
+        sponsorCode: data.sponsorCode.value,
       });
     } else {
       form.reportValidity();
     }
   }
+  // const isMobile = useBreakpointValue({ base: true, md: false });
 
   return (
-    <Box p={2} maxWidth="500px" margin="auto">
-      <Heading size="xl" mb={4} textAlign="left">
+    <Box p={2} maxWidth={{ base: "100%", md: "700px" }} margin="auto">
+      <Heading size="xl" mb={8} textAlign="center">
         {t("users.create_admin_user")}
       </Heading>
       <form onSubmit={handleSubmit}>
-        <VStack spacing={4}>
-          <FormControl isRequired>
-            <FormLabel>Email</FormLabel>
-            <Input type="email" name="email" />
-          </FormControl>
-          <FormControl isRequired>
-            <FormLabel> {t("users.phone")}</FormLabel>
-            <Input type="tel" name="phoneNumber" />
-          </FormControl>
-          <FormControl isRequired>
-            <FormLabel> {t("users.age_range")}</FormLabel>
-            <Select name="type">
-              {["18-24", "25-34", "35-44", "45-54", "55-64", "64+"].map(
-                (age) => (
-                  <option key={age} value={age}>
-                    {age}
-                  </option>
-                )
-              )}
-            </Select>
-          </FormControl>
-          <PasswordField name="password" label={t("auth.password")} />
-          <PasswordField name="cpassword" label={t("auth.confirm_password")} />
-          <FormControl>
-            <FormLabel> {t("users.gender")}</FormLabel>
-            <Select name="gender">
-              <option value="M">{t("users.male")}</option>
-              <option value="F">{t("users.female")}</option>
-            </Select>
-          </FormControl>
-          <FormControl>
-            <FormLabel> {t("users.sponsor_code")}</FormLabel>
-            <Input type="text" name={t("users.sponsor_code")} />
-          </FormControl>
+        <VStack spacing={8}>
+          <HStack spacing={8} w="full" align="space-between">
+            <FormControl isRequired>
+              <FormLabel>{t("users.first_name")}</FormLabel>
+              <Input type="text" name="firstName" />
+            </FormControl>
+            <FormControl isRequired>
+              <FormLabel> {t("users.last_name")}</FormLabel>
+              <Input type="text" name="lastName" />
+            </FormControl>
+          </HStack>
+          <HStack spacing={8} w="full" align="space-between">
+            <FormControl isRequired>
+              <FormLabel>Email</FormLabel>
+              <Input type="email" name="email" />
+            </FormControl>
+            <FormControl isRequired>
+              <FormLabel> {t("users.phone")}</FormLabel>
+              <Input type="tel" name="phoneNumber" />
+            </FormControl>
+          </HStack>
+          <HStack spacing={8} w="full" align="space-between">
+            <FormControl isRequired>
+              <FormLabel> {t("users.age_range")}</FormLabel>
+              <Select name="age">
+                {["18-24", "25-34", "35-44", "45-54", "55-64", "64+"].map(
+                  (age) => (
+                    <option key={age} value={age}>
+                      {age}
+                    </option>
+                  )
+                )}
+              </Select>
+            </FormControl>
+            <FormControl>
+              <FormLabel> {t("users.gender")}</FormLabel>
+              <Select name="gender">
+                <option value="M">{t("users.male")}</option>
+                <option value="F">{t("users.female")}</option>
+              </Select>
+            </FormControl>
+          </HStack>
+          <HStack spacing={8} w="full" align="space-between">
+            <PasswordField name="password" label={t("auth.password")} />
+            <PasswordField
+              name="cpassword"
+              label={t("auth.confirm_password")}
+            />
+          </HStack>
+          <HStack spacing={8} w="full" align="space-between">
+            <FormControl>
+              <FormLabel> {t("users.sponsor_code")}</FormLabel>
+              <Input mr={8} type="text" name="sponsorCode" />
+            </FormControl>
+            <FormControl>
+              <FormLabel> {t("users.car_infos")}</FormLabel>
+              <UploadFileBox file={file} onSetFile={setFile} />
+            </FormControl>
+          </HStack>
+
           <LoadingButton
             type="submit"
             mt="4"
-            w="100%"
+            w="full"
+            alignSelf="center"
             colorScheme="blue"
             loading={isPending}
             title="Create driver"

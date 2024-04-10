@@ -75,8 +75,26 @@ export function toCapitalize(str: string) {
     : str.charAt(0).toUpperCase() + str.slice(1);
 }
 
-export function getImagePath(image?: string) {
+export function getFilePath(image?: string) {
   return (image?.length ?? "") === ""
     ? ""
     : import.meta.env.VITE_API_URL + image;
+}
+
+export function formatDate(date: string) {
+  return new Date(date).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "2-digit",
+  });
+}
+
+export function parseFormData(data: any) {
+  const formData = new FormData();
+  Object.entries(data).forEach(([key, value]) => {
+    if (value) {
+      formData.append(key, value as string | Blob);
+    }
+  });
+  return formData;
 }

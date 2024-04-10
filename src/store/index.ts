@@ -3,6 +3,8 @@ import profileReducer from "./profile/profile-slice";
 import uiReducer from "./ui/ui-slice";
 import listingSlice from "./deliveries/listing";
 import userReducer from "./users/user-slice";
+import newRegistrationReducer from "./registration/new/slice";
+// import settledRegistrationReducer from "./registration/settledRegistrations/slice";
 
 const store = configureStore({
   reducer: {
@@ -10,6 +12,8 @@ const store = configureStore({
     profile: profileReducer,
     ui: uiReducer,
     users: userReducer,
+    newRegistrations: newRegistrationReducer,
+    // settledRegistrations:
   },
 });
 

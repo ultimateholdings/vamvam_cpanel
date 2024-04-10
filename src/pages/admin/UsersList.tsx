@@ -21,7 +21,7 @@ import RevokeAllButton from "../../components/Users/RevokeAllButton";
 import FilterByRoleInput from "../../components/Users/FilterByRoleInput";
 import UserDetailPage from "./UserDetail";
 import UserData from "../../models/auth/user-data";
-import { getImagePath } from "../../helper/utils";
+import { getFilePath } from "../../helper/utils";
 import { useTranslation } from "react-i18next";
 
 const UsersPage = () => {
@@ -147,7 +147,7 @@ const UsersPage = () => {
                 <Td>
                   <HStack spacing="3">
                     <Avatar
-                      src={getImagePath(member.avatar as string)}
+                      src={getFilePath(member.avatar as string)}
                       boxSize="10"
                     />
                     <Text fontWeight="medium">{member.firstName}</Text>

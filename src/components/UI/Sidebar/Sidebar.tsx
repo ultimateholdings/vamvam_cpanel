@@ -128,15 +128,15 @@ const Sidebar = () => {
             icon: <IoDocumentTextOutline />,
             children: [
               {
-                name: t("settings.new"),
+                name: t("registrations.new"),
                 link: "new-registrations",
               },
               {
-                name: t("settings.settled"),
+                name: t("registrations.settled"),
                 link: "settled-registrations",
               },
               {
-                name: t("settings.create_internal_driver"),
+                name: t("registrations.create_internal_driver"),
                 link: "create-internal-driver",
               },
             ],

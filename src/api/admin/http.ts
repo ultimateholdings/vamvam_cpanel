@@ -150,7 +150,6 @@ async function getAllUsers({ skip, pageToken, role }: GetUserArgs) {
         }
       : {}
   );
-  // await mockApiCall();
   const data = response.data;
   return {
     users: data.results as UserData[],

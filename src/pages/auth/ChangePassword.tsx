@@ -51,7 +51,7 @@ export default function ChangePasswordPage() {
 
   return (
     <Box p="6" maxWidth="500px" margin="auto">
-      <Heading size="xl" textAlign="left" mb="8">
+      <Heading size="xl" textAlign="center" mb="8">
         {t("auth.change_password")}
       </Heading>
       <Box borderRadius="md" p="6" mb="4">
