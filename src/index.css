@@ -17,6 +17,10 @@
         font-feature-settings: "frac" on, "dlig" on, "ordn" on, "aalt" on;
     }
 
+    h3 {
+        text-transform: capitalize;
+    }
+
     .ratings {
         --r-space: .5rem;
         --icon-fill: hsla(40, 59%, 30%, .2);
@@ -24,6 +28,102 @@
 
     [data-theme="rating-bg"] {
         --icon-fill: hsl(40, 82%, 59%);
+    }
+
+    [data-icon-prefix]::before,
+    [data-icon-suffix]::after {
+        content: "";
+        min-inline-size: var(--icon-size, 1.5em);
+        aspect-ratio: var(--icon-ratio, 1);
+        display: inline-block;
+        background-color: var(--icon-fill, currentColor);
+        transform: var(--icon-transform, none);
+        clip-path: var(--icon-clip, none);
+        border-radius: var(--icon-radius, 0px);
+    }
+
+    [data-icon="arrow_down"] {
+        --min-padding: 0.75em 1.5em 0.75em 0;
+        --r-space: 0.1em;
+        --icon-clip: url(#arrow_down);
+        cursor: pointer;
+
+    }
+
+    [data-icon="arrow_down"]:where(.d-filter[open] *) {
+        --icon-transform: rotateZ(180deg);
+    }
+
+    .d-filter {
+        position: relative;
+        min-inline-size: min(100%, 10rem);
+
+        text-transform: uppercase;
+
+    }
+
+    .d-filter > summary {
+        list-style: none;
+    }
+
+    .d-filter > form {
+        position: absolute;
+        inset-inline-start: -10%;
+        z-index: 2;
+    }
+
+    .f-option>label::before {
+        content: "";
+        inset: 0;
+        position: absolute;
+    }
+
+    .f-option {
+        --r-space: 1em;
+        position: relative;
+        cursor: pointer;
+        font-weight: 600;
+    }
+
+    .f-option:is(:focus-within, :hover) {
+        --checkbox-border: 2px solid hsl(252, 85%, 62%);
+    }
+
+    .f-option> :is(span, div) {
+        --icon-fill: none;
+        display: inline-block;
+        position: relative;
+        isolation: isolate;
+    }
+
+    .f-option :is(span, div, input, svg) {
+        inline-size: 1.5rem;
+        aspect-ratio: 1;
+    }
+
+    .f-option :is(input[type="checkbox"], svg) {
+        position: absolute;
+    }
+
+    .f-option svg {
+        background-color: var(--fill, hsl(231, 73%, 93%));
+        border-radius: 0.25rem;
+        z-index: -1;
+        stroke: #fff;
+        stroke-dashoffset: 1;
+        stroke-dasharray: 1;
+        padding: 0.15em;
+        border: var(--checkbox-border, none);
+    }
+
+    .f-option input[type="checkbox"] {
+        margin: 0;
+        opacity: 0;
+    }
+
+    input:checked+svg {
+        --fill: hsl(252, 85%, 62%);
+        stroke-dashoffset: 0;
     }
 
     :is(.box, .img-box, .btn-primary, .cart-modal, .main-content) {
@@ -66,9 +166,38 @@
         flex-grow: 2;
     }
 
+    :is(.center, .empty) {
+        display: grid;
+        place-items: center;
+        place-content: center;
+        gap: var(--s-space, var(--c-space, 1.5em));
+    }
+
+
+    .empty {
+        min-block-size: 60lvb;
+    }
+
     :where(.column, .cart-modal) {
         --alignment: var(--col-align, stretch);
         flex-flow: var(--col-dir, column) var(--wrap, nowrap);
+    }
+
+    @media screen and (min-width: 480px) {
+        .table-actions {
+            --i-alignment: end;
+
+        }
+    }
+
+    @media screen and (prefers-reduced-motion: no-preference) {
+
+        svg,
+        [data-icon]::before,
+        [data-icon]::after {
+            transition: all .35s cubic-bezier(.25, .1, .3, 1.5);
+        }
+
     }
 }
 

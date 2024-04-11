@@ -1,13 +1,31 @@
 <!doctype html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vam Vam</title>
-  </head>
-  <body>
+</head>
+
+<body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
-  </body>
+
+    <svg width="0" height="0" xmlns="http://www.w3.org/2000/svg" version="1.1" aria-hidden="true">
+        <defs>
+            <clipPath id="arrow_left" clipPathUnits="objectBoundingBox">
+                <path fill-rule="evenodd" clip-rule="evenodd"
+                    d="m 0.61 0.27 c 0.01 0.01 0.02 0.03 0 0.04 l -0.15 0.19 l 0.15 0.19 c 0.01 0.01 0.01 0.03 -0 0.04 c -0.01 0.01 -0.03 0.01 -0.04 -0 l -0.17 -0.21 c -0.01 -0.01 -0.01 -0.03 0 -0.04 l 0.17 -0.21 c 0.01 -0.01 0.03 -0.02 0.04 -0 z"
+                    fill="currentColor" style="fill:var(--icon-fill, currentColor);" />
+            </clipPath>
+            <clipPath id="arrow_down" clipPathUnits="objectBoundingBox">
+                <path fill-rule="evenodd" clip-rule="evenodd"
+                    d="m 0.27 0.4 c 0.01 -0.01 0.03 -0.02 0.04 -0 l 0.19 0.15 l 0.19 -0.15 c 0.01 -0.01 0.03 -0.01 0.04 0 c 0.01 0.01 0.01 0.03 -0 0.04 l -0.21 0.17 c -0.01 0.01 -0.03 0.01 -0.04 0 l -0.21 -0.17 c -0.01 -0.01 -0.02 -0.03 -0 -0.04 z"
+                    fill="currentColor" style="fill:var(--icon-fill, currentColor);" />
+            </clipPath>
+        </defs>
+    </svg>
+</body>
+
 </html>

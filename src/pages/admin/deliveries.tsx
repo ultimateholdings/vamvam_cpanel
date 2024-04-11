@@ -88,7 +88,7 @@ function DeliveryDetails(props: any) {
                             </Heading>
                             <Badge colorScheme="whatsapp" p={1.5} borderRadius={".25rem"} >{formatter.formatCurrency(props.data.price ?? "")}</Badge>
                         </div>
-                        <Heading as={"h3"} size={"md"}>Client Informations</Heading>
+                        <Heading as={"h3"} size={"md"}>client informations</Heading>
                         <div className="row wrap fill-evenly">
                             <div className="stack">
                                 <Heading as={"h4"} size={"sm"} colorScheme={"facebook"}>SENDER</Heading>
@@ -99,7 +99,15 @@ function DeliveryDetails(props: any) {
                                 <UserAvatar {...(props.data.recipientInfos?.main ?? props.data?.recipientInfos ?? {})} />
                             </div>
                         </div>
-                        <Heading as={"h3"} size={"md"}>Route Informations</Heading>
+                        {
+                            props.data.driver
+                                ? (<>
+                                    <Heading as={"h3"} size={"md"}>driver informations</Heading>
+                                    <UserAvatar {...props.data.driver} />
+                                </>)
+                                : ""
+                        }
+                        <Heading as={"h3"} size={"md"}>route informations</Heading>
                         <div className="row wrap fill-evenly">
                             <div className="stack">
                                 <Heading as={"h4"} size={"sm"} colorScheme={"facebook"}>DEPARTURE</Heading>
@@ -116,11 +124,11 @@ function DeliveryDetails(props: any) {
                                 <Text>{props.data.packageType}</Text>
                             </div>
                             {
-                                (props.data.note ?? 3)
+                                props.data.note
                                     ?
                                     <div className="stack">
                                         <Heading as={"h3"} size={"md"} >note</Heading>
-                                        <Ratings note={props.data.note ?? 3} />
+                                        <Ratings note={props.data.note} />
                                     </div>
                                     : ""
                             }
@@ -196,9 +204,16 @@ function Deliveries() {
             {
                 state.result === RequestResult.resolved
                     ? (
-                        <OverviewTable title="delivery list">
-                            <MemberTable colNames={headers} dataSource={state.data?.results ?? []} />
-                        </OverviewTable>
+                        (state.data?.results ?? []).length > 0
+                            ?
+                            <OverviewTable title="delivery list">
+                                <MemberTable colNames={headers} dataSource={state.data?.results ?? []} />
+                            </OverviewTable>
+                            : <div className="empty">
+                                <Sprite size={196} name="empty" title="illustration of an empty box" />
+                                <Heading as={"h3"} size={"md"}>no delivery available</Heading>
+                                <Text>Once a client will request a delivery you will be able to get its informations here</Text>
+                            </div>
                     )
                     : (
                         <p>loading...</p>

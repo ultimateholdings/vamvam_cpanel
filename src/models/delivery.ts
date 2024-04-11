@@ -1,4 +1,3 @@
-import { DELIVERY_STATUS } from "../helper/enums.ts";
 interface UserDesc {
     avatar?: string;
     id: string;

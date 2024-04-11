@@ -12,18 +12,8 @@ import SidebarLinkGroup from "./Sidebar/SidebarLinkGroup.tsx";
 import Sidebar from "./Sidebar/Sidebar.tsx";
 import LoadingButton from "./LoadingButton.tsx";
 import LangSwitcher from "./LangSwitcher.tsx";
-import { OverviewTable } from "./overview-table.tsx";
+import { Option, OverviewTable, Sprite } from "./overview-table.tsx";
 import OverviewTableTyped from "./OverviewTableTyped.tsx";
-import sprite from "../../images/icons.svg";
-
-function Sprite(props: any) {
-    return (
-        <svg width={props.size ?? 24} height={props.size ?? 24} {...(props.options ?? {})}>
-            <title>{props.title}</title>
-            <use href={sprite + "#" + props.name} />
-        </svg>
-    );
-}
 
 export {
     LoadingButton,
@@ -36,6 +26,7 @@ export {
     LinearLoader,
     Logo,
     OAuthButtonGroup,
+    Option,
     PasswordField,
     Sidebar,
     LangSwitcher,
