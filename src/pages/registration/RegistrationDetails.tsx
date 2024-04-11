@@ -1,4 +1,4 @@
-import { Location, useLocation } from "react-router-dom";
+import { Location, useLocation, useNavigate } from "react-router-dom";
 import { RegistrationData } from "../../models/registrations/registration-data";
 import { FormEvent, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
@@ -23,18 +23,26 @@ import PdfBox from "../../components/registrations/PdfBox";
 import { getFilePath } from "../../helper/utils";
 import HandleRegistrationActions from "../../components/registrations/HandleRegistrationActions";
 
+type RegisStatus = "pending" | "reviewing" | "editing";
 function RegistrationDetails() {
   const { t } = useTranslation();
   const { state: data } = useLocation() as Location<RegistrationData>;
 
   const [registrationData, setRegistrationData] = useState(data);
-  const [isEditing, setIsEditing] = useState(false);
+  const [actionState, setActionState] = useState<RegisStatus>(() => {
+    if (registrationData.status === "pending" && data.contributorId) {
+      return "reviewing";
+    }
+    return registrationData.status as RegisStatus;
+  });
   const [file, setFile] = useState<File>();
+  const navigate = useNavigate();
 
   const { mutate, isPending } = useMutation({
     mutationFn: updateRegistration,
     onSuccess: async () => {
-      toast.success(t("users.update_registration_success"));
+      toast.success(t("registrations.update_registration_success"));
+      navigate("..");
     },
     onError: (error) => {
       toast.error(error.message);
@@ -73,18 +81,20 @@ function RegistrationDetails() {
   }
 
   function handleChangeEdit() {
-    setIsEditing(true);
+    setActionState("editing");
   }
 
   function handleCancelEdit() {
-    setIsEditing(false);
+    setActionState("pending");
     setRegistrationData(data);
     setFile(undefined);
   }
 
+  const isEditing = actionState === "editing";
+
   const headerButton = isEditing ? (
     <Button colorScheme="gray.600" variant="outline" onClick={handleCancelEdit}>
-      Cancel
+      {t("cancel")}
     </Button>
   ) : (
     <Button
@@ -94,7 +104,7 @@ function RegistrationDetails() {
       variant="outline"
       onClick={handleChangeEdit}
     >
-      Edit
+      {t("registrations.edit")}
     </Button>
   );
 
@@ -102,7 +112,7 @@ function RegistrationDetails() {
     <Box p={2} maxWidth={{ base: "100%", md: "700px" }} margin="auto">
       <HStack spacing={7} align="center" justify="center" mb={9}>
         <Heading size="lg" textAlign="center">
-          {t("users.admin_details")}
+          {t("registrations.registration_details")}
         </Heading>
         {registrationData.status === "rejected" && headerButton}
       </HStack>
@@ -263,7 +273,7 @@ function RegistrationDetails() {
           </HStack>
           <HStack spacing={8} w="full" align="space-between">
             <FormControl>
-              <FormLabel> {t("users.sponsor_code")}</FormLabel>
+              <FormLabel> {t("registrations.sponsor_code")}</FormLabel>
               {isEditing && (
                 <Input
                   mr={8}
@@ -287,11 +297,11 @@ function RegistrationDetails() {
               )}
             </FormControl>
             <FormControl>
-              <FormLabel> {t("users.car_infos")}</FormLabel>
+              <FormLabel> {t("registrations.bike_infos")}</FormLabel>
               {!isEditing && (
                 <PdfBox
                   pdfUrl={getFilePath(registrationData.carInfos! as string)}
-                  title="Driver bike infos"
+                  title={t("registrations.pdf_document")}
                 />
               )}
               {isEditing && <UploadFileBox file={file} onSetFile={setFile} />}
@@ -305,11 +315,20 @@ function RegistrationDetails() {
               w={{ base: "full", md: "30%" }}
               colorScheme="blue"
               loading={isPending}
-              title="Update"
+              title={t("registrations.update_registration")}
             />
           )}
-          {!isEditing && (
-            <HandleRegistrationActions id={registrationData.id!} />
+
+          {!isEditing && registrationData.status !== "active" && (
+            <HandleRegistrationActions
+              id={registrationData.id!}
+              status={
+                actionState === "reviewing"
+                  ? "reviewing"
+                  : registrationData.status!
+              }
+              onHandled={() => setActionState("reviewing")}
+            />
           )}
         </VStack>
       </form>

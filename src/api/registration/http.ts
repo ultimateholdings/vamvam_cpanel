@@ -85,7 +85,6 @@ async function handleRegistration(id: string) {
 }
 
 async function rejectRegistration(id: string) {
-  await handleRegistration(id);
   try {
     await axios.post("/driver/reject-validation", { id });
   } catch (error: any) {
@@ -100,7 +99,6 @@ async function rejectRegistration(id: string) {
 }
 
 async function validateRegistration(id: string) {
-  await handleRegistration(id);
   try {
     await axios.post("/driver/validate-registration", { id });
   } catch (error: any) {

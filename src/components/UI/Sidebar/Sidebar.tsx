@@ -117,6 +117,10 @@ const Sidebar = () => {
                 name: t("sidebar.view"),
                 link: "settings",
               },
+              {
+                name: t("users.disconnect_all_users"),
+                link: "disconnect-all",
+              },
             ],
           },
           profileRoute,

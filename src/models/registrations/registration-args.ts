@@ -4,7 +4,7 @@ interface GetRegistrationArgs {
   skip?: number;
   from?: string;
   to?: string;
-  status?: "pending" | "validated" | "rejected" | undefined;
+  status?: string;
 }
 
 export type { GetRegistrationArgs };

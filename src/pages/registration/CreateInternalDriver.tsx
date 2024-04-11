@@ -27,7 +27,7 @@ function CreateInternalDriverPage() {
   const { mutate, isPending } = useMutation({
     mutationFn: createInternalDriver,
     onSuccess: async () => {
-      toast.success(t("users.create_driver_success"));
+      toast.success(t("registrations.driver_created_success"));
     },
     onError: (error) => {
       toast.error(error.message);
@@ -48,7 +48,7 @@ function CreateInternalDriverPage() {
       }
 
       if (!file) {
-        toast.error(t("users.car_infos_required"));
+        toast.error(t("registrations.bike_infos_required"));
         return;
       }
 
@@ -72,7 +72,7 @@ function CreateInternalDriverPage() {
   return (
     <Box p={2} maxWidth={{ base: "100%", md: "700px" }} margin="auto">
       <Heading size="xl" mb={8} textAlign="center">
-        {t("users.create_admin_user")}
+        {t("registrations.create_internal_driver")}
       </Heading>
       <form onSubmit={handleSubmit}>
         <VStack spacing={8}>
@@ -126,11 +126,11 @@ function CreateInternalDriverPage() {
           </HStack>
           <HStack spacing={8} w="full" align="space-between">
             <FormControl>
-              <FormLabel> {t("users.sponsor_code")}</FormLabel>
+              <FormLabel> {t("registrations.sponsor_code")}</FormLabel>
               <Input mr={8} type="text" name="sponsorCode" />
             </FormControl>
             <FormControl>
-              <FormLabel> {t("users.car_infos")}</FormLabel>
+              <FormLabel> {t("registrations.bike_infos")}</FormLabel>
               <UploadFileBox file={file} onSetFile={setFile} />
             </FormControl>
           </HStack>
@@ -142,7 +142,7 @@ function CreateInternalDriverPage() {
             alignSelf="center"
             colorScheme="blue"
             loading={isPending}
-            title="Create driver"
+            title={t("registrations.create_driver")}
           />
         </VStack>
       </form>

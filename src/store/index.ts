@@ -4,7 +4,7 @@ import uiReducer from "./ui/ui-slice";
 import listingSlice from "./deliveries/listing";
 import userReducer from "./users/user-slice";
 import newRegistrationReducer from "./registration/new/slice";
-// import settledRegistrationReducer from "./registration/settledRegistrations/slice";
+import settledRegistrationReducer from "./registration/settled/slice";
 
 const store = configureStore({
   reducer: {
@@ -13,7 +13,7 @@ const store = configureStore({
     ui: uiReducer,
     users: userReducer,
     newRegistrations: newRegistrationReducer,
-    // settledRegistrations:
+    settledRegistrations: settledRegistrationReducer,
   },
 });
 

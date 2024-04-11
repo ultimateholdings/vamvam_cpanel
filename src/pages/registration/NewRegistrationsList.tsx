@@ -11,7 +11,7 @@ import {
   Th,
   Tr,
   HStack,
-  Input,
+  Badge,
 } from "@chakra-ui/react";
 import { CircularLoader, OverviewTableTyped } from "../../components/UI";
 import { useTranslation } from "react-i18next";
@@ -20,6 +20,7 @@ import { newRegistrationActions } from "../../store/registration/new/slice";
 import { RegistrationData } from "../../models/registrations/registration-data";
 import { formatDate } from "../../helper/utils";
 import { useNavigate } from "react-router-dom";
+import SearchInput from "../../components/registrations/SearchInput";
 
 const NewRegistrationsPage = () => {
   const { t } = useTranslation();
@@ -94,7 +95,8 @@ const NewRegistrationsPage = () => {
     t("users.last_name"),
     "Email",
     t("users.phone"),
-    t("users.registration_date"),
+    t("registrations.registration_date"),
+    t("users.status"),
   ];
 
   return loading && !initialReqSent ? (
@@ -106,14 +108,12 @@ const NewRegistrationsPage = () => {
         onNext={showNext ? handleNextPage : undefined}
         onPrevious={showPrevious ? handlePreviousPage : undefined}
         items={totalnewRegistrations}
-        title={t("users.new_registrations_list")}
+        title={t("registrations.new_registrations")}
         headerTrailer={
           <HStack align="end">
-            <Text color="fg.muted">{t("users.search")}</Text>
-            <Input
-              type="text"
-              placeholder={t("users.search")}
-              onChange={(e) => handleNameChange(e.target.value)}
+            <SearchInput
+              onSearch={handleNameChange}
+              placeholder={t("registrations.enter_name")}
             />
           </HStack>
         }
@@ -155,6 +155,16 @@ const NewRegistrationsPage = () => {
                   <Text color="fg.muted">
                     {formatDate(registration.registrationDate!)}
                   </Text>
+                </Td>
+                <Td>
+                  <Badge
+                    size="sm"
+                    colorScheme={registration.contributorId ? "orange" : "blue"}
+                  >
+                    {registration.contributorId
+                      ? "reviewing"
+                      : registration.status}
+                  </Badge>
                 </Td>
               </Tr>
             ))}

@@ -10,6 +10,7 @@ export interface RegistrationData {
   sponsorCode?: string;
   gender?: string;
   lang?: string;
+  contributorId?: string;
   registrationDate?: string;
-  status?: "rejected" | "pending" | "validated";
+  status?: "rejected" | "pending" | "active";
 }

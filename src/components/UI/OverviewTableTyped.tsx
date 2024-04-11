@@ -10,6 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { FC } from "react";
 import { PAGE_LIMIT } from "../../helper";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   onPrevious?: VoidFunction;
@@ -22,8 +23,10 @@ type Props = {
 };
 
 const OverviewTableTyped: FC<Props> = (props) => {
+  const { t } = useTranslation();
   const isMobile = useBreakpointValue({ base: true, md: false });
   const currentPage = props.currentPage;
+  const totalItemLength = props.items.length;
   return (
     <Box
       bg="bg.surface"
@@ -45,17 +48,18 @@ const OverviewTableTyped: FC<Props> = (props) => {
         <Box overflowX="auto">{props.children}</Box>
         <Box px={{ base: "4", md: "6" }} pb="5">
           <HStack spacing="3" justify="space-between">
-            {!isMobile && (
+            {!isMobile && totalItemLength > 0 && (
               <Text color="fg.muted" textStyle="sm">
-                Showing{" "}
+                {t("showing")}{" "}
                 {currentPage <= 1
                   ? currentPage
                   : Math.min(
                       (currentPage - 1) * PAGE_LIMIT,
-                      props.items.length
+                      totalItemLength
                     )}{" "}
-                to {Math.min(currentPage * PAGE_LIMIT, props.items.length)} of{" "}
-                {props.items.length} results
+                {t("to")} {Math.min(currentPage * PAGE_LIMIT, totalItemLength)}{" "}
+                {t("of")} {totalItemLength} {t("result")}
+                {totalItemLength > 1 ? "s" : ""}
               </Text>
             )}
             <ButtonGroup
@@ -65,9 +69,11 @@ const OverviewTableTyped: FC<Props> = (props) => {
               variant="secondary"
             >
               {props.onPrevious && (
-                <Button onClick={props.onPrevious}>Previous</Button>
+                <Button onClick={props.onPrevious}>{t("previous")}</Button>
               )}
-              {props.onNext && <Button onClick={props.onNext}>Next</Button>}
+              {props.onNext && (
+                <Button onClick={props.onNext}>{t("next")}</Button>
+              )}
             </ButtonGroup>
           </HStack>
         </Box>

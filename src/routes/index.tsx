@@ -53,6 +53,7 @@ const routes: RouteObject[] = [
   },
   {
     path: "/logout",
+    element: <Navigate to="/signing" />,
     loader: logoutAction,
   },
 ];

@@ -17,7 +17,6 @@ import {
   Badge,
 } from "@chakra-ui/react";
 import { CircularLoader, OverviewTableTyped } from "../../components/UI";
-import RevokeAllButton from "../../components/Users/RevokeAllButton";
 import FilterByRoleInput from "../../components/Users/FilterByRoleInput";
 import UserDetailPage from "./UserDetail";
 import UserData from "../../models/auth/user-data";
@@ -124,7 +123,7 @@ const UsersPage = () => {
         title={t("users.users_list")}
         headerTrailer={
           <HStack align="end">
-            <RevokeAllButton />
+             
             <FilterByRoleInput onSelectRole={handleRoleChange} />
           </HStack>
         }

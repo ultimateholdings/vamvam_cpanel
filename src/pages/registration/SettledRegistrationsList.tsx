@@ -2,24 +2,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store";
 import { useCallback, useEffect } from "react";
 import { PAGE_LIMIT } from "../../helper";
-import {
-  Table,
-  Tbody,
-  Td,
-  Text,
-  Thead,
-  Th,
-  Tr,
-  HStack,
-  Input,
-} from "@chakra-ui/react";
+import { Table, Tbody, Td, Text, Thead, Th, Tr, Badge } from "@chakra-ui/react";
 import { CircularLoader, OverviewTableTyped } from "../../components/UI";
 import { useTranslation } from "react-i18next";
-import { fetchNewRegistrations } from "../../store/registration/new/actions";
-import { newRegistrationActions } from "../../store/registration/new/slice";
+import { settledRegistrationActions } from "../../store/registration/settled/slice";
 import { RegistrationData } from "../../models/registrations/registration-data";
 import { formatDate } from "../../helper/utils";
 import { useNavigate } from "react-router-dom";
+import { fetchSettledRegistrations } from "../../store/registration/settled/actions";
+import SettledFilters from "../../components/registrations/SettledFilter";
 
 const SettledRegistrationsPage = () => {
   const { t } = useTranslation();
@@ -27,58 +18,89 @@ const SettledRegistrationsPage = () => {
   const dispatch = useDispatch<AppDispatch>();
   const {
     initialReqSent,
-    newRegistrations: totalnewRegistrations,
+    settledRegistrations: totalSettledRegistrations,
     loading,
     name,
+    from,
+    to,
+    status: prevStatus,
     pageToken,
     refreshed,
     currentPage,
-  } = useSelector((state: RootState) => state.newRegistrations);
+  } = useSelector((state: RootState) => state.settledRegistrations);
   const { linearLoaderVisible } = useSelector((state: RootState) => state.ui);
-  const displayedNewRegistrations = totalnewRegistrations.slice(
+  const displayedSettledRegistrations = totalSettledRegistrations.slice(
     PAGE_LIMIT * (currentPage - 1),
     PAGE_LIMIT * currentPage
   );
 
-  const fetchNewRegistrationsList = useCallback(() => {
-    dispatch(fetchNewRegistrations({}));
+  const fetchSettledRegistrationList = useCallback(() => {
+    dispatch(fetchSettledRegistrations({}));
   }, [dispatch]);
 
   const clearState = useCallback(() => {
-    dispatch(newRegistrationActions.emptyState());
+    dispatch(settledRegistrationActions.emptyState());
   }, [dispatch]);
 
   useEffect(() => {
-    fetchNewRegistrationsList();
+    fetchSettledRegistrationList();
     return () => {
       clearState();
     };
-  }, [clearState, fetchNewRegistrationsList]);
+  }, [clearState, fetchSettledRegistrationList]);
 
   function handleNameChange(name: string) {
-    dispatch(newRegistrationActions.changeName(name));
-    dispatch(newRegistrationActions.changeNewRegistrations([]));
-    dispatch(fetchNewRegistrations({ name }));
+    dispatch(settledRegistrationActions.changeName(name));
+    dispatch(settledRegistrationActions.changeSettledRegistrations([]));
+    dispatch(fetchSettledRegistrations({ name, status: prevStatus, from, to }));
+  }
+
+  function handleStatusChange(status: string) {
+    if (prevStatus === status) return;
+    dispatch(settledRegistrationActions.changeStatus(status));
+    dispatch(settledRegistrationActions.changeSettledRegistrations([]));
+    dispatch(fetchSettledRegistrations({ name, status, from, to }));
+  }
+
+  function handleDateRangeChange(
+    startDate: string | undefined,
+    endDate: string | undefined
+  ) {
+    dispatch(
+      settledRegistrationActions.changeDateRange({ startDate, endDate })
+    );
+    dispatch(settledRegistrationActions.changeSettledRegistrations([]));
+    dispatch(
+      fetchSettledRegistrations({
+        from: startDate,
+        to: endDate,
+        name,
+        status: prevStatus,
+      })
+    );
   }
 
   function handleNextPage() {
     if (linearLoaderVisible) return;
-    if (totalnewRegistrations.length == PAGE_LIMIT * currentPage) {
+    if (totalSettledRegistrations.length == PAGE_LIMIT * currentPage) {
       dispatch(
-        fetchNewRegistrations({
+        fetchSettledRegistrations({
+          skip: refreshed ? totalSettledRegistrations.length : undefined,
           pageToken: pageToken,
-          name: name,
-          skip: refreshed ? totalnewRegistrations.length : undefined,
+          status: prevStatus,
+          name,
+          from,
+          to,
         })
       );
     } else {
-      dispatch(newRegistrationActions.changeCurrentPage(currentPage + 1));
+      dispatch(settledRegistrationActions.changeCurrentPage(currentPage + 1));
     }
   }
 
   function handlePreviousPage() {
     if (linearLoaderVisible) return;
-    dispatch(newRegistrationActions.changeCurrentPage(currentPage - 1));
+    dispatch(settledRegistrationActions.changeCurrentPage(currentPage - 1));
   }
 
   function handleViewDetails(registration: RegistrationData) {
@@ -87,14 +109,15 @@ const SettledRegistrationsPage = () => {
     });
   }
 
-  const showNext = displayedNewRegistrations.length === PAGE_LIMIT;
+  const showNext = displayedSettledRegistrations.length === PAGE_LIMIT;
   const showPrevious = currentPage > 1;
   const tableColumns = [
     t("users.first_name"),
     t("users.last_name"),
     "Email",
     t("users.phone"),
-    t("users.registration_date"),
+    t("registrations.registration_date"),
+    t("users.status"),
   ];
 
   return loading && !initialReqSent ? (
@@ -105,17 +128,14 @@ const SettledRegistrationsPage = () => {
         currentPage={currentPage}
         onNext={showNext ? handleNextPage : undefined}
         onPrevious={showPrevious ? handlePreviousPage : undefined}
-        items={totalnewRegistrations}
-        title={t("users.new_registrations_list")}
+        items={totalSettledRegistrations}
+        title={t("registrations.settled_registrations")}
         headerTrailer={
-          <HStack align="end">
-            <Text color="fg.muted">{t("users.search")}</Text>
-            <Input
-              type="text"
-              placeholder={t("users.search")}
-              onChange={(e) => handleNameChange(e.target.value)}
-            />
-          </HStack>
+          <SettledFilters
+            onSearch={handleNameChange}
+            onDateRangeChange={handleDateRangeChange}
+            onSelect={handleStatusChange}
+          />
         }
       >
         <Table>
@@ -127,7 +147,7 @@ const SettledRegistrationsPage = () => {
             </Tr>
           </Thead>
           <Tbody>
-            {displayedNewRegistrations.map((registration) => (
+            {displayedSettledRegistrations.map((registration) => (
               <Tr
                 key={registration.id}
                 _hover={{ cursor: "pointer" }}
@@ -155,6 +175,20 @@ const SettledRegistrationsPage = () => {
                   <Text color="fg.muted">
                     {formatDate(registration.registrationDate!)}
                   </Text>
+                </Td>
+                <Td>
+                  <Badge
+                    size="sm"
+                    colorScheme={
+                      registration.status === "active"
+                        ? "green"
+                        : registration.status === "pending"
+                        ? "blue"
+                        : "red"
+                    }
+                  >
+                    {registration.status}
+                  </Badge>
                 </Td>
               </Tr>
             ))}

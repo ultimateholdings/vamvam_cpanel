@@ -1,6 +1,7 @@
 import React, { useRef } from "react";
 import { Box, Text, Button, VisuallyHidden, VStack } from "@chakra-ui/react";
 import { FiUpload } from "react-icons/fi";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   file?: File;
@@ -8,6 +9,7 @@ type Props = {
 };
 
 const UploadFileBox: React.FC<Props> = ({ onSetFile, file }) => {
+  const { t } = useTranslation();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -40,7 +42,7 @@ const UploadFileBox: React.FC<Props> = ({ onSetFile, file }) => {
       {!file && (
         <VStack spacing={4}>
           <FiUpload />
-          <Text fontSize="sm">Click to Upload your file</Text>
+          <Text fontSize="sm">{t("registrations.click_to_upload_file")}</Text>
           <VisuallyHidden>
             <input
               accept="application/pdf"

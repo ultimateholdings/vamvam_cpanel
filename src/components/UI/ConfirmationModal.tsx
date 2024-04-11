@@ -23,7 +23,7 @@ type Props = {
   title: string;
   description: string;
   successMessage?: string;
-  confirmColor: string;
+  confirmColor?: string;
 };
 
 const ConfirmationModal: FC<Props> = ({ confirmColor = "red", ...props }) => {

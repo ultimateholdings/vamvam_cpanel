@@ -56,7 +56,7 @@ const settledRegistrationslice = createSlice({
       state.name = action.payload;
       state.currentPage = 0;
     },
-    changeInterval(state, action) {
+    changeDateRange(state, action) {
       state.from = action.payload.from;
       state.to = action.payload.to;
       state.currentPage = 0;
