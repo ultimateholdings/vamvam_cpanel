@@ -78,7 +78,7 @@ const SettledFilters: React.FC<Props> = ({
   return (
     <Box p={4}>
       {isMobile ? (
-        <VStack spacing={4} align="center">
+        <VStack spacing={4} align="start" justify="start">
           {filterComponents}
         </VStack>
       ) : (

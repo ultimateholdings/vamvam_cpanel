@@ -168,6 +168,7 @@ const ProfilePage = () => {
                 <VisuallyHidden>
                   <input
                     ref={fileInputRef}
+                    accept="image/*"
                     type="file"
                     onChange={handleFileChange}
                   />

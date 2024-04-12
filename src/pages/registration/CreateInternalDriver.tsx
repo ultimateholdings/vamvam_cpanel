@@ -8,7 +8,6 @@ import {
   Input,
   Select,
   VStack,
-  // useBreakpointValue,
 } from "@chakra-ui/react";
 import { LoadingButton, PasswordField } from "../../components/UI";
 import { useTranslation } from "react-i18next";
