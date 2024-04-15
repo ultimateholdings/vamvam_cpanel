@@ -1,4 +1,4 @@
-import { PAGE_LIMIT } from "../../helper";
+import { PAGE_LIMIT, STORAGE_KEY } from "../../helper";
 import { axios } from "../../helper/http";
 import { getAuthToken, handleApiError } from "../../helper/utils";
 import { CreateAdminData, GetUserArgs } from "../../models/admin/admin";
@@ -106,8 +106,9 @@ async function updateBonus({
 
 async function revokeAllUsersToken() {
   try {
-    const response = await axios.post("/admin/revoke-all");
-    console.log(response);
+    await axios.post("/admin/revoke-all");
+    localStorage.removeItem(STORAGE_KEY.token);
+    localStorage.removeItem(STORAGE_KEY.role);
   } catch (error: any) {
     throw handleApiError({
       error,
@@ -150,7 +151,6 @@ async function getAllUsers({ skip, pageToken, role }: GetUserArgs) {
         }
       : {}
   );
-  // await mockApiCall();
   const data = response.data;
   return {
     users: data.results as UserData[],

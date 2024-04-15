@@ -12,7 +12,7 @@ import {
   VisuallyHidden,
   Heading,
 } from "@chakra-ui/react";
-import { getImagePath } from "../helper/utils";
+import { getFilePath } from "../helper/utils";
 import { LoadingButton } from "../components/UI";
 import { useMutation } from "@tanstack/react-query";
 import { deleteAvatar, updateProfile } from "../api/auth/http";
@@ -149,7 +149,7 @@ const ProfilePage = () => {
               src={
                 profileData.pickedFile
                   ? profileData.avatar
-                  : getImagePath(profileData.avatar as string)
+                  : getFilePath(profileData.avatar as string)
               }
               boxSize="90"
             />
@@ -168,6 +168,7 @@ const ProfilePage = () => {
                 <VisuallyHidden>
                   <input
                     ref={fileInputRef}
+                    accept="image/*"
                     type="file"
                     onChange={handleFileChange}
                   />

@@ -1,6 +1,10 @@
 import { PAGE_LIMIT } from "../../helper";
 import { axios } from "../../helper/http";
-import { getAuthToken, handleApiError } from "../../helper/utils";
+import {
+  getAuthToken,
+  handleApiError,
+  parseFormData,
+} from "../../helper/utils";
 import { GetRegistrationArgs } from "../../models/registrations/registration-args";
 import { RegistrationData } from "../../models/registrations/registration-data";
 
@@ -9,12 +13,12 @@ async function getNewRegistrations({
   pageToken,
   skip,
 }: GetRegistrationArgs) {
-  const urlQuery = `?maxPageSize=${PAGE_LIMIT}`.concat(
-    skip ? `&skip=${skip}` : ""
-  );
+  const urlQuery = `?maxPageSize=${PAGE_LIMIT}`
+    .concat(skip ? `&skip=${skip}` : "")
+    .concat(name ? `&name=${name}` : "");
 
   const response = await axios.get(
-    `/driver/registrations${urlQuery}${name ? `&name=${name}` : ""}`,
+    `/driver/registrations${urlQuery}`,
     pageToken
       ? {
           headers: {
@@ -26,7 +30,7 @@ async function getNewRegistrations({
   );
   const data = response.data;
   return {
-    users: data.results as RegistrationData[],
+    registrations: data.results as RegistrationData[],
     refreshed: data.refreshed,
     nextPageToken: data.nextPageToken,
   };
@@ -60,7 +64,7 @@ async function getSettledRegistrations({
   );
   const data = response.data;
   return {
-    users: data.results as RegistrationData[],
+    registrations: data.results as RegistrationData[],
     refreshed: data.refreshed,
     nextPageToken: data.nextPageToken,
   };
@@ -82,7 +86,7 @@ async function handleRegistration(id: string) {
 
 async function rejectRegistration(id: string) {
   try {
-    await axios.post("/driver/reject-registration", { id });
+    await axios.post("/driver/reject-validation", { id });
   } catch (error: any) {
     throw handleApiError({
       error,
@@ -110,7 +114,12 @@ async function validateRegistration(id: string) {
 
 async function createInternalDriver(data: RegistrationData) {
   try {
-    await axios.post("/driver/register", data);
+    const formData = parseFormData(data);
+    await axios.post("/driver/register-intern", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
   } catch (error: any) {
     throw handleApiError({
       error,
@@ -122,9 +131,14 @@ async function createInternalDriver(data: RegistrationData) {
   }
 }
 
-async function createRegistration(data: any) {
+async function createRegistration(data: RegistrationData) {
   try {
-    await axios.post("/driver/register", data);
+    const formData = parseFormData(data);
+    await axios.post("/driver/register", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
   } catch (error: any) {
     throw handleApiError({
       error,
@@ -136,9 +150,14 @@ async function createRegistration(data: any) {
   }
 }
 
-async function updateRegistration(data: RegistrationData) {
+async function updateRegistration(data: Partial<RegistrationData>) {
   try {
-    await axios.post("/driver/update-registration", data);
+    const formData = parseFormData(data);
+    await axios.post("/driver/update-registration", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
   } catch (error: any) {
     throw handleApiError({
       error,

@@ -23,9 +23,10 @@ type Props = {
   title: string;
   description: string;
   successMessage?: string;
+  confirmColor?: string;
 };
 
-const ConfirmationModal: FC<Props> = (props) => {
+const ConfirmationModal: FC<Props> = ({ confirmColor = "red", ...props }) => {
   const { t } = useTranslation();
   const { mutate, isPending } = useMutation({
     mutationFn: props.onAsyncConfirm,
@@ -65,13 +66,13 @@ const ConfirmationModal: FC<Props> = (props) => {
             {t("cancel")}
           </Button>
           {props.onConfirm && (
-            <Button colorScheme="red" onClick={handleConfirm}>
-              {t("cancel")}
+            <Button colorScheme={confirmColor} onClick={handleConfirm}>
+              {t("confirm")}
             </Button>
           )}
           {props.onAsyncConfirm && (
             <LoadingButton
-              colorScheme="red"
+              colorScheme={confirmColor}
               loading={isPending}
               onClick={handleConfirm}
               title={t("confirm")}

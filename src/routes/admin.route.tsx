@@ -7,6 +7,7 @@ import ChangePasswordPage from "../pages/auth/ChangePassword";
 import SettingsPage from "../pages/admin/Settings";
 import { loadSettings } from "../api/admin/loader";
 import { Home, Deliveries } from "../pages/admin";
+import DisconnectAllPage from "../pages/admin/DisconnectAll";
 
 const adminRoute: RouteObject = {
   path: "admin",
@@ -32,6 +33,10 @@ const adminRoute: RouteObject = {
       path: "settings",
       element: <SettingsPage />,
       loader: loadSettings,
+    },
+    {
+      path: "disconnect-all",
+      element: <DisconnectAllPage />,
     },
     {
       path: "change-password",

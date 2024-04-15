@@ -174,8 +174,6 @@ export async function deleteAvatar() {
 export async function logout() {
   try {
     await axios.post("/user/logout");
-    localStorage.removeItem(STORAGE_KEY.token);
-    localStorage.removeItem(STORAGE_KEY.role);
   } catch (error) {
     throw handleApiError({
       error,
@@ -184,5 +182,8 @@ export async function logout() {
         fr: "Echec du logout",
       },
     });
+  } finally {
+    localStorage.removeItem(STORAGE_KEY.token);
+    localStorage.removeItem(STORAGE_KEY.role);
   }
 }

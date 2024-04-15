@@ -6,7 +6,7 @@ import {
   NewRegistrationsList,
   CreateInternalDriverPage,
   SettledRegistrationsList,
-  UpdateRegistrationPage,
+  RegistrationDetails,
 } from "../pages/registration";
 
 const registrationRoute: RouteObject = {
@@ -19,19 +19,33 @@ const registrationRoute: RouteObject = {
     },
     {
       path: "new-registrations",
-      element: <NewRegistrationsList />,
+      children: [
+        {
+          index: true,
+          element: <NewRegistrationsList />,
+        },
+        {
+          path: ":id",
+          element: <RegistrationDetails />,
+        },
+      ],
     },
     {
       path: "settled-registrations",
-      element: <SettledRegistrationsList />,
+      children: [
+        {
+          index: true,
+          element: <SettledRegistrationsList />,
+        },
+        {
+          path: ":id",
+          element: <RegistrationDetails />,
+        },
+      ],
     },
     {
       path: "create-internal-driver",
       element: <CreateInternalDriverPage />,
-    },
-    {
-      path: "update-registrations/:id",
-      element: <UpdateRegistrationPage />,
     },
     {
       path: "profile",
