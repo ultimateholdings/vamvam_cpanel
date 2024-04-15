@@ -22,4 +22,22 @@ enum DELIVERY_STATUS {
   "pending-client-approval" = "pending confirmation",
 }
 
-export { DELIVERY_STATUS, USER_ROLE, STORAGE_KEY };
+enum DELIVERY_SCHEME {
+    "archived" = "default",
+    "conflicting" = "red",
+    "cancelled" = "teal",
+    "pending-driver-approval" = "linkedin",
+    "pending-driver-reception" = "facebook",
+    "pending-client-approval" = "twitter",
+    "started" = "telegram",
+    "terminated" = "green",
+}
+enum RequestResult {
+    error = "error in request",
+    pending = "pending request",
+    resolved = "request resolved",
+    initial = "not requested"
+}
+export { DELIVERY_SCHEME, DELIVERY_STATUS, USER_ROLE, STORAGE_KEY, RequestResult };
+
+

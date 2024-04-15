@@ -18,14 +18,18 @@ interface recipientData {
 }
 
 export interface DeliveryData {
+    begin: Date;
     client: UserDesc;
+    createdAt: Date
     departure: LocationData;
     destination: LocationData;
+    end: Date;
     id: string;
+    note: number;
     packageType: string;
     price: number;
     recientInfos: recipientData;
-    status: DELIVERY_STATUS;
+    status: string;
 }
 
 export interface PaginatedResponse<T> {
@@ -41,20 +45,14 @@ interface PaginationHeader {
 
 export enum RequestResult {
     error = "error in request",
-    pending = "pending request",
-    resolved = "request resolved",
-    initial = "not requested"
+        pending = "pending request",
+        resolved = "request resolved",
+        initial = "not requested"
 }
-export interface RequestState {
+export interface RequestState<T, E extends Error> {
     result: RequestResult;
-}
-export interface RequestSuccess<T> extends RequestState {
-    result: RequestResult.resolved;
-    data: T;
-}
-export interface RequestError<T extends Error> extends RequestState {
-    result: RequestResult.error;
-    data: T;
+    data?: T;
+    error?: E;
 }
 export interface DeliveryFilter extends PaginationHeader {
     from: Date;
