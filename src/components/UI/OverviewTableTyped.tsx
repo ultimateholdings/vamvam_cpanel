@@ -20,6 +20,7 @@ type Props = {
   currentPage: number;
   items: any[];
   title: string;
+  pageSize?: number;
 };
 
 const OverviewTableTyped: FC<Props> = (props) => {
@@ -27,6 +28,7 @@ const OverviewTableTyped: FC<Props> = (props) => {
   const isMobile = useBreakpointValue({ base: true, md: false });
   const currentPage = props.currentPage;
   const totalItemLength = props.items.length;
+  const pageSize = props.pageSize ?? PAGE_LIMIT;
   return (
     <Box
       bg="bg.surface"
@@ -45,7 +47,7 @@ const OverviewTableTyped: FC<Props> = (props) => {
             {props.headerTrailer}
           </Stack>
         </Box>
-        <Box overflowX="auto">{props.children}</Box>
+        <Box overflowX="auto" minH={"60lvb"} maxH={"80lvb"}>{props.children}</Box>
         <Box px={{ base: "4", md: "6" }} pb="5">
           <HStack spacing="3" justify="space-between">
             {!isMobile && totalItemLength > 0 && (
@@ -54,10 +56,10 @@ const OverviewTableTyped: FC<Props> = (props) => {
                 {currentPage <= 1
                   ? currentPage
                   : Math.min(
-                      (currentPage - 1) * PAGE_LIMIT,
+                      (currentPage - 1) * pageSize,
                       totalItemLength
                     )}{" "}
-                {t("to")} {Math.min(currentPage * PAGE_LIMIT, totalItemLength)}{" "}
+                {t("to")} {Math.min(currentPage * pageSize, totalItemLength)}{" "}
                 {t("of")} {totalItemLength} {t("result")}
                 {totalItemLength > 1 ? "s" : ""}
               </Text>

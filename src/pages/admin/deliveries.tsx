@@ -22,11 +22,11 @@ import {
     useDisclosure
 } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
-import { OverviewTable, Sprite } from "../../components/UI";
+import { OverviewTableTyped, Sprite } from "../../components/UI";
 import { AppDispatch, RootState } from "../../store";
-import { fetchDeliveries } from "../../store/deliveries/listing.ts";
-import { RequestResult, DELIVERY_STATUS, DELIVERY_SCHEME } from "../../helper/enums.ts";
-import { useEffect, useState } from "react";
+import { fetchDeliveries, listingActions } from "../../store/deliveries/listing.ts";
+import { DELIVERY_STATUS, DELIVERY_SCHEME } from "../../helper/enums.ts";
+import { useEffect, useState, useCallback } from "react";
 import { DeliveryData } from "../../models/delivery.ts";
 import { getFormatter } from "../../helper/utils.ts";
 
@@ -192,23 +192,56 @@ function Deliveries() {
     const dispatch = useDispatch<AppDispatch>();
     const state = useSelector((rootState: RootState) => rootState.deliveries);
     const headers = ["client", "status", "departure", "destination", ""];
+    const shownDeliveries = state.deliveries.slice(
+        state.pageSize * (state.currentPage - 1),
+        state.pageSize * state.currentPage
+    );
+    const fetchDeliveryList = useCallback(() => {
+        dispatch(fetchDeliveries({}));
+    }, [dispatch]);
 
-    useEffect(() => requestDeliveries(), []);
+    const clearState = useCallback(() => {
+        dispatch(listingActions.emptyState());
+    }, [dispatch]);
 
-    function requestDeliveries() {
-        dispatch(fetchDeliveries());
+    useEffect(() => {
+        fetchDeliveryList();
+        return () => {
+            clearState();
+        };
+    }, [clearState, fetchDeliveryList]);
+
+    function handleNextPage() {
+        if (state.status === "loading") {
+            return;
+        }
+        if (state.deliveries.length === state.pageSize * state.currentPage) {
+        } else {
+            dispatch(listingActions.changePage(state.currentPage + 1));
+        }
+    }
+
+    function previousPage() {
+        dispatch(listingActions.changePage(state.currentPage - 1));
     }
 
     return (
         <Stack>
             {
-                state.result === RequestResult.resolved
+                ["resolved", "complete"].includes(state.status)
                     ? (
-                        (state.data?.results ?? []).length > 0
+                        state.deliveries.length > 0
                             ?
-                            <OverviewTable title="delivery list">
-                                <MemberTable colNames={headers} dataSource={state.data?.results ?? []} />
-                            </OverviewTable>
+                            <OverviewTableTyped
+                                title="delivery list"
+                                onNext={state.status !== "complete" ? handleNextPage: undefined}
+                                onPrevious={state.currentPage > 1 ? previousPage: undefined}
+                                items={state.deliveries.length}
+                                currentPage={state.currentPage}
+                                pageSize={1}
+                            >
+                                <MemberTable colNames={headers} dataSource={shownDeliveries} />
+                            </OverviewTableTyped>
                             : <div className="empty">
                                 <Sprite size={196} name="empty" title="illustration of an empty box" />
                                 <Heading as={"h3"} size={"md"}>no delivery available</Heading>

@@ -99,6 +99,16 @@ export function parseFormData(data: any) {
   return formData;
 }
 
+export function debouncer(fn: any, delayInSecond: number) {
+    let timeId: any;
+    return function (obj: any) {
+        if (timeId) {
+            clearTimeout(timeId);
+        }
+        timeId = setTimeout(() => fn(obj), delayInSecond * 1000);
+    };
+};
+
 export function getFormatter() {
     let dateFormatter = new Intl.DateTimeFormat(
         navigator.language,

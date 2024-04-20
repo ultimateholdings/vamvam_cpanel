@@ -2,10 +2,11 @@ import {
     Box,
     Button,
     Stack,
-    Heading
+    Heading,
+    ButtonGroup
 } from '@chakra-ui/react'
 import sprite from "../../images/icons.svg";
-import { DELIVERY_STATUS } from "../../helper/enums.ts";
+import { DELIVERY_STATUS, debouncer } from "../../helper";
 import { FormEvent } from "react";
 
 const filterOptions = Object.entries(DELIVERY_STATUS).reduce(
@@ -41,13 +42,14 @@ export function Option(props: any) {
 }
 
 export const OverviewTable = (props: any) => {
+    const debounce = debouncer(props.onFiltered, 1);
     function handleChange(event: FormEvent) {
         let form = event.currentTarget as HTMLFormElement;
 
         const elements = Array.from(form.elements).filter(
             (el) => (el as HTMLInputElement).checked === true
         ).map((el: any) => el?.name);
-        console.log(elements.join(","));
+        debounce(elements.join(","));
     }
     return (
         <Box
@@ -81,10 +83,11 @@ export const OverviewTable = (props: any) => {
                 <Box overflowX="auto" minH={"60lvb"} maxH={"80lvb"}>
                     {props.children}
                 </Box>
-                <div className="segragator box table-actions">
-                    <Button colorScheme='default' variant={"ghost"}>Previous</Button>
-                    <Button variant={"ghost"}>Next</Button>
-                </div>
+                <ButtonGroup className="segragator box table-actions" variant={"ghost"}>
+                    <Button colorScheme='default' onClick={props.onPrev}>Previous</Button>
+
+                    <Button onClick={props.onNext}>Next</Button>
+                </ButtonGroup>
             </Stack>
         </Box>
     );
