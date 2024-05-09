@@ -1,7 +1,7 @@
 import { PAGE_LIMIT, STORAGE_KEY } from "../../helper";
 import { axios } from "../../helper/http";
 import { getAuthToken, handleApiError } from "../../helper/utils";
-import { CreateAdminData, GetUserArgs } from "../../models/admin/admin";
+import { CreateAdminData, BundleData, GetBundlesArgs, GetUserArgs } from "../../models/admin/admin";
 import {
   DeliverySettingsData,
   DeliverySettingsValue,
@@ -159,6 +159,73 @@ async function getAllUsers({ skip, pageToken, role }: GetUserArgs) {
   };
 }
 
+async function getAllBundles({ skip, pageToken }: GetBundlesArgs) {
+  const urlQuery = `?maxPageSize=${PAGE_LIMIT}`
+    .concat(skip ? `&skip=${skip}` : "");
+
+  const response = await axios.get(
+    `/bundle/${urlQuery}`,
+    pageToken
+      ? {
+          headers: {
+            "page-token": pageToken,
+            Authorization: `Bearer ${getAuthToken()}`,
+          },
+        }
+      : {}
+  );
+  const data = response.data;
+  return {
+    bundles: data.data as BundleData[],
+    refreshed: data.refreshed,
+    nextPageToken: data.nextPageToken,
+  };
+}
+
+async function createBundle(data: BundleData) {
+  try {
+    const response = await axios.post("/bundle/new-bundle", data);
+    console.log(response);
+  } catch (error: any) {
+    throw handleApiError({
+      error,
+      defaultMessage: {
+        en: "Failed to create bundle",
+        fr: "Échec de création du pack",
+      },
+    });
+  }
+}
+
+async function editBundle(data: BundleData) {
+  try {
+    const response = await axios.post("/bundle/update", data);
+    console.log(response);
+  } catch (error: any) {
+    throw handleApiError({
+      error,
+      defaultMessage: {
+        en: "Failed to create bundle",
+        fr: "Échec de création du pack",
+      },
+    });
+  }
+}
+
+async function deleteBundle(id:string) {
+  try {
+    await axios.post("/bundle/delete",{id:id});
+  } catch (error) {
+    throw handleApiError({
+      error,
+      defaultMessage: {
+        en: "Failed to delete bundle",
+        fr: "Echec de la suppression du pack",
+      },
+    });
+  }
+}
+
 export {
   updateSettingsData,
   getSettingsData,
@@ -168,4 +235,8 @@ export {
   revokeAllUsersToken,
   createAdmin,
   getAllUsers,
+  getAllBundles,
+  createBundle,
+  editBundle,
+  deleteBundle
 };

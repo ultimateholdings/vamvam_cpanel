@@ -13,4 +13,16 @@ interface GetUserArgs {
   skip?: number;
 }
 
-export type { CreateAdminData, GetUserArgs };
+interface GetBundlesArgs {
+  pageToken?: string;
+  skip?: number;
+}
+
+interface BundleData {
+  id: string;
+  bonus: string;
+  point: string;
+  unitPrice: string;
+}
+
+export type { CreateAdminData, GetUserArgs, GetBundlesArgs, BundleData };

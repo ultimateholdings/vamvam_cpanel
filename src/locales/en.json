@@ -76,7 +76,8 @@
     "settled": "Settled",
     "profile": "Profile",
     "users": "Users",
-    "create_internal_driver": "Create Internal Driver"
+    "create_internal_driver": "Create Internal Driver",
+    "bundles": "Bundles"
   },
   "users": {
     "name": "Name",
@@ -142,5 +143,20 @@
     "new_registrations": "New registrations",
     "settled_registrations": "Settled registrations",
     "handle": "Take charge"
+  },
+  "bundle":{
+    "create_bundle":"Create a bundle",
+    "edit_bundle":"Update a bundle",
+    "bonus":"Bonus",
+    "point":"Point",
+    "unitPrice":"Unit price",
+    "price":"Price",
+    "gainMin":"Minimum gain",
+    "save":"Save",
+    "create_bundle_success": "Bundle created successfully",
+    "edit_bundle_success": "Bundle  updated successfully",
+    "delete_bundle": "Delete bundle",
+    "delete_bundle_warning": "Are you sure you want to delete this bundle?",
+    "bundle_delete_success": "Bundle deleted successfully"
   }
 }

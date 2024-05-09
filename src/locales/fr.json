@@ -76,7 +76,8 @@
     "settled": "Règlés",
     "profile": "Profil",
     "users": "Utilisateurs",
-    "create_internal_driver": "Créer un livreur interne"
+    "create_internal_driver": "Créer un livreur interne",
+    "bundles": "Packages"
   },
   "users": {
     "name": "Nom",
@@ -148,5 +149,21 @@
     "rejected": "Rejetées",
     "validated": "Validées",
     "search_by_name": "Rechercher par nom"
+  },
+  "bundle":{
+    "create_bundle":"Créer un Pack",
+    "edit_bundle":"Editer un Pack",
+    "bonus":"Bonus",
+    "point":"Point",
+    "unitPrice":"Prix unitaire",
+    "price":"Prix",
+    "gainMin":"Gain minimum",
+    "save":"Enregistrer",
+    "delete":"Supprimer",
+    "create_bundle_success": "Pack créé avec succès",
+    "edit_bundle_success": "Pack édité avec succès",
+    "delete_bundle": "Supprimer le pack",
+    "delete_bundle_warning": "Êtes-vous sûr de vouloir supprimer ce pack?",
+    "bundle_delete_success": "Pack supprimé avec succès"
   }
 }

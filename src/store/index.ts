@@ -3,6 +3,7 @@ import profileReducer from "./profile/profile-slice";
 import uiReducer from "./ui/ui-slice";
 import listingSlice from "./deliveries/listing";
 import userReducer from "./users/user-slice";
+import bundleReducer from "./bundles/bundle-slice";
 import newRegistrationReducer from "./registration/new/slice";
 import settledRegistrationReducer from "./registration/settled/slice";
 
@@ -12,6 +13,7 @@ const store = configureStore({
     profile: profileReducer,
     ui: uiReducer,
     users: userReducer,
+    bundles: bundleReducer,
     newRegistrations: newRegistrationReducer,
     settledRegistrations: settledRegistrationReducer,
   },

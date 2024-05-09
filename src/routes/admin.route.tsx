@@ -8,6 +8,8 @@ import SettingsPage from "../pages/admin/Settings";
 import { loadSettings } from "../api/admin/loader";
 import { Home, Deliveries } from "../pages/admin";
 import DisconnectAllPage from "../pages/admin/DisconnectAll";
+import BundlesPage from "../pages/admin/bundles/BundlesList";
+import CreateBundlePage from "../pages/admin/bundles/CreateBundle";
 
 const adminRoute: RouteObject = {
   path: "admin",
@@ -55,6 +57,18 @@ const adminRoute: RouteObject = {
     {
       path: "subscriptions",
     },
+    {
+      path: "bundles",
+      element: <BundlesPage />,
+    },
+    {
+      path: "create-bundle",
+      element: <CreateBundlePage />,
+    },
+    {
+      path: "edit-bundle",
+      element: <CreateBundlePage />,
+    }
   ],
 };
 

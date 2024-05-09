@@ -110,6 +110,20 @@ const Sidebar = () => {
             ],
           },
           {
+            name: t("sidebar.bundles"),
+            icon: <IoPersonOutline />,
+            children: [
+              {
+                name: t("sidebar.list"),
+                link: "bundles",
+              },
+              {
+                name: t("sidebar.create"),
+                link: "create-bundle",
+              },
+            ],
+          },
+          {
             name: t("settings.title"),
             icon: <IoSettingsOutline />,
             children: [
