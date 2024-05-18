@@ -3,9 +3,11 @@ import profileReducer from "./profile/profile-slice";
 import uiReducer from "./ui/ui-slice";
 import listingSlice from "./deliveries/listing";
 import userReducer from "./users/user-slice";
-import bundleReducer from "./bundles/bundle-slice";
 import newRegistrationReducer from "./registration/new/slice";
 import settledRegistrationReducer from "./registration/settled/slice";
+import bundleReducer from "./bundles/bundle-slice";
+import sponsorReducer from "./sponsors/sponsor-slice";
+import usersSponsorReducer from "./sponsors/users-sponsored/user-sponsored-slice";
 
 const store = configureStore({
   reducer: {
@@ -14,6 +16,8 @@ const store = configureStore({
     ui: uiReducer,
     users: userReducer,
     bundles: bundleReducer,
+    sponsors: sponsorReducer,
+    userSponsored: usersSponsorReducer,
     newRegistrations: newRegistrationReducer,
     settledRegistrations: settledRegistrationReducer,
   },

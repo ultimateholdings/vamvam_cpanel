@@ -77,7 +77,8 @@
     "profile": "Profil",
     "users": "Utilisateurs",
     "create_internal_driver": "Créer un livreur interne",
-    "bundles": "Packages"
+    "bundles": "Packages",
+    "sponsors": "Sponsors"
   },
   "users": {
     "name": "Nom",
@@ -164,6 +165,28 @@
     "edit_bundle_success": "Pack édité avec succès",
     "delete_bundle": "Supprimer le pack",
     "delete_bundle_warning": "Êtes-vous sûr de vouloir supprimer ce pack?",
-    "bundle_delete_success": "Pack supprimé avec succès"
+    "bundle_delete_success": "Pack supprimé avec succès",
+    "bundles.bundles_list": "Liste des Packs"
+  },
+  "sponsor":{
+    "create_sponsor":"Créer un Sponsor",
+    "edit_sponsor":"Editer un Sponsor",
+    "save":"Enregistrer",
+    "delete":"Supprimer",
+    "create_sponsor_success": "Sponsor créé avec succès",
+    "edit_sponsor_success": "Sponsor édité avec succès",
+    "delete_sponsor": "Supprimer le pack",
+    "delete_sponsor_warning": "Êtes-vous sûr de vouloir supprimer ce pack?",
+    "sponsor_delete_success": "Sponsor supprimé avec succès",
+    "sponsors.sponsors_list": "Liste des Sponsors",
+    "code":"Code",
+    "name":"Nom",
+    "phone":"Numéro de téléphone",
+    "sponsored":"Sponsorisé",
+    "yes":"Oui",
+    "no":"Non",
+    "lastName":"Nom",
+    "firstName":"Prénom",
+    "users_sponsored_list":"Liste des utilisateurs parrainés"
   }
 }

@@ -9,6 +9,7 @@ import {
   IoPersonOutline,
   IoSettingsOutline,
   IoDocumentTextOutline,
+  IoPeopleOutline,
 } from "react-icons/io5";
 import { CgProfile } from "react-icons/cg";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
@@ -16,6 +17,7 @@ import SidebarOpener from "./SidebarOpener";
 import { getUserRole } from "../../../helper/utils";
 import { USER_ROLE } from "../../../helper";
 import { useTranslation } from "react-i18next";
+import { PiPackageThin } from "react-icons/pi";
 
 const Sidebar = () => {
   const location = useLocation();
@@ -111,7 +113,7 @@ const Sidebar = () => {
           },
           {
             name: t("sidebar.bundles"),
-            icon: <IoPersonOutline />,
+            icon: <PiPackageThin   />,
             children: [
               {
                 name: t("sidebar.list"),
@@ -120,6 +122,20 @@ const Sidebar = () => {
               {
                 name: t("sidebar.create"),
                 link: "create-bundle",
+              },
+            ],
+          },
+          {
+            name: t("sidebar.sponsors"),
+            icon: <IoPeopleOutline    />,
+            children: [
+              {
+                name: t("sidebar.list"),
+                link: "sponsors",
+              },
+              {
+                name: t("sidebar.create"),
+                link: "create-sponsor",
               },
             ],
           },

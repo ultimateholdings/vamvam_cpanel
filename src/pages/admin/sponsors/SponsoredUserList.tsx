@@ -1,8 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../store";
 import { useCallback, useEffect } from "react";
-import { fetchBundlesList } from "../../../store/bundles/bundles-actions";
-import { bundleActions } from "../../../store/bundles/bundle-slice";
 import { PAGE_LIMIT } from "../../../helper";
 import {
   Table,
@@ -13,77 +11,82 @@ import {
   Th,
   Tr,
   HStack,
+  // Badge,
 } from "@chakra-ui/react";
 import { CircularLoader, OverviewTableTyped } from "../../../components/UI";
-import BundleData from "../../../models/bundles/bundle-data";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { fetchUsersSponsoredList } from "../../../store/sponsors/users-sponsored/user-sponsored-actions";
+import UserData from "../../../models/auth/user-data";
+import { usersponsoredActions } from "../../../store/sponsors/users-sponsored/user-sponsored-slice";
 
-const BundlesPage = () => {
+const SponsoredUsersPage = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
+  const params= useParams()
+  
   const {
     initialReqSent,
-    bundles: totalBundles,
+    usersSponsored: totalUsers,
     loading,
     pageToken,
     refreshed,
     currentPage,
-  } = useSelector((state: RootState) => state.bundles);
+  } = useSelector((state: RootState) => state.userSponsored);
   const { linearLoaderVisible } = useSelector((state: RootState) => state.ui);
-  const displayedBundles = totalBundles.slice(
+  const displayedUsers = totalUsers.slice(
     PAGE_LIMIT * (currentPage - 1),
     PAGE_LIMIT * currentPage
   );
 
-  const fetchBundles = useCallback(() => {
-    dispatch(fetchBundlesList({}));
-  }, [dispatch]);
+  const fetchUsers = useCallback(() => {
+    dispatch(fetchUsersSponsoredList({id:params?.id}));
+  }, [dispatch,params?.id]);
 
   const clearState = useCallback(() => {
-    dispatch(bundleActions.emptyState());
+    dispatch(usersponsoredActions.emptyState());
   }, [dispatch]);
 
   useEffect(() => {
-    fetchBundles();
+    fetchUsers();
     return () => {
       clearState();
     };
-  }, [clearState, fetchBundles]);
+  }, [clearState, fetchUsers]);
 
   const navigate = useNavigate();
 
   function handleNextPage() {
     if (linearLoaderVisible) return;
-    if (totalBundles.length == PAGE_LIMIT * currentPage) {
+    if (totalUsers.length == PAGE_LIMIT * currentPage) {
       dispatch(
-        fetchBundlesList({
+        fetchUsersSponsoredList({
           pageToken: pageToken,
-          skip: refreshed ? totalBundles.length : undefined,
+          skip: refreshed ? totalUsers.length : undefined,
+          id:params?.id
         })
       );
     } else {
-      dispatch(bundleActions.changeCurrentPage(currentPage + 1));
+      dispatch(usersponsoredActions.changeCurrentPage(currentPage + 1));
     }
   }
 
   function handlePreviousPage() {
     if (linearLoaderVisible) return;
-    dispatch(bundleActions.changeCurrentPage(currentPage - 1));
+    dispatch(usersponsoredActions.changeCurrentPage(currentPage - 1));
   }
 
-  function handleViewDetails(bundle: BundleData) {
-    navigate('/admin/edit-bundle',{state:bundle})
+  function handleViewDetails(user: UserData) {
+    return
+    navigate('/admin/edit-user',{state:user})
   }
 
-  const showNext = displayedBundles.length === PAGE_LIMIT;
+  const showNext = displayedUsers.length === PAGE_LIMIT;
   const showPrevious = currentPage > 1;
   const tableColumns = [
-    t("bundle.bonus"),
-    t("bundle.gainMin"),
-    t("bundle.point"),
-    t("bundle.price"),
-    t("bundle.unitPrice"),
+    t("sponsor.firstName"),
+    t("sponsor.lastName"),
+    t("sponsor.phone"),
   ];
 
   return loading && !initialReqSent ? (
@@ -94,8 +97,8 @@ const BundlesPage = () => {
         currentPage={currentPage}
         onNext={showNext ? handleNextPage : undefined}
         onPrevious={showPrevious ? handlePreviousPage : undefined}
-        items={totalBundles}
-        title={t("bundle.bundles_list")}
+        items={totalUsers}
+        title={t("sponsor.users_sponsored_list")}
       >
         <Table>
           <Thead>
@@ -106,7 +109,7 @@ const BundlesPage = () => {
             </Tr>
           </Thead>
           <Tbody>
-            {displayedBundles.map((member) => (
+            {displayedUsers.map((member) => (
               <Tr
                 key={member.id}
                 _hover={{ cursor: "pointer" }}
@@ -114,20 +117,14 @@ const BundlesPage = () => {
               >
                 <Td>
                   <HStack spacing="3">
-                    <Text fontWeight="medium">{member.bonus}</Text>
+                    <Text fontWeight="medium">{member?.firstName}</Text>
                   </HStack>
                 </Td>
                 <Td>
-                  <Text color="fg.muted">{member.gainMin}</Text>
+                  <Text color="fg.muted">{member?.lastName}</Text>
                 </Td>
                 <Td>
-                  <Text color="fg.muted">{member.point}</Text>
-                </Td>
-                <Td>
-                  <Text color="fg.muted">{member.price}</Text>
-                </Td>
-                <Td>
-                  <Text color="fg.muted">{member.unitPrice}</Text>
+                  <Text color="fg.muted">{member?.phone}</Text>
                 </Td>
               </Tr>
             ))}
@@ -138,4 +135,4 @@ const BundlesPage = () => {
   );
 };
 
-export default BundlesPage;
+export default SponsoredUsersPage;

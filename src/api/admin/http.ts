@@ -1,7 +1,7 @@
 import { PAGE_LIMIT, STORAGE_KEY } from "../../helper";
 import { axios } from "../../helper/http";
 import { getAuthToken, handleApiError } from "../../helper/utils";
-import { CreateAdminData, BundleData, GetBundlesArgs, GetUserArgs } from "../../models/admin/admin";
+import { CreateAdminData, BundleData, GetBundlesArgs, GetUserArgs, GetSponsorsArgs } from "../../models/admin/admin";
 import {
   DeliverySettingsData,
   DeliverySettingsValue,
@@ -9,6 +9,8 @@ import {
   OTPSettingsValue,
 } from "../../models/admin/settings";
 import UserData from "../../models/auth/user-data";
+import Sponsor from "../../models/sponsors/sponsor";
+import SponsorData from "../../models/sponsors/sponsor-data";
 
 async function updateSettingsData(
   data: OTPSettingsValue | DeliverySettingsValue
@@ -226,6 +228,94 @@ async function deleteBundle(id:string) {
   }
 }
 
+async function getAllSponsors({ skip, pageToken }: GetSponsorsArgs) {
+  const urlQuery = `?maxPageSize=${PAGE_LIMIT}`
+    .concat(skip ? `&skip=${skip}` : "");
+  const response = await axios.get(
+    `/sponsor/ranking/${urlQuery}`,
+    pageToken
+      ? {
+          headers: {
+            "page-token": pageToken,
+            Authorization: `Bearer ${getAuthToken()}`,
+          },
+        }
+      : {}
+  );
+  const data = response.data;
+  return {
+    sponsors: data.results as SponsorData[],
+    refreshed: data.refreshed,
+    nextPageToken: data.nextPageToken,
+  };
+}
+
+async function createSponsor(data: Sponsor) {
+  try {
+    const response = await axios.post("/sponsor/create", data);
+    console.log(response);
+  } catch (error: any) {
+    throw handleApiError({
+      error,
+      defaultMessage: {
+        en: "Failed to create sponsor",
+        fr: "Échec de création du pack",
+      },
+    });
+  }
+}
+
+async function editSponsor(data: Sponsor) {
+  try {
+    const response = await axios.post("/sponsor/update", data);
+    console.log(response);
+  } catch (error: any) {
+    throw handleApiError({
+      error,
+      defaultMessage: {
+        en: "Failed to create sponsor",
+        fr: "Échec de création du pack",
+      },
+    });
+  }
+}
+
+async function deleteSponsor(id:string) {
+  try {
+    await axios.post("/sponsor/delete",{id:id});
+  } catch (error) {
+    throw handleApiError({
+      error,
+      defaultMessage: {
+        en: "Failed to delete sponsor",
+        fr: "Echec de la suppression du pack",
+      },
+    });
+  }
+}
+
+async function getAllUserSponsored({ id, skip, pageToken }: GetSponsorsArgs) {
+  const urlQuery = `?maxPageSize=${PAGE_LIMIT}&id=${id}`
+    .concat(skip ? `&skip=${skip}`  : "");
+  const response = await axios.get(
+    `/sponsor/enrolled/${urlQuery}`,
+    pageToken
+      ? {
+          headers: {
+            "page-token": pageToken,
+            Authorization: `Bearer ${getAuthToken()}`,
+          },
+        }
+      : {}
+  );
+  const data = response.data;
+  return {
+    usersSponsored: data.results as UserData[],
+    refreshed: data.refreshed,
+    nextPageToken: data.nextPageToken,
+  };
+}
+
 export {
   updateSettingsData,
   getSettingsData,
@@ -238,5 +328,10 @@ export {
   getAllBundles,
   createBundle,
   editBundle,
-  deleteBundle
+  deleteBundle,
+  getAllSponsors,
+  createSponsor,
+  editSponsor,
+  deleteSponsor,
+  getAllUserSponsored
 };

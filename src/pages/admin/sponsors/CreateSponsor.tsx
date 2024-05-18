@@ -5,22 +5,18 @@ import {
   FormControl,
   FormLabel,
   Heading,
-  NumberDecrementStepper,
-  NumberIncrementStepper,
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
+  Input,
   VStack,
 } from "@chakra-ui/react";
 import { LoadingButton } from "../../../components/UI";
 import { useTranslation } from "react-i18next";
 import { useMutation } from "@tanstack/react-query";
 import toast from "react-hot-toast";
-import { createBundle, deleteBundle, editBundle } from "../../../api/admin/http";
+import { createSponsor, deleteSponsor, editSponsor } from "../../../api/admin/http";
 import { useLocation, useNavigate } from "react-router-dom";
 import ConfirmationModal from "../../../components/UI/ConfirmationModal";
 
-function CreateBundlePage() {
+function CreateSponsorPage() {
   const { t } = useTranslation();
   const location = useLocation();
 
@@ -29,9 +25,9 @@ function CreateBundlePage() {
   const navigate = useNavigate();
 
   const { mutate, isPending } = useMutation({
-    mutationFn: location.state == null ? createBundle : editBundle,
+    mutationFn: location.state == null ? createSponsor : editSponsor,
     onSuccess: async () => {
-      toast.success(location.state == null ? t("bundle.create_bundle_success") : t("bundle.edit_bundle_success"));
+      toast.success(location.state == null ? t("sponsor.create_sponsor_success") : t("sponsor.edit_sponsor_success"));
     },
     onError: (error) => {
       toast.error(error.message);
@@ -45,9 +41,9 @@ function CreateBundlePage() {
       const data = form.elements as any;
       mutate({
         id: location.state?.id ?? null,
-        bonus: data.bonus.value,
-        point: data.point.value,
-        unitPrice: data.unitPrice.value,
+        code: data.code.value,
+        name: data.name.value,
+        phone: data.phone.value,
       });
     } else {
       form.reportValidity();
@@ -62,58 +58,41 @@ function CreateBundlePage() {
     setIsOpen(false);
   }
 
-  function onDeleteBundleSuccess() {
+  function onDeleteSponsorSuccess() {
     handleClose();
-    navigate('/admin/bundles');
+    navigate('/admin/sponsors');
   }
 
   return (
     <Box p={2} maxWidth="500px" margin="auto">
       <Heading size="xl" mb={4} textAlign="left">
-        {location.state == null ? t("bundle.create_bundle") : t("bundle.edit_bundle")}
+        {location.state == null ? t("sponsor.create_sponsor") : t("sponsor.edit_sponsor")}
       </Heading>
       <ConfirmationModal
           isOpen={isOpen}
           onClose={handleClose}
-          onSuccess={onDeleteBundleSuccess}
-          title={t("bundle.delete_bundle")}
-          description={t("bundle.delete_bundle_warning")}
-          successMessage={t("bundle.bundle_delete_success")}
-          onAsyncConfirm={()=>deleteBundle(location.state?.id)}
+          onSuccess={onDeleteSponsorSuccess}
+          title={t("sponsor.delete_sponsor")}
+          description={t("sponsor.delete_sponsor_warning")}
+          successMessage={t("sponsor.sponsor_delete_success")}
+          onAsyncConfirm={()=>deleteSponsor(location.state?.id)}
         />
       <form onSubmit={handleSubmit}>
         <VStack spacing={4}>
           <FormControl isRequired>
-            <FormLabel> {t("bundle.bonus")}</FormLabel>
-            <NumberInput name="bonus" defaultValue={location.state?.bonus}>
-              <NumberInputField defaultValue={location.state?.bonus}/>
-              <NumberInputStepper>
-                <NumberIncrementStepper />
-                <NumberDecrementStepper />
-              </NumberInputStepper>
-            </NumberInput>
+            <FormLabel>Code</FormLabel>
+            <Input type="text" name="code"  defaultValue={location.state?.sponsor?.code} />
           </FormControl>
           <FormControl isRequired>
-            <FormLabel> {t("bundle.point")}</FormLabel>
-            <NumberInput name="point" defaultValue={location.state?.point}>
-              <NumberInputField defaultValue={location.state?.point}/>
-              <NumberInputStepper>
-                <NumberIncrementStepper />
-                <NumberDecrementStepper />
-              </NumberInputStepper>
-            </NumberInput>
+            <FormLabel> {t("sponsor.name")}</FormLabel>
+            <Input type="text" name="name" defaultValue={location.state?.sponsor?.name} />
           </FormControl>
           <FormControl isRequired>
-            <FormLabel> {t("bundle.unitPrice")}</FormLabel>
-            <NumberInput name="unitPrice" defaultValue={location.state?.unitPrice}>
-              <NumberInputField defaultValue={location.state?.unitPrice}/>
-              <NumberInputStepper>
-                <NumberIncrementStepper />
-                <NumberDecrementStepper />
-              </NumberInputStepper>
-            </NumberInput>
+            <FormLabel> {t("sponsor.phone")}</FormLabel>
+            <Input type="tel" name="phone" defaultValue={location.state?.sponsor?.phone} />
           </FormControl>
-          <div className="fullWidth">
+          {location.state == null  && 
+            <div className="fullWidth">
             <Flex minWidth='max-content' justifyContent="center" gap={6}>
                 <LoadingButton
                   type="submit"
@@ -121,7 +100,7 @@ function CreateBundlePage() {
                   w={location.state == null ? "100%" : ""}
                   colorScheme="blue"
                   loading={isPending}
-                  title={t("bundle.save")}
+                  title={t("sponsor.save")}
                 />
                 {
                   location.state != null ? 
@@ -129,7 +108,7 @@ function CreateBundlePage() {
                   mt="4"
                   colorScheme="red"
                   loading={isPending}
-                  title={t("bundle.delete")}
+                  title={t("sponsor.delete")}
                   onClick={handleOpen}
                 />
                 : <></>
@@ -137,10 +116,12 @@ function CreateBundlePage() {
               
             </Flex>
           </div>
+          }
+          
         </VStack>
       </form>
     </Box>
   );
 }
 
-export default CreateBundlePage;
+export default CreateSponsorPage;
