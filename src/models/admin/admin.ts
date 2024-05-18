@@ -32,4 +32,9 @@ interface GetSponsorsArgs {
   id?: string;
 }
 
-export type { CreateAdminData, GetUserArgs, GetBundlesArgs, BundleData, GetSponsorsArgs };
+interface GetTransactionsArgs {
+  pageToken?: string;
+  skip?: number;
+}
+
+export type { CreateAdminData, GetUserArgs, GetBundlesArgs, BundleData, GetSponsorsArgs, GetTransactionsArgs };

@@ -18,6 +18,7 @@ import { getUserRole } from "../../../helper/utils";
 import { USER_ROLE } from "../../../helper";
 import { useTranslation } from "react-i18next";
 import { PiPackageThin } from "react-icons/pi";
+import { MdAttachMoney } from "react-icons/md";
 
 const Sidebar = () => {
   const location = useLocation();
@@ -97,7 +98,18 @@ const Sidebar = () => {
   const sidebarItems =
     adminRole === USER_ROLE.manager
       ? [
-          {
+          
+        {
+          name: t("sidebar.transactions"),
+          icon: <MdAttachMoney  />,
+          children: [
+            {
+              name: t("sidebar.list"),
+              link: "transactions",
+            }
+          ],
+        },
+        {
             name: t("sidebar.users"),
             icon: <IoPersonOutline />,
             children: [

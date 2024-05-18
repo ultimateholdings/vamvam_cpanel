@@ -78,7 +78,8 @@
     "users": "Users",
     "create_internal_driver": "Create Internal Driver",
     "bundles": "Bundles",
-    "sponsors": "Sponsors"
+    "sponsors": "Sponsors",
+    "transactions": "Transactions"
   },
   "users": {
     "name": "Name",
@@ -181,5 +182,15 @@
     "lastName":"LastName",
     "firstName":"FirstName",
     "users_sponsored_list":"List of sponsored users"
+  },
+  "transaction":{
+    "transactions_list":"List of transactions",
+    "avatar":"Avatar",
+    "firstName":"FirstName",
+    "lastName":"LastName",
+    "bonus":"Bonus",
+    "amount":"Amount",
+    "point":"Point",
+    "date":"Date"
   }
 }

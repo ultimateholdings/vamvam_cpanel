@@ -78,7 +78,8 @@
     "users": "Utilisateurs",
     "create_internal_driver": "Créer un livreur interne",
     "bundles": "Packages",
-    "sponsors": "Sponsors"
+    "sponsors": "Sponsors",
+    "transactions": "Transactions"
   },
   "users": {
     "name": "Nom",
@@ -188,5 +189,15 @@
     "lastName":"Nom",
     "firstName":"Prénom",
     "users_sponsored_list":"Liste des utilisateurs parrainés"
+  },
+  "transaction": {
+    "transactions_list": "Liste des transactions",
+    "avatar ": "Avatar",
+    "firstName ": "FirstName",
+    "lastName ": "LastName",
+    "bonus ": "Bonus",
+    "amount ": "Montant",
+    "point ": "Point",
+    "date":"Date"
   }
 }

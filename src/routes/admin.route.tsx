@@ -13,6 +13,7 @@ import CreateBundlePage from "../pages/admin/bundles/CreateBundle";
 import CreateSponsorPage from "../pages/admin/sponsors/CreateSponsor";
 import SponsorsPage from "../pages/admin/sponsors/SponsorsList";
 import SponsoredUsersPage from "../pages/admin/sponsors/SponsoredUserList";
+import TransactionsPage from "../pages/admin/transactions/SponsorsList";
 
 const adminRoute: RouteObject = {
   path: "admin",
@@ -84,6 +85,10 @@ const adminRoute: RouteObject = {
     {
       path: "sponsor/:id",
       element: <SponsoredUsersPage />,
+    },
+    {
+      path: "transactions",
+      element: <TransactionsPage />,
     }
   ],
 };

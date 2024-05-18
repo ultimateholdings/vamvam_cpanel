@@ -1,7 +1,7 @@
 import { PAGE_LIMIT, STORAGE_KEY } from "../../helper";
 import { axios } from "../../helper/http";
 import { getAuthToken, handleApiError } from "../../helper/utils";
-import { CreateAdminData, BundleData, GetBundlesArgs, GetUserArgs, GetSponsorsArgs } from "../../models/admin/admin";
+import { CreateAdminData, BundleData, GetBundlesArgs, GetUserArgs, GetSponsorsArgs, GetTransactionsArgs } from "../../models/admin/admin";
 import {
   DeliverySettingsData,
   DeliverySettingsValue,
@@ -11,6 +11,7 @@ import {
 import UserData from "../../models/auth/user-data";
 import Sponsor from "../../models/sponsors/sponsor";
 import SponsorData from "../../models/sponsors/sponsor-data";
+import TransactionData from "../../models/transactions/transaction-data";
 
 async function updateSettingsData(
   data: OTPSettingsValue | DeliverySettingsValue
@@ -316,6 +317,43 @@ async function getAllUserSponsored({ id, skip, pageToken }: GetSponsorsArgs) {
   };
 }
 
+
+
+async function getAllTransactions({ skip, pageToken }: GetTransactionsArgs) {
+  const params = {
+    type:"recharge",
+    startDate:"1693483365735",
+    endDate:"1693483365735",
+  }
+  const urlQuery = `?maxPageSize=${PAGE_LIMIT}`
+    .concat(skip ? `&skip=${skip}` : "");
+  const response = await axios.get(
+    `/transaction/payment-history/${urlQuery}`,
+    pageToken
+      ? {
+          headers: {
+            "page-token": pageToken,
+            Authorization: `Bearer ${getAuthToken()}`,
+          },
+          params:{
+            ...params
+          }
+        }
+      : {
+        headers:{}, 
+        params:{
+          ...params
+        }
+      }
+  );
+  const data = response.data;
+  return {
+    transactions: data.results as TransactionData[],
+    refreshed: data.refreshed,
+    nextPageToken: data.nextPageToken,
+  };
+}
+
 export {
   updateSettingsData,
   getSettingsData,
@@ -333,5 +371,6 @@ export {
   createSponsor,
   editSponsor,
   deleteSponsor,
-  getAllUserSponsored
+  getAllUserSponsored,
+  getAllTransactions
 };
