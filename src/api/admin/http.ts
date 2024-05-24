@@ -319,11 +319,11 @@ async function getAllUserSponsored({ id, skip, pageToken }: GetSponsorsArgs) {
 
 
 
-async function getAllTransactions({ skip, pageToken }: GetTransactionsArgs) {
+async function getAllTransactions({ skip, pageToken,startDate,endDate}: GetTransactionsArgs) {
   const params = {
-    type:"recharge",
-    startDate:"1693483365735",
-    endDate:"1693483365735",
+    startDate:startDate != null ? Date.parse(startDate!) : "0000000000000" ,
+    endDate:endDate != null ? Date.parse(endDate!) : new Date().getTime(),
+    type:"recharge"
   }
   const urlQuery = `?maxPageSize=${PAGE_LIMIT}`
     .concat(skip ? `&skip=${skip}` : "");
@@ -335,9 +335,9 @@ async function getAllTransactions({ skip, pageToken }: GetTransactionsArgs) {
             "page-token": pageToken,
             Authorization: `Bearer ${getAuthToken()}`,
           },
-          params:{
-            ...params
-          }
+          params:
+           { ...params}
+          
         }
       : {
         headers:{}, 

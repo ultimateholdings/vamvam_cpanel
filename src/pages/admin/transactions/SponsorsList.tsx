@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../store";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { fetchTransactionsList } from "../../../store/transactions/transactions-actions";
 import { transactionActions } from "../../../store/transactions/transaction-slice";
 import { PAGE_LIMIT } from "../../../helper";
@@ -20,6 +20,7 @@ import TransactionData from "../../../models/transactions/transaction-data";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { getFilePath } from "../../../helper/utils";
+import FilterByDateInput from "../../../components/Users/FilterByDateInput";
 
 const TransactionsPage = () => {
   const { t } = useTranslation();
@@ -37,6 +38,11 @@ const TransactionsPage = () => {
     PAGE_LIMIT * (currentPage - 1),
     PAGE_LIMIT * currentPage
   );
+
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+
+
 
   const fetchTransactions = useCallback(() => {
     dispatch(fetchTransactionsList({}));
@@ -79,6 +85,18 @@ const TransactionsPage = () => {
     navigate('/admin/transaction/'+transaction.id)
   }
 
+  const handleStartDateChange = (value:string) => {
+    setStartDate(value);
+  }
+
+
+  const handleEndtDateChange = (value:string) => { 
+    setEndDate(value);
+    
+  }
+
+  const sendFilters = ()=> dispatch(fetchTransactionsList({startDate, endDate}));
+
   const showNext = displayedTransactions.length === PAGE_LIMIT;
   const showPrevious = currentPage > 1;
   const tableColumns = [
@@ -86,8 +104,6 @@ const TransactionsPage = () => {
     t("transaction.bonus"),
     t("transaction.amount"),
     t("transaction.date"),
-    // t("transaction.firstName"),
-    // t("transaction.lastName"),
     t("transaction.point"),
   ];
 
@@ -101,6 +117,18 @@ const TransactionsPage = () => {
         onPrevious={showPrevious ? handlePreviousPage : undefined}
         items={totalTransactions}
         title={t("transaction.transactions_list")}
+        headerTrailer={
+          <HStack align="end">
+            <FilterByDateInput onSelectDate={handleStartDateChange} title={"Debut"} value={startDate}/>
+            <FilterByDateInput onSelectDate={handleEndtDateChange} title={"Fin"} value={endDate}/>
+            <button
+              onClick={() => sendFilters()}
+              className="px-8 py-2 mt-4 cursor-pointer rounded-lg border border-primary bg-primary"
+            >
+              valider
+            </button>
+          </HStack>
+        }
       >
         <Table>
           <Thead>
@@ -142,16 +170,6 @@ const TransactionsPage = () => {
                 <Td>
                   <Text color="fg.muted">{member?.point}</Text>
                 </Td>
-                {/* <Td>
-                  <Text color="fg.muted">
-                    <Badge
-                        size="sm"
-                        colorScheme={member?.transactioned ? "green" : "red"}
-                      >
-                        {member?.transactioned ? t("transaction.yes") : t("transaction.no")}
-                      </Badge>
-                    </Text>
-                </Td> */}
               </Tr>
             ))}
           </Tbody>

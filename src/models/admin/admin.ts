@@ -35,6 +35,8 @@ interface GetSponsorsArgs {
 interface GetTransactionsArgs {
   pageToken?: string;
   skip?: number;
+  startDate?: string;
+  endDate?: string;
 }
 
 export type { CreateAdminData, GetUserArgs, GetBundlesArgs, BundleData, GetSponsorsArgs, GetTransactionsArgs };
