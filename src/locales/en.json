@@ -192,5 +192,21 @@
     "amount":"Amount",
     "point":"Point",
     "date":"Date"
+  },
+  "home":{
+    "total_users":"Total Users",
+    "clients":"Clients",
+    "drivers":"Drivers",
+    "total_transactions":"Total Transactions",
+    "bonus_transactions":"Bonus Transactions",
+    "point_transactions":"Point Transactions",
+    "total_deliveries":"Total Deliveries",
+    "archived_deliveries":"Archived Deliveries",
+    "cancelled_deliveries":"Cancelled Deliveries",
+    "conflicting_deliveries":"Conflicting Deliveries",
+    "ongoing_deliveries":"Ongoing Deliveries",
+    "terminated_deliveries":"Terminated Deliveries",
+    "home":"Home"
   }
+  
 }

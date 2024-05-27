@@ -37,6 +37,7 @@ interface GetTransactionsArgs {
   skip?: number;
   startDate?: string;
   endDate?: string;
+  type?: string;
 }
 
 export type { CreateAdminData, GetUserArgs, GetBundlesArgs, BundleData, GetSponsorsArgs, GetTransactionsArgs };

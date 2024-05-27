@@ -5,7 +5,7 @@ interface TransactionState {
   transactions: TransactionData[];
   pageToken?: string;
   refreshed: boolean;
-  prevRole?: string;
+  prevType?: string;
   currentPage: number;
   loading: boolean;
   initialReqSent: boolean;
@@ -39,6 +39,10 @@ const transactionSlice = createSlice({
       }
       state.currentPage = state.currentPage + 1;
     },
+    changeTypes(state, action) {
+      state.prevType = action.payload;
+      state.currentPage = 0;
+    },
     changeTransactions(state, action) {
       state.transactions = action.payload;
     },
@@ -55,7 +59,7 @@ const transactionSlice = createSlice({
       state.transactions = [];
       state.pageToken = undefined;
       state.refreshed = false;
-      state.prevRole = undefined;
+      state.prevType = undefined;
       state.currentPage = 0;
       state.loading = false;
       state.initialReqSent = false;

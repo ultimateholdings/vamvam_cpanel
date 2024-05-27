@@ -5,7 +5,7 @@ import { transactionActions } from "./transaction-slice";
 import { GetTransactionsArgs } from "../../models/admin/admin";
 import { json } from "react-router-dom";
 
-export function fetchTransactionsList({ skip, pageToken, startDate, endDate}: GetTransactionsArgs) {
+export function fetchTransactionsList({ skip, pageToken, startDate, endDate, type}: GetTransactionsArgs) {
   return async (dispatch: Dispatch) => {
     const isInitialReq = !skip && !pageToken;
 
@@ -20,7 +20,8 @@ export function fetchTransactionsList({ skip, pageToken, startDate, endDate}: Ge
         pageToken,
         skip,
         startDate,
-        endDate
+        endDate,
+        type
       });
 
       if (isInitialReq) {

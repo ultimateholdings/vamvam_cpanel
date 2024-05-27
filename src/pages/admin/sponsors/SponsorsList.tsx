@@ -127,16 +127,6 @@ const SponsorsPage = () => {
                 <Td>
                   <Text color="fg.muted">{member?.sponsored}</Text>
                 </Td>
-                {/* <Td>
-                  <Text color="fg.muted">
-                    <Badge
-                        size="sm"
-                        colorScheme={member?.sponsored ? "green" : "red"}
-                      >
-                        {member?.sponsored ? t("sponsor.yes") : t("sponsor.no")}
-                      </Badge>
-                    </Text>
-                </Td> */}
               </Tr>
             ))}
           </Tbody>
