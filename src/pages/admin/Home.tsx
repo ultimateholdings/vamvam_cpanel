@@ -91,6 +91,8 @@ const HomePage: React.FC = () => {
 
   return (
     <>
+    <div className='home'>
+
       <OverviewTableTyped
         headerTrailer={
           <HStack align="end">
@@ -160,6 +162,7 @@ const HomePage: React.FC = () => {
           ))}
         </div>
       </OverviewTableTyped>
+    </div>
     </>
   );
 };
