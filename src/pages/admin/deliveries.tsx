@@ -205,6 +205,7 @@ function Deliveries() {
     }, [dispatch]);
 
     useEffect(() => {
+        debugger;
         fetchDeliveryList();
         return () => {
             clearState();
@@ -212,33 +213,33 @@ function Deliveries() {
     }, [clearState, fetchDeliveryList]);
 
     function handleNextPage() {
-        if (state.status === "loading") {
-            return;
-        }
         if (state.deliveries.length === state.pageSize * state.currentPage) {
-        } else {
-            dispatch(listingActions.changePage(state.currentPage + 1));
+            dispatch(fetchDeliveries({
+                maxPageSize: state.pageSize,
+                pageToken: state.pageToken
+            }));
         }
+        dispatch(listingActions.setCurrentPage(state.currentPage + 1));
     }
 
     function previousPage() {
-        dispatch(listingActions.changePage(state.currentPage - 1));
+        dispatch(listingActions.setCurrentPage(state.currentPage - 1));
     }
 
     return (
         <Stack>
             {
-                ["resolved", "complete"].includes(state.status)
+                state.loading === false
                     ? (
                         state.deliveries.length > 0
                             ?
                             <OverviewTableTyped
                                 title="delivery list"
-                                onNext={state.status !== "complete" ? handleNextPage: undefined}
+                                onNext={state.paginationCompleted ? undefined: handleNextPage}
                                 onPrevious={state.currentPage > 1 ? previousPage: undefined}
-                                items={state.deliveries.length}
+                                items={state.deliveries}
                                 currentPage={state.currentPage}
-                                pageSize={1}
+                                pageSize={state.pageSize}
                             >
                                 <MemberTable colNames={headers} dataSource={shownDeliveries} />
                             </OverviewTableTyped>

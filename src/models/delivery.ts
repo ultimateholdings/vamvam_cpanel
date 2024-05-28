@@ -16,6 +16,11 @@ interface recipientData {
     phone: string;
 }
 
+interface PaginationHeader {
+    size: number;
+    skip: number;
+}
+
 export interface DeliveryData {
     begin: Date;
     client: UserDesc;
@@ -36,11 +41,14 @@ export interface PaginatedResponse<T> {
     refreshed: boolean;
     results: Array<T>;
 }
-
-interface PaginationHeader {
-    size: number;
-    skip: number;
+export interface ListingArgs {
+    from?: Date;
+    pageToken?: string;
+    skip?:number;
+    status?: string;
+    to?: Date;
 }
+
 
 export enum RequestResult {
     error = "error in request",

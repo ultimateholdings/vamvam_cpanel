@@ -1,9 +1,9 @@
-import {DeliveryData, PaginatedResponse} from "../../models/delivery.ts";
-import {axios, getAuthToken, handleApiError} from "../../helper";
+import { DeliveryData, PaginatedResponse } from "../../models/delivery.ts";
+import { axios, getAuthToken, handleApiError } from "../../helper";
 
 type listingProps = {
     pageToken?: string,
-    filter?: string
+    query?: string,
 };
 
 export async function getAllDeliveries(params: listingProps): Promise<PaginatedResponse<DeliveryData> | undefined> {
@@ -18,11 +18,11 @@ export async function getAllDeliveries(params: listingProps): Promise<PaginatedR
         };
     }
     try {
-       result = await axios.get<PaginatedResponse<DeliveryData>>(
-           "/delivery/all?maxPageSize=1&" + (params.filter ?? ""),
-           token
-       );
-       return result.data;
+        result = await axios.get<PaginatedResponse<DeliveryData>>(
+            "/delivery/all?" + (params.query ?? ""),
+            token
+        );
+        return result.data;
     } catch (error) {
         throw handleApiError({
             error,

@@ -1,24 +1,39 @@
 import { Dispatch } from "redux";
+import {json} from "react-router-dom";
+import {uiActions} from "../ui/ui-slice.ts";
 import { createSlice } from "@reduxjs/toolkit";
 import { getAllDeliveries } from "../../api/deliveries/http.ts";
-import {PAGE_LIMIT} from "../../helper";
+import {DeliveryData, ListingArgs} from "../../models/delivery.ts";
 
-const initialState = {
+interface DeliveryState {
+    alreadyRequested: boolean;
+    currentPage: number;
+    deliveries: DeliveryData[];
+    hasFilterChanged: boolean;
+    loading: boolean;
+    pageToken?: string;
+    pageSize: number;
+    paginationCompleted: boolean;
+    refreshed: boolean;
+
+}
+const initialState : DeliveryState = {
+    alreadyRequested: false,
     currentPage: 0,
-    status: "initial",
-    pageToken: "",
-    deliveries: <any>[],
-    error: undefined,
-    filter: {},
-    pageSize: 1
+    deliveries: [],
+    hasFilterChanged: false,
+    loading: false,
+    paginationCompleted: false,
+    pageSize: 1,
+    refreshed: false
 };
 
-function mergeDeliveries (initial: Array<any>, newDatas: Array<any>) :Array<any>{
-    const result = initial.reduce(function (acc: any, delivery: any) {
+function mergeDeliveries(initial: Array<any>, newDatas: Array<any>): Array<any> {
+    const result = initial.reduce(function(acc: any, delivery: any) {
         acc[delivery.id] = delivery;
         return acc;
     }, Object.create(null));
-    newDatas.forEach(function (delivery: any) {
+    newDatas.forEach(function(delivery: any) {
         result[delivery.id] = delivery;
     });
     return Object.values(result);
@@ -28,63 +43,93 @@ const listingSlice = createSlice({
     name: "delivery-listing",
     initialState,
     reducers: {
-        appendResults(state, action) {
-            const {results, nextPageToken } = action.payload;
-            state.status = "resolved";
-            state.pageToken = nextPageToken;
-            if (results.length < 1) {
-                state.status = "complete";
+        emptyState(state) {
+            state.currentPage = 0;
+            state.refreshed = false;
+            state.deliveries = [];
+            state.alreadyRequested = false;
+            state.pageToken = undefined;
+        },
+        completePagination(state, action) {
+            state.paginationCompleted = action.payload;
+        },
+        updateDeliveries(state, action) {
+            const {deliveries, pageToken, refreshed} = action.payload;
+            state.pageToken = pageToken;
+            state.refreshed = refreshed;
+            if(state.pageSize > deliveries.length) {
+                state.paginationCompleted = true;
+            }
+            if(state.hasFilterChanged) {
+                state.deliveries = deliveries;
+                return;
+            }
+            if (refreshed) {
+                state.deliveries = mergeDeliveries(
+                    state.deliveries,
+                    deliveries
+                );
+            } else {
+                state.deliveries = state.deliveries.concat(deliveries);
             }
             state.currentPage += 1;
-            state.deliveries = mergeDeliveries(state.deliveries, results);
         },
-        applyFilter(state, action) {
-            if (state.filter !== action.payload) {
-                state.currentPage = 0;
-                state.deliveries = [];
-            }
-            state.filter = action.payload;
+        filterChanged(state, action) {
+            state.hasFilterChanged = action.payload;
         },
-        changePage(state, action) {
+        setLoading(state, action) {
+            state.loading = action.payload;
+        },
+        setCurrentPage(state, action) {
             state.currentPage = action.payload;
         },
-        emptyState(state) {
-            state = Object.assign({}, initialState);
+        setInitialRequest(state, action) {
+            state.alreadyRequested = action.payload;
         },
-        raiseError(state, action) {
-            state.status = "error";
-            state.error = action.payload;
-        },
-        waitLoading(state) {
-            state.status = "loading";
+        setDeliveries(state, action) {
+            state.deliveries = action.payload;
         }
     }
 });
 
 export const listingActions = listingSlice.actions;
-const listingKeys = ["from", "to", "status"];
-function parseParams(params: any, keys: Array<string>) : string {
-    return keys.map(function (key) {
+const listingKeys = ["from", "to", "status", "skip", "maxPageSize"];
+function parseParams(params: any, keys: Array<string>): string {
+    return keys.map(function(key) {
         if (params[key]) {
             return key + "=" + params[key];
         }
     }).filter((val) => val !== undefined).join("&");
 }
+function setLoading(dispatch:Dispatch, initialized: boolean, loading: boolean) {
+    if (initialized) {
+        dispatch(listingSlice.actions.setLoading(loading));
+    } else {
+        dispatch(uiActions.showLinearLoader(loading));
+    }
+}
 
-export function fetchDeliveries(arg: any) {
+export function fetchDeliveries(arg: ListingArgs) {
     const actions = listingSlice.actions;
     return async function deliveryFetcher(dispatch: Dispatch) {
+        const isInitial = !arg.skip && !arg.pageToken;
         let results;
-        let filter = parseParams(arg ?? {}, listingKeys);
+        let query = parseParams(Object.assign({maxPageSize: 1}, arg), listingKeys);
         try {
-            dispatch(actions.waitLoading());
-            if (filter.trim().length > 0) {
-                dispatch(actions.applyFilter(filter));
+            setLoading(dispatch, isInitial, true);
+            results = await getAllDeliveries({pageToken: arg.pageToken, query});
+            if(isInitial) {
+                dispatch(actions.setInitialRequest(true));
             }
-            results = await getAllDeliveries(Object.assign({filter}, arg ?? {}));
-            dispatch(actions.appendResults(results));
-        } catch (error) {
-            dispatch(actions.raiseError(error));
+            dispatch(actions.updateDeliveries({
+                deliveries: results?.results ?? [],
+                pageToken: results?.nextPageToken,
+                refreshed: results?.refreshed
+            }));
+        } catch (error: any) {
+            throw json({message: error.message}, {status: 500});
+        } finally {
+            setLoading(dispatch, isInitial, false);
         }
     }
 }
