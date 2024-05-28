@@ -11,7 +11,7 @@ export async function getAllDeliveries(params: listingProps): Promise<PaginatedR
     let token = {};
     if (params.pageToken) {
         token = {
-            Headers: {
+            headers: {
                 "page-token": params.pageToken,
                 Authorization: "Bearer " + getAuthToken()
             }

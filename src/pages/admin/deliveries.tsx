@@ -26,8 +26,8 @@ import { OverviewTableTyped, Sprite } from "../../components/UI";
 import { AppDispatch, RootState } from "../../store";
 import { fetchDeliveries, listingActions } from "../../store/deliveries/listing.ts";
 import { DELIVERY_STATUS, DELIVERY_SCHEME } from "../../helper/enums.ts";
-import { useEffect, useState, useCallback } from "react";
-import { DeliveryData } from "../../models/delivery.ts";
+import { useEffect, useState } from "react";
+import { DeliveryData} from "../../models/delivery.ts";
 import { getFormatter } from "../../helper/utils.ts";
 
 const formatter = getFormatter();
@@ -196,30 +196,27 @@ function Deliveries() {
         state.pageSize * (state.currentPage - 1),
         state.pageSize * state.currentPage
     );
-    const fetchDeliveryList = useCallback(() => {
-        dispatch(fetchDeliveries({}));
-    }, [dispatch]);
-
-    const clearState = useCallback(() => {
-        dispatch(listingActions.emptyState());
-    }, [dispatch]);
-
+    const inPrevPage = (
+        state.currentPage < Math.ceil(state.deliveries.length / state.pageSize)
+    );
     useEffect(() => {
-        debugger;
-        fetchDeliveryList();
+        dispatch(fetchDeliveries({}));
         return () => {
-            clearState();
+            dispatch(listingActions.emptyState());
         };
-    }, [clearState, fetchDeliveryList]);
+    }, []);
 
     function handleNextPage() {
         if (state.deliveries.length === state.pageSize * state.currentPage) {
             dispatch(fetchDeliveries({
-                maxPageSize: state.pageSize,
-                pageToken: state.pageToken
+                pageToken: state.pageToken,
+                status: state.filter?.status,
+                from: state.filter?.from,
+                to: state.filter?.to
             }));
+        } else {
+            dispatch(listingActions.setCurrentPage(state.currentPage + 1));
         }
-        dispatch(listingActions.setCurrentPage(state.currentPage + 1));
     }
 
     function previousPage() {
@@ -235,8 +232,12 @@ function Deliveries() {
                             ?
                             <OverviewTableTyped
                                 title="delivery list"
-                                onNext={state.paginationCompleted ? undefined: handleNextPage}
-                                onPrevious={state.currentPage > 1 ? previousPage: undefined}
+                                onNext={(
+                                state.paginationCompleted && !inPrevPage
+                                ? undefined
+                                : handleNextPage
+                                )}
+                                onPrevious={state.currentPage > 1 ? previousPage : undefined}
                                 items={state.deliveries}
                                 currentPage={state.currentPage}
                                 pageSize={state.pageSize}

@@ -61,8 +61,8 @@ export interface RequestState<T, E extends Error> {
     data?: T;
     error?: E;
 }
-export interface DeliveryFilter extends PaginationHeader {
-    from: Date;
-    status: string;
-    to: Date;
+export interface DeliveryFilter {
+    from?: Date;
+    status?: string;
+    to?: Date;
 }

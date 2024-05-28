@@ -1,14 +1,15 @@
 import { Dispatch } from "redux";
-import {json} from "react-router-dom";
-import {uiActions} from "../ui/ui-slice.ts";
+import { json } from "react-router-dom";
+import { uiActions } from "../ui/ui-slice.ts";
 import { createSlice } from "@reduxjs/toolkit";
 import { getAllDeliveries } from "../../api/deliveries/http.ts";
-import {DeliveryData, ListingArgs} from "../../models/delivery.ts";
+import { DeliveryFilter, DeliveryData, ListingArgs } from "../../models/delivery.ts";
 
 interface DeliveryState {
     alreadyRequested: boolean;
     currentPage: number;
     deliveries: DeliveryData[];
+    filter?: DeliveryFilter;
     hasFilterChanged: boolean;
     loading: boolean;
     pageToken?: string;
@@ -16,8 +17,9 @@ interface DeliveryState {
     paginationCompleted: boolean;
     refreshed: boolean;
 
+    getParams(): ListingArgs;
 }
-const initialState : DeliveryState = {
+const initialState: DeliveryState = {
     alreadyRequested: false,
     currentPage: 0,
     deliveries: [],
@@ -25,7 +27,16 @@ const initialState : DeliveryState = {
     loading: false,
     paginationCompleted: false,
     pageSize: 1,
-    refreshed: false
+    refreshed: false,
+
+    getParams() {
+        return {
+            from: this.filter?.from,
+            to: this.filter?.to,
+            status: this.filter?.status,
+            pageToken: this.pageToken,
+        }
+    }
 };
 
 function mergeDeliveries(initial: Array<any>, newDatas: Array<any>): Array<any> {
@@ -54,13 +65,13 @@ const listingSlice = createSlice({
             state.paginationCompleted = action.payload;
         },
         updateDeliveries(state, action) {
-            const {deliveries, pageToken, refreshed} = action.payload;
+            const { deliveries, pageToken, refreshed } = action.payload;
             state.pageToken = pageToken;
             state.refreshed = refreshed;
-            if(state.pageSize > deliveries.length) {
+            if (state.pageSize > deliveries.length) {
                 state.paginationCompleted = true;
             }
-            if(state.hasFilterChanged) {
+            if (state.hasFilterChanged) {
                 state.deliveries = deliveries;
                 return;
             }
@@ -72,7 +83,9 @@ const listingSlice = createSlice({
             } else {
                 state.deliveries = state.deliveries.concat(deliveries);
             }
-            state.currentPage += 1;
+            if(deliveries.length > 0) {
+                state.currentPage += 1;
+            }
         },
         filterChanged(state, action) {
             state.hasFilterChanged = action.payload;
@@ -101,7 +114,7 @@ function parseParams(params: any, keys: Array<string>): string {
         }
     }).filter((val) => val !== undefined).join("&");
 }
-function setLoading(dispatch:Dispatch, initialized: boolean, loading: boolean) {
+function setLoading(dispatch: Dispatch, initialized: boolean, loading: boolean) {
     if (initialized) {
         dispatch(listingSlice.actions.setLoading(loading));
     } else {
@@ -113,12 +126,12 @@ export function fetchDeliveries(arg: ListingArgs) {
     const actions = listingSlice.actions;
     return async function deliveryFetcher(dispatch: Dispatch) {
         const isInitial = !arg.skip && !arg.pageToken;
-        let results;
-        let query = parseParams(Object.assign({maxPageSize: 1}, arg), listingKeys);
+        let results: any;
+        let query = parseParams(Object.assign({ maxPageSize: 1 }, arg), listingKeys);
         try {
             setLoading(dispatch, isInitial, true);
-            results = await getAllDeliveries({pageToken: arg.pageToken, query});
-            if(isInitial) {
+            results = await getAllDeliveries({ pageToken: arg.pageToken, query });
+            if (isInitial) {
                 dispatch(actions.setInitialRequest(true));
             }
             dispatch(actions.updateDeliveries({
@@ -127,7 +140,7 @@ export function fetchDeliveries(arg: ListingArgs) {
                 refreshed: results?.refreshed
             }));
         } catch (error: any) {
-            throw json({message: error.message}, {status: 500});
+            throw json({ message: error.message }, { status: 500 });
         } finally {
             setLoading(dispatch, isInitial, false);
         }
