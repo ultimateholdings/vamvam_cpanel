@@ -8,6 +8,12 @@ import SettingsPage from "../pages/admin/Settings";
 import { loadSettings } from "../api/admin/loader";
 import { Home, Deliveries } from "../pages/admin";
 import DisconnectAllPage from "../pages/admin/DisconnectAll";
+import BundlesPage from "../pages/admin/bundles/BundlesList";
+import CreateBundlePage from "../pages/admin/bundles/CreateBundle";
+import CreateSponsorPage from "../pages/admin/sponsors/CreateSponsor";
+import SponsorsPage from "../pages/admin/sponsors/SponsorsList";
+import SponsoredUsersPage from "../pages/admin/sponsors/SponsoredUserList";
+import TransactionsPage from "../pages/admin/transactions/TransactionsList";
 
 const adminRoute: RouteObject = {
   path: "admin",
@@ -43,9 +49,6 @@ const adminRoute: RouteObject = {
       element: <ChangePasswordPage />,
     },
     {
-      path: "sponsors",
-    },
-    {
       path: "deliveries",
       element: <Deliveries />,
     },
@@ -55,6 +58,38 @@ const adminRoute: RouteObject = {
     {
       path: "subscriptions",
     },
+    {
+      path: "bundles",
+      element: <BundlesPage />,
+    },
+    {
+      path: "create-bundle",
+      element: <CreateBundlePage />,
+    },
+    {
+      path: "edit-bundle",
+      element: <CreateBundlePage />,
+    },
+    {
+      path: "sponsors",
+      element: <SponsorsPage />,
+    },
+    {
+      path: "create-sponsor",
+      element: <CreateSponsorPage />,
+    },
+    {
+      path: "edit-sponsor",
+      element: <CreateSponsorPage />,
+    },
+    {
+      path: "sponsor/:id",
+      element: <SponsoredUsersPage />,
+    },
+    {
+      path: "transactions",
+      element: <TransactionsPage />,
+    }
   ],
 };
 

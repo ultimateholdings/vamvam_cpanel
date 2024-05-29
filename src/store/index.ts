@@ -5,6 +5,10 @@ import listingSlice from "./deliveries/listing";
 import userReducer from "./users/user-slice";
 import newRegistrationReducer from "./registration/new/slice";
 import settledRegistrationReducer from "./registration/settled/slice";
+import bundleReducer from "./bundles/bundle-slice";
+import sponsorReducer from "./sponsors/sponsor-slice";
+import usersSponsorReducer from "./sponsors/users-sponsored/user-sponsored-slice";
+import transactionReducer from "./transactions/transaction-slice";
 
 const store = configureStore({
   reducer: {
@@ -12,8 +16,12 @@ const store = configureStore({
     profile: profileReducer,
     ui: uiReducer,
     users: userReducer,
+    bundles: bundleReducer,
+    sponsors: sponsorReducer,
+    userSponsored: usersSponsorReducer,
     newRegistrations: newRegistrationReducer,
     settledRegistrations: settledRegistrationReducer,
+    transactions: transactionReducer,
   },
 });
 

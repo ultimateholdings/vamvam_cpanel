@@ -172,3 +172,12 @@ span.flatpickr-weekday,
 [x-cloak] {
   display: none !important;
 }
+
+
+.fullWidth{
+  width: 100%;
+}
+
+.home .css-ayshjd{
+  overflow: initial;
+}

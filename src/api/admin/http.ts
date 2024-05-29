@@ -1,7 +1,7 @@
 import { PAGE_LIMIT, STORAGE_KEY } from "../../helper";
 import { axios } from "../../helper/http";
 import { getAuthToken, handleApiError } from "../../helper/utils";
-import { CreateAdminData, GetUserArgs } from "../../models/admin/admin";
+import { CreateAdminData, BundleData, GetBundlesArgs, GetUserArgs, GetSponsorsArgs, GetTransactionsArgs } from "../../models/admin/admin";
 import {
   DeliverySettingsData,
   DeliverySettingsValue,
@@ -9,6 +9,9 @@ import {
   OTPSettingsValue,
 } from "../../models/admin/settings";
 import UserData from "../../models/auth/user-data";
+import Sponsor from "../../models/sponsors/sponsor";
+import SponsorData from "../../models/sponsors/sponsor-data";
+import TransactionData from "../../models/transactions/transaction-data";
 
 async function updateSettingsData(
   data: OTPSettingsValue | DeliverySettingsValue
@@ -159,6 +162,198 @@ async function getAllUsers({ skip, pageToken, role }: GetUserArgs) {
   };
 }
 
+async function getAllBundles({ skip, pageToken }: GetBundlesArgs) {
+  const urlQuery = `?maxPageSize=${PAGE_LIMIT}`
+    .concat(skip ? `&skip=${skip}` : "");
+
+  const response = await axios.get(
+    `/bundle/${urlQuery}`,
+    pageToken
+      ? {
+          headers: {
+            "page-token": pageToken,
+            Authorization: `Bearer ${getAuthToken()}`,
+          },
+        }
+      : {}
+  );
+  const data = response.data;
+  return {
+    bundles: data.data as BundleData[],
+    refreshed: data.refreshed,
+    nextPageToken: data.nextPageToken,
+  };
+}
+
+async function createBundle(data: BundleData) {
+  try {
+    const response = await axios.post("/bundle/new-bundle", data);
+    console.log(response);
+  } catch (error: any) {
+    throw handleApiError({
+      error,
+      defaultMessage: {
+        en: "Failed to create bundle",
+        fr: "Échec de création du pack",
+      },
+    });
+  }
+}
+
+async function editBundle(data: BundleData) {
+  try {
+    const response = await axios.post("/bundle/update", data);
+    console.log(response);
+  } catch (error: any) {
+    throw handleApiError({
+      error,
+      defaultMessage: {
+        en: "Failed to create bundle",
+        fr: "Échec de création du pack",
+      },
+    });
+  }
+}
+
+async function deleteBundle(id:string) {
+  try {
+    await axios.post("/bundle/delete",{id:id});
+  } catch (error) {
+    throw handleApiError({
+      error,
+      defaultMessage: {
+        en: "Failed to delete bundle",
+        fr: "Echec de la suppression du pack",
+      },
+    });
+  }
+}
+
+async function getAllSponsors({ skip, pageToken }: GetSponsorsArgs) {
+  const urlQuery = `?maxPageSize=${PAGE_LIMIT}`
+    .concat(skip ? `&skip=${skip}` : "");
+  const response = await axios.get(
+    `/sponsor/ranking/${urlQuery}`,
+    pageToken
+      ? {
+          headers: {
+            "page-token": pageToken,
+            Authorization: `Bearer ${getAuthToken()}`,
+          },
+        }
+      : {}
+  );
+  const data = response.data;
+  return {
+    sponsors: data.results as SponsorData[],
+    refreshed: data.refreshed,
+    nextPageToken: data.nextPageToken,
+  };
+}
+
+async function createSponsor(data: Sponsor) {
+  try {
+    const response = await axios.post("/sponsor/create", data);
+    console.log(response);
+  } catch (error: any) {
+    throw handleApiError({
+      error,
+      defaultMessage: {
+        en: "Failed to create sponsor",
+        fr: "Échec de création du pack",
+      },
+    });
+  }
+}
+
+async function editSponsor(data: Sponsor) {
+  try {
+    const response = await axios.post("/sponsor/update", data);
+    console.log(response);
+  } catch (error: any) {
+    throw handleApiError({
+      error,
+      defaultMessage: {
+        en: "Failed to create sponsor",
+        fr: "Échec de création du pack",
+      },
+    });
+  }
+}
+
+async function deleteSponsor(id:string) {
+  try {
+    await axios.post("/sponsor/delete",{id:id});
+  } catch (error) {
+    throw handleApiError({
+      error,
+      defaultMessage: {
+        en: "Failed to delete sponsor",
+        fr: "Echec de la suppression du pack",
+      },
+    });
+  }
+}
+
+async function getAllUserSponsored({ id, skip, pageToken }: GetSponsorsArgs) {
+  const urlQuery = `?maxPageSize=${PAGE_LIMIT}&id=${id}`
+    .concat(skip ? `&skip=${skip}`  : "");
+  const response = await axios.get(
+    `/sponsor/enrolled/${urlQuery}`,
+    pageToken
+      ? {
+          headers: {
+            "page-token": pageToken,
+            Authorization: `Bearer ${getAuthToken()}`,
+          },
+        }
+      : {}
+  );
+  const data = response.data;
+  return {
+    usersSponsored: data.results as UserData[],
+    refreshed: data.refreshed,
+    nextPageToken: data.nextPageToken,
+  };
+}
+
+
+
+async function getAllTransactions({ skip, pageToken,startDate,endDate,type}: GetTransactionsArgs) {
+  const params = {
+    // startDate:startDate != null ? Date.parse(startDate!) : "0000000000000" ,
+    // endDate:endDate != null ? Date.parse(endDate!) : new Date().getTime(),
+    type:type
+  }
+  const urlQuery = `?maxPageSize=${PAGE_LIMIT}`
+    .concat(skip ? `&skip=${skip}` : "");
+  const response = await axios.get(
+    `/transaction/payment-history/${urlQuery}`,
+    pageToken
+      ? {
+          headers: {
+            "page-token": pageToken,
+            Authorization: `Bearer ${getAuthToken()}`,
+          },
+          params:
+           { ...params}
+          
+        }
+      : {
+        headers:{}, 
+        params:{
+          ...params
+        }
+      }
+  );
+  const data = response.data;
+  return {
+    transactions: data.results as TransactionData[],
+    refreshed: data.refreshed,
+    nextPageToken: data.nextPageToken,
+  };
+}
+
 export {
   updateSettingsData,
   getSettingsData,
@@ -168,4 +363,14 @@ export {
   revokeAllUsersToken,
   createAdmin,
   getAllUsers,
+  getAllBundles,
+  createBundle,
+  editBundle,
+  deleteBundle,
+  getAllSponsors,
+  createSponsor,
+  editSponsor,
+  deleteSponsor,
+  getAllUserSponsored,
+  getAllTransactions
 };

@@ -76,7 +76,10 @@
     "settled": "Règlés",
     "profile": "Profil",
     "users": "Utilisateurs",
-    "create_internal_driver": "Créer un livreur interne"
+    "create_internal_driver": "Créer un livreur interne",
+    "bundles": "Packages",
+    "sponsors": "Sponsors",
+    "transactions": "Transactions"
   },
   "users": {
     "name": "Nom",
@@ -148,5 +151,68 @@
     "rejected": "Rejetées",
     "validated": "Validées",
     "search_by_name": "Rechercher par nom"
+  },
+  "bundle": {
+    "create_bundle": "Créer un Pack",
+    "edit_bundle": "Editer un Pack",
+    "bonus": "Bonus",
+    "point": "Point",
+    "unitPrice": "Prix unitaire",
+    "price": "Prix",
+    "gainMin": "Gain minimum",
+    "save": "Enregistrer",
+    "delete": "Supprimer",
+    "create_bundle_success": "Pack créé avec succès",
+    "edit_bundle_success": "Pack édité avec succès",
+    "delete_bundle": "Supprimer le pack",
+    "delete_bundle_warning": "Êtes-vous sûr de vouloir supprimer ce pack?",
+    "bundle_delete_success": "Pack supprimé avec succès",
+    "bundles.bundles_list": "Liste des Packs"
+  },
+  "sponsor": {
+    "create_sponsor": "Créer un Sponsor",
+    "edit_sponsor": "Editer un Sponsor",
+    "save": "Enregistrer",
+    "delete": "Supprimer",
+    "create_sponsor_success": "Sponsor créé avec succès",
+    "edit_sponsor_success": "Sponsor édité avec succès",
+    "delete_sponsor": "Supprimer le pack",
+    "delete_sponsor_warning": "Êtes-vous sûr de vouloir supprimer ce pack?",
+    "sponsor_delete_success": "Sponsor supprimé avec succès",
+    "sponsors.sponsors_list": "Liste des Sponsors",
+    "code": "Code",
+    "name": "Nom",
+    "phone": "Numéro de téléphone",
+    "sponsored": "Sponsorisé",
+    "yes": "Oui",
+    "no": "Non",
+    "lastName": "Nom",
+    "firstName": "Prénom",
+    "users_sponsored_list": "Liste des utilisateurs parrainés"
+  },
+  "transaction": {
+    "transactions_list": "Liste des transactions",
+    "avatar ": "Avatar",
+    "firstName ": "FirstName",
+    "lastName ": "LastName",
+    "bonus ": "Bonus",
+    "amount ": "Montant",
+    "point ": "Point",
+    "date": "Date"
+  },
+  "home": {
+    "total_users": "Total des utilisateurs",
+    "clients": "Clients",
+    "drivers": "Drivers",
+    "total_transactions": "Total des transactions",
+    "bonus_transactions": "Bonus Transactions",
+    "point_transactions": "Transactions par points",
+    "total_deliveries": "Total des livraisons",
+    "archived_deliveries": "Livraisons archivées",
+    "cancelled_deliveries": "Livraisons annulées",
+    "conflicting_deliveries": "Livraisons conflictuelles",
+    "ongoing_deliveries": "Livraisons en cours",
+    "terminated_deliveries": "Livraisons terminées",
+    "home":"Accueil"
   }
 }

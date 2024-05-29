@@ -11,6 +11,33 @@ interface GetUserArgs {
   role?: string;
   pageToken?: string;
   skip?: number;
+  id?: string;
 }
 
-export type { CreateAdminData, GetUserArgs };
+interface GetBundlesArgs {
+  pageToken?: string;
+  skip?: number;
+}
+
+interface BundleData {
+  id: string;
+  bonus: string;
+  point: string;
+  unitPrice: string;
+}
+
+interface GetSponsorsArgs {
+  pageToken?: string;
+  skip?: number;
+  id?: string;
+}
+
+interface GetTransactionsArgs {
+  pageToken?: string;
+  skip?: number;
+  startDate?: string;
+  endDate?: string;
+  type?: string;
+}
+
+export type { CreateAdminData, GetUserArgs, GetBundlesArgs, BundleData, GetSponsorsArgs, GetTransactionsArgs };
