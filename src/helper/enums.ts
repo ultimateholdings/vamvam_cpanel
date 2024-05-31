@@ -22,16 +22,16 @@ enum DELIVERY_STATUS {
   "pending-client-approval" = "pending confirmation",
 }
 
-enum DELIVERY_SCHEME {
-    "archived" = "default",
-    "conflicting" = "red",
-    "cancelled" = "teal",
-    "pending-driver-approval" = "linkedin",
-    "pending-driver-reception" = "facebook",
-    "pending-client-approval" = "twitter",
-    "started" = "telegram",
-    "terminated" = "green",
-}
+const DELIVERY_SCHEME  = {
+    "archived": "default",
+    "conflicting": "red",
+    "cancelled": "teal",
+    "pending-driver-approval": "linkedin",
+    "pending-driver-reception": "facebook",
+    "pending-client-approval": "twitter",
+    "started": "telegram",
+    "terminated": "green",
+};
 enum RequestResult {
     error = "error in request",
     pending = "pending request",
