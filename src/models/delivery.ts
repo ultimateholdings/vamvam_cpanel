@@ -1,4 +1,3 @@
-import { DELIVERY_STATUS } from "../helper/enums.ts";
 interface UserDesc {
     avatar?: string;
     id: string;
@@ -37,11 +36,16 @@ export interface PaginatedResponse<T> {
     refreshed: boolean;
     results: Array<T>;
 }
-
-interface PaginationHeader {
-    size: number;
-    skip: number;
+export interface DeliveryFilter {
+    from?: string;
+    status?: string;
+    to?: string;
 }
+export interface ListingArgs extends DeliveryFilter {
+    pageToken?: string;
+    skip?:number;
+}
+
 
 export enum RequestResult {
     error = "error in request",
@@ -53,9 +57,4 @@ export interface RequestState<T, E extends Error> {
     result: RequestResult;
     data?: T;
     error?: E;
-}
-export interface DeliveryFilter extends PaginationHeader {
-    from: Date;
-    status: string;
-    to: Date;
 }

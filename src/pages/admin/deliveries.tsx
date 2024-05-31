@@ -1,9 +1,7 @@
 import {
-    Avatar,
     Badge,
-    Box,
     Button,
-    HStack,
+    Heading,
     Modal,
     ModalOverlay,
     ModalContent,
@@ -21,60 +19,100 @@ import {
     useDisclosure
 } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
-import { OverviewTable } from "../../components/UI";
+import { useTranslation } from "react-i18next";
 import { AppDispatch, RootState } from "../../store";
-import { fetchDeliveries } from "../../store/deliveries/listing.ts";
-import { RequestResult, DELIVERY_STATUS, DELIVERY_SCHEME } from "../../helper/enums.ts";
+import { applyFilter, fetchDeliveries, listingActions } from "../../store/deliveries/listing.ts";
+import { DELIVERY_STATUS, DELIVERY_SCHEME } from "../../helper/enums.ts";
 import { useEffect, useState } from "react";
-import { DeliveryData } from "../../models/delivery.ts";
+import { DeliveryData, DeliveryFilter } from "../../models/delivery.ts";
 import { getFormatter } from "../../helper/utils.ts";
+import {
+    DateRangePicker,
+    Location,
+    OverviewTableTyped,
+    OptionSelector,
+    Ratings,
+    Sprite,
+    UserAvatar
+} from "../../components/UI";
 
 const formatter = getFormatter();
-const fullName = (first?: string, last?: string) => ((first ?? "") + " " + (last ?? "")).trim();
 const statusMap = Object.assign({}, DELIVERY_STATUS);
 const schemeMap = Object.assign({}, DELIVERY_SCHEME);
-function UserAvatar(props: any) {
-    const name = fullName(props.firstName, props.lastName);
-    return (
-        <HStack spacing="3">
-            <Avatar name={name} src={props.avatar} boxSize="10" />
-            <Box>
-                <Text fontWeight="medium" casing={"capitalize"}>{fullName(props.firstName, props.lastName)}</Text>
-                <Text fontSize={"sm"} color={"fg.muted"}>{props.phone}</Text>
-            </Box>
-        </HStack>
-    );
-}
-
-function Location(props: any) {
-    return (
-        props.address
-            ? <Text>{props.address}</Text>
-            : <Box>
-                <Text fontSize={"sm"}>longitude: {props.longitude}</Text>
-                <Text fontSize={"sm"}>latitude: {props.latitude}</Text>
-            </Box>
-    );
-}
+const filterOptions = Object.entries(DELIVERY_STATUS).reduce(
+    function(acc, [key, val]) {
+        if (!key.startsWith("pending")) {
+            acc[key] = val;
+        }
+        return acc;
+    },
+    Object.create(null)
+);
 
 function DeliveryDetails(props: any) {
     return (
         <Modal isOpen={props.opened} onClose={props.onClose} size={"xl"}>
             <ModalOverlay />
             <ModalContent>
-                <ModalHeader><Text casing={"capitalize"}>delivery summary</Text></ModalHeader>
+                <ModalHeader><Heading as={"h2"} size={"lg"}>Delivery Summary</Heading></ModalHeader>
                 <ModalCloseButton />
                 <ModalBody>
-                    <Stack spacing={4}>
-                        <HStack justifyContent={"space-between"}>
-                            <Badge p={1.5} borderRadius={".25rem"} colorScheme={schemeMap[props.data.status]}>
-                                {statusMap[props.data.status]}
-                            </Badge>
-                            <Text fontWeight={600} color={"green"}>{formatter.formatCurrency(props.data.price ?? "")}</Text>
-                        </HStack>
-                        <UserAvatar {...props.data.client} />
+                    <div className="stack box">
+                        <div className="segragator">
+                            <Heading as={"h3"} size={"md"}>
+                                Status  <Badge p={1.5} borderRadius={".25rem"} colorScheme={schemeMap[props.data.status]}>
+                                    {statusMap[props.data.status]}
+                                </Badge>
+                            </Heading>
+                            <Badge colorScheme="whatsapp" p={1.5} borderRadius={".25rem"} >{formatter.formatCurrency(props.data.price ?? "")}</Badge>
+                        </div>
+                        <Heading as={"h3"} size={"md"}>client informations</Heading>
+                        <div className="row wrap fill-evenly">
+                            <div className="stack">
+                                <Heading as={"h4"} size={"sm"} colorScheme={"facebook"}>SENDER</Heading>
+                                <UserAvatar {...props.data.client} />
+                            </div>
+                            <div className="stack">
+                                <Heading as={"h4"} size={"sm"} colorScheme="teal">RECIPIENT</Heading>
+                                <UserAvatar {...(props.data.recipientInfos?.main ?? props.data?.recipientInfos ?? {})} />
+                            </div>
+                        </div>
+                        {
+                            props.data.driver
+                                ? (<>
+                                    <Heading as={"h3"} size={"md"}>driver informations</Heading>
+                                    <UserAvatar {...props.data.driver} />
+                                </>)
+                                : ""
+                        }
+                        <Heading as={"h3"} size={"md"}>route informations</Heading>
+                        <div className="row wrap fill-evenly">
+                            <div className="stack">
+                                <Heading as={"h4"} size={"sm"} colorScheme={"facebook"}>DEPARTURE</Heading>
+                                <Location {...props.data.departure} />
+                            </div>
+                            <div className="stack">
+                                <Heading as={"h4"} size={"sm"} colorScheme="teal">DESTINATION</Heading>
+                                <Location {...props.data.destination} />
+                            </div>
+                        </div>
+                        <div className="row wrap fill-evenly capitalize">
+                            <div className="stack">
+                                <Heading as={"h3"} size={"md"}>package type</Heading>
+                                <Text>{props.data.packageType}</Text>
+                            </div>
+                            {
+                                props.data.note
+                                    ?
+                                    <div className="stack">
+                                        <Heading as={"h3"} size={"md"} >note</Heading>
+                                        <Ratings note={props.data.note} />
+                                    </div>
+                                    : ""
+                            }
+                        </div>
 
-                    </Stack>
+                    </div>
 
                 </ModalBody>
             </ModalContent>
@@ -131,27 +169,89 @@ function MemberTable(props: any) {
 function Deliveries() {
     const dispatch = useDispatch<AppDispatch>();
     const state = useSelector((rootState: RootState) => rootState.deliveries);
-    const headers = ["client", "status", "departure", "destination", ""];
+    const {t} = useTranslation();
+    const headers = ["client", t("users.status"), t("delivery.departure"), t("delivery.destination"), ""];
+    const shownDeliveries = state.deliveries.slice(
+        state.pageSize * (state.currentPage - 1),
+        state.pageSize * state.currentPage
+    );
+    const inPrevPage = (
+        state.currentPage < Math.ceil(state.deliveries.length / state.pageSize)
+    );
+    useEffect(function() {
+        dispatch(fetchDeliveries({}));
+        return function() {
+            dispatch(listingActions.emptyState());
+        }
+    }, []);
 
-    useEffect(() => requestDeliveries(), []);
+    function handleFiltering(filter: DeliveryFilter) {
+        if (
+            filter.from === state.filter?.from &&
+            filter.to === state.filter?.to &&
+            filter.status === state.filter?.status
+        ) {
+            return;
+        }
+        dispatch(applyFilter(filter));
+        dispatch(fetchDeliveries({
+            status: filter.status ?? state.filter?.status,
+            from: filter.from ?? state.filter?.from,
+            to: filter.to ?? state.filter?.to
+        }));
+    }
 
-    function requestDeliveries() {
-        dispatch(fetchDeliveries());
+    function handleNextPage() {
+        if (state.deliveries.length === state.pageSize * state.currentPage) {
+            dispatch(fetchDeliveries({
+                pageToken: state.pageToken,
+                status: state.filter?.status,
+                from: state.filter?.from,
+                skip: state.refreshed ? state.deliveries.length : undefined,
+                to: state.filter?.to
+            }));
+        } else {
+            dispatch(listingActions.setCurrentPage(state.currentPage + 1));
+        }
+    }
+
+    function previousPage() {
+        dispatch(listingActions.setCurrentPage(state.currentPage - 1));
     }
 
     return (
         <Stack>
             {
-                state.result === RequestResult.resolved
-                    ? (
-                        <OverviewTable title="delivery list">
-
-                            <MemberTable colNames={headers} dataSource={state.data?.results ?? []} />
-                        </OverviewTable>
-                    )
-                    : (
-                        <p>loading...</p>
-                    )
+                <OverviewTableTyped
+                    title={t("delivery.listing")}
+                    onNext={(
+                        state.paginationCompleted && !inPrevPage
+                            ? undefined
+                            : handleNextPage
+                    )}
+                    onPrevious={state.currentPage > 1 ? previousPage : undefined}
+                    items={state.deliveries}
+                    currentPage={state.currentPage}
+                    pageSize={state.pageSize}
+                    headerTrailer={
+                        <Stack spacing="1rem" direction={{ base: "column", md: "row" }}>
+                            <DateRangePicker onRangeChange={(from, to) => handleFiltering({ from, to })} />
+                            <OptionSelector title={t("delivery.status_filter")} options={filterOptions} onChange={(status) => handleFiltering({ status })} />
+                        </Stack>
+                    }
+                >
+                    {
+                        (
+                            state.deliveries.length > 0
+                                ? <MemberTable colNames={headers} dataSource={shownDeliveries} />
+                                : <div className="empty">
+                                    <Sprite size={196} name="empty" title="illustration of an empty box" />
+                                    <Heading as={"h3"} size={"md"}>{t("delivery.listing_empty_header")}</Heading>
+                                    <Text>{t("delivery.listing_empty_content")}</Text>
+                                </div>
+                        )
+                    }
+                </OverviewTableTyped>
             }
         </Stack>
     );
