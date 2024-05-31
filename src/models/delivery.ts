@@ -16,11 +16,6 @@ interface recipientData {
     phone: string;
 }
 
-interface PaginationHeader {
-    size: number;
-    skip: number;
-}
-
 export interface DeliveryData {
     begin: Date;
     client: UserDesc;
@@ -41,12 +36,14 @@ export interface PaginatedResponse<T> {
     refreshed: boolean;
     results: Array<T>;
 }
-export interface ListingArgs {
-    from?: Date;
+export interface DeliveryFilter {
+    from?: string;
+    status?: string;
+    to?: string;
+}
+export interface ListingArgs extends DeliveryFilter {
     pageToken?: string;
     skip?:number;
-    status?: string;
-    to?: Date;
 }
 
 
@@ -60,9 +57,4 @@ export interface RequestState<T, E extends Error> {
     result: RequestResult;
     data?: T;
     error?: E;
-}
-export interface DeliveryFilter {
-    from?: Date;
-    status?: string;
-    to?: Date;
 }

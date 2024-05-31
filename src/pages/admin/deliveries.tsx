@@ -1,10 +1,7 @@
 import {
-    Avatar,
     Badge,
-    Box,
     Button,
     Heading,
-    HStack,
     Modal,
     ModalOverlay,
     ModalContent,
@@ -22,54 +19,34 @@ import {
     useDisclosure
 } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
-import { OverviewTableTyped, Sprite } from "../../components/UI";
 import { AppDispatch, RootState } from "../../store";
-import { fetchDeliveries, listingActions } from "../../store/deliveries/listing.ts";
+import { applyFilter, fetchDeliveries, listingActions } from "../../store/deliveries/listing.ts";
 import { DELIVERY_STATUS, DELIVERY_SCHEME } from "../../helper/enums.ts";
 import { useEffect, useState } from "react";
-import { DeliveryData} from "../../models/delivery.ts";
+import { DeliveryData, DeliveryFilter } from "../../models/delivery.ts";
 import { getFormatter } from "../../helper/utils.ts";
+import {
+    DateRangePicker,
+    Location,
+    OverviewTableTyped,
+    OptionSelector,
+    Ratings,
+    Sprite,
+    UserAvatar
+} from "../../components/UI";
 
 const formatter = getFormatter();
-const fullName = (first?: string, last?: string) => ((first ?? "") + " " + (last ?? "")).trim();
 const statusMap = Object.assign({}, DELIVERY_STATUS);
 const schemeMap = Object.assign({}, DELIVERY_SCHEME);
-function UserAvatar(props: any) {
-    const name = fullName(props.firstName, props.lastName);
-    return (
-        <HStack spacing="3">
-            <Avatar name={props.name ?? name} src={props.avatar} boxSize="10" />
-            <Box>
-                <Text fontWeight="medium" casing={"capitalize"}>{props.name ?? name}</Text>
-                <Text fontSize={"sm"} color={"fg.muted"}>{props.phone}</Text>
-            </Box>
-        </HStack>
-    );
-}
-function Ratings(props: any) {
-    return (
-        <div className="row ratings">
-            {
-                Array(5).fill("").map(function(val, index) {
-                    return (
-                        <Sprite key={index} name="star" options={{ "data-theme": index < props.note ? "rating-bg" : "rating-fg" }} title={val + "star number " + (index + 1) + " " + (index < props.note ? "filled" : "empty")} />
-                    );
-                })
-            }
-        </div>
-    );
-}
-
-function Location(props: any) {
-    return (
-        props.address
-            ? <Text>{props.address}</Text>
-            : <Box>
-                <Text fontSize={"sm"}>longitude: {props.longitude}</Text>
-                <Text fontSize={"sm"}>latitude: {props.latitude}</Text>
-            </Box>
-    );
-}
+const filterOptions = Object.entries(DELIVERY_STATUS).reduce(
+    function(acc, [key, val]) {
+        if (!key.startsWith("pending")) {
+            acc[key] = val;
+        }
+        return acc;
+    },
+    Object.create(null)
+);
 
 function DeliveryDetails(props: any) {
     return (
@@ -199,12 +176,28 @@ function Deliveries() {
     const inPrevPage = (
         state.currentPage < Math.ceil(state.deliveries.length / state.pageSize)
     );
-    useEffect(() => {
+    useEffect(function() {
         dispatch(fetchDeliveries({}));
-        return () => {
+        return function() {
             dispatch(listingActions.emptyState());
-        };
+        }
     }, []);
+
+    function handleFiltering(filter: DeliveryFilter) {
+        if (
+            filter.from === state.filter?.from &&
+            filter.to === state.filter?.to &&
+            filter.status === state.filter?.status
+        ) {
+            return;
+        }
+        dispatch(applyFilter(filter));
+        dispatch(fetchDeliveries({
+            status: filter.status ?? state.filter?.status,
+            from: filter.from ?? state.filter?.from,
+            to: filter.to ?? state.filter?.to
+        }));
+    }
 
     function handleNextPage() {
         if (state.deliveries.length === state.pageSize * state.currentPage) {
@@ -212,6 +205,7 @@ function Deliveries() {
                 pageToken: state.pageToken,
                 status: state.filter?.status,
                 from: state.filter?.from,
+                skip: state.refreshed ? state.deliveries.length : undefined,
                 to: state.filter?.to
             }));
         } else {
@@ -226,33 +220,36 @@ function Deliveries() {
     return (
         <Stack>
             {
-                state.loading === false
-                    ? (
-                        state.deliveries.length > 0
-                            ?
-                            <OverviewTableTyped
-                                title="delivery list"
-                                onNext={(
-                                state.paginationCompleted && !inPrevPage
-                                ? undefined
-                                : handleNextPage
-                                )}
-                                onPrevious={state.currentPage > 1 ? previousPage : undefined}
-                                items={state.deliveries}
-                                currentPage={state.currentPage}
-                                pageSize={state.pageSize}
-                            >
-                                <MemberTable colNames={headers} dataSource={shownDeliveries} />
-                            </OverviewTableTyped>
-                            : <div className="empty">
-                                <Sprite size={196} name="empty" title="illustration of an empty box" />
-                                <Heading as={"h3"} size={"md"}>no delivery available</Heading>
-                                <Text>Once a client will request a delivery you will be able to get its informations here</Text>
-                            </div>
-                    )
-                    : (
-                        <p>loading...</p>
-                    )
+                <OverviewTableTyped
+                    title="delivery list"
+                    onNext={(
+                        state.paginationCompleted && !inPrevPage
+                            ? undefined
+                            : handleNextPage
+                    )}
+                    onPrevious={state.currentPage > 1 ? previousPage : undefined}
+                    items={state.deliveries}
+                    currentPage={state.currentPage}
+                    pageSize={state.pageSize}
+                    headerTrailer={
+                        <Stack spacing="1rem" direction={{ base: "column", md: "row" }}>
+                            <DateRangePicker onRangeChange={(from, to) => handleFiltering({ from, to })} />
+                            <OptionSelector title="Filter By Status" options={filterOptions} onChange={(status) => handleFiltering({ status })} />
+                        </Stack>
+                    }
+                >
+                    {
+                        (
+                            state.deliveries.length > 0
+                                ? <MemberTable colNames={headers} dataSource={shownDeliveries} />
+                                : <div className="empty">
+                                    <Sprite size={196} name="empty" title="illustration of an empty box" />
+                                    <Heading as={"h3"} size={"md"}>no delivery available</Heading>
+                                    <Text>Once a client will request a delivery you will be able to get its informations here</Text>
+                                </div>
+                        )
+                    }
+                </OverviewTableTyped>
             }
         </Stack>
     );

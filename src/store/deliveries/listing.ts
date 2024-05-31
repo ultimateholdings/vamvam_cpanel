@@ -10,33 +10,20 @@ interface DeliveryState {
     currentPage: number;
     deliveries: DeliveryData[];
     filter?: DeliveryFilter;
-    hasFilterChanged: boolean;
     loading: boolean;
     pageToken?: string;
     pageSize: number;
     paginationCompleted: boolean;
     refreshed: boolean;
-
-    getParams(): ListingArgs;
 }
 const initialState: DeliveryState = {
     alreadyRequested: false,
     currentPage: 0,
     deliveries: [],
-    hasFilterChanged: false,
     loading: false,
     paginationCompleted: false,
     pageSize: 1,
     refreshed: false,
-
-    getParams() {
-        return {
-            from: this.filter?.from,
-            to: this.filter?.to,
-            status: this.filter?.status,
-            pageToken: this.pageToken,
-        }
-    }
 };
 
 function mergeDeliveries(initial: Array<any>, newDatas: Array<any>): Array<any> {
@@ -71,10 +58,6 @@ const listingSlice = createSlice({
             if (state.pageSize > deliveries.length) {
                 state.paginationCompleted = true;
             }
-            if (state.hasFilterChanged) {
-                state.deliveries = deliveries;
-                return;
-            }
             if (refreshed) {
                 state.deliveries = mergeDeliveries(
                     state.deliveries,
@@ -87,8 +70,16 @@ const listingSlice = createSlice({
                 state.currentPage += 1;
             }
         },
-        filterChanged(state, action) {
-            state.hasFilterChanged = action.payload;
+        updateFilter(state, action) {
+            const {from, to, status} = action.payload;
+            state.filter = {
+                from: from ?? state.filter?.from,
+                status: status ?? state.filter?.status,
+                to: to ?? state.filter?.to
+            };
+            state.currentPage = 0;
+            state.deliveries = [];
+            state.paginationCompleted = false;
         },
         setLoading(state, action) {
             state.loading = action.payload;
@@ -109,7 +100,7 @@ export const listingActions = listingSlice.actions;
 const listingKeys = ["from", "to", "status", "skip", "maxPageSize"];
 function parseParams(params: any, keys: Array<string>): string {
     return keys.map(function(key) {
-        if (params[key]) {
+        if (params[key] && params[key] !== "") {
             return key + "=" + params[key];
         }
     }).filter((val) => val !== undefined).join("&");
@@ -144,6 +135,12 @@ export function fetchDeliveries(arg: ListingArgs) {
         } finally {
             setLoading(dispatch, isInitial, false);
         }
+    }
+}
+
+export function applyFilter(filter: DeliveryFilter) {
+    return function (dispatch: Dispatch) {
+        dispatch(listingActions.updateFilter(filter));
     }
 }
 export default listingSlice.reducer;
