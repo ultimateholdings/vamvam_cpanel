@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {axios} from "../../helper/http";
 import { HStack } from '@chakra-ui/react';
-import { OverviewTableTyped } from '../../components/UI';
+import { OverviewTableTyped, DateRangePicker } from '../../components/UI';
 import FilterByDateInput from '../../components/Users/FilterByDateInput';
 import CardOne from '../../components/UI/cards/CardOne';
 import { useTranslation } from 'react-i18next';
@@ -54,13 +54,10 @@ const HomePage: React.FC = () => {
     fetchData(fromDate, toDate);
   }, [fromDate, toDate]);
 
-  const handleFromDateChange = (date: string) => {
-    setFromDate(date);
-  };
-
-  const handleToDateChange = (date: string) => {
-    setToDate(date);
-  };
+  function handleRangeChange(from: string, to: string) {
+      setFromDate(from);
+      setToDate(to);
+  }
 
   if (!data) {
     return <div>Loading...</div>;
@@ -96,16 +93,7 @@ const HomePage: React.FC = () => {
       <OverviewTableTyped
         headerTrailer={
           <HStack align="end">
-            <FilterByDateInput
-              onSelectDate={handleFromDateChange}
-              title="From"
-              value={fromDate}
-            />
-            <FilterByDateInput
-              onSelectDate={handleToDateChange}
-              title="To"
-              value={toDate}
-            />
+            <DateRangePicker onRangeChange={handleRangeChange} />
           </HStack>
         }
         currentPage={0}
@@ -117,7 +105,7 @@ const HomePage: React.FC = () => {
             <CardOne
               key={index}
               image={
-                (stat.type == "deliveries" && 
+                (stat.type == "deliveries" &&
                 <svg className="fill-primary dark:fill-white" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" width="800px" height="800px" viewBox="0 0 612 612" >
                   <g>
                     <path d="M482.188,83.333L184.622,223.225v89.832l-51.91-23.082v-89.832L430.278,60.252l-99.946-44.439
@@ -134,7 +122,7 @@ const HomePage: React.FC = () => {
                       c2.455-1.046,4.438-0.086,4.423,2.146L580.201,423.619z"/>
                   </g>
                   </svg> )
-                || (stat.type == "transaction" && 
+                || (stat.type == "transaction" &&
                 <svg
                   className="fill-primary dark:fill-white"
                   width="22"
@@ -152,8 +140,8 @@ const HomePage: React.FC = () => {
                     fill=""
                   />
                 </svg> )
-                || 
-                (stat.type == "user" && 
+                ||
+                (stat.type == "user" &&
                 <svg className="fill-primary dark:fill-white" enable-background="new 0 0 24 24" id="Layer_1" version="1.0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g><path d="M9,9c0-1.7,1.3-3,3-3s3,1.3,3,3c0,1.7-1.3,3-3,3S9,10.7,9,9z M12,14c-4.6,0-6,3.3-6,3.3V19h12v-1.7C18,17.3,16.6,14,12,14z   "/></g><g><g><circle cx="18.5" cy="8.5" r="2.5"/></g><g><path d="M18.5,13c-1.2,0-2.1,0.3-2.8,0.8c2.3,1.1,3.2,3,3.2,3.2l0,0.1H23v-1.3C23,15.7,21.9,13,18.5,13z"/></g></g><g><g><circle cx="18.5" cy="8.5" r="2.5"/></g><g><path d="M18.5,13c-1.2,0-2.1,0.3-2.8,0.8c2.3,1.1,3.2,3,3.2,3.2l0,0.1H23v-1.3C23,15.7,21.9,13,18.5,13z"/></g></g><g><g><circle cx="5.5" cy="8.5" r="2.5"/></g><g><path d="M5.5,13c1.2,0,2.1,0.3,2.8,0.8c-2.3,1.1-3.2,3-3.2,3.2l0,0.1H1v-1.3C1,15.7,2.1,13,5.5,13z"/></g></g></svg>)
               }
               value={stat.value}

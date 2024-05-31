@@ -19,6 +19,7 @@ import {
     useDisclosure
 } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 import { AppDispatch, RootState } from "../../store";
 import { applyFilter, fetchDeliveries, listingActions } from "../../store/deliveries/listing.ts";
 import { DELIVERY_STATUS, DELIVERY_SCHEME } from "../../helper/enums.ts";
@@ -168,7 +169,8 @@ function MemberTable(props: any) {
 function Deliveries() {
     const dispatch = useDispatch<AppDispatch>();
     const state = useSelector((rootState: RootState) => rootState.deliveries);
-    const headers = ["client", "status", "departure", "destination", ""];
+    const {t} = useTranslation();
+    const headers = ["client", t("users.status"), t("delivery.departure"), t("delivery.destination"), ""];
     const shownDeliveries = state.deliveries.slice(
         state.pageSize * (state.currentPage - 1),
         state.pageSize * state.currentPage
@@ -221,7 +223,7 @@ function Deliveries() {
         <Stack>
             {
                 <OverviewTableTyped
-                    title="delivery list"
+                    title={t("delivery.listing")}
                     onNext={(
                         state.paginationCompleted && !inPrevPage
                             ? undefined
@@ -234,7 +236,7 @@ function Deliveries() {
                     headerTrailer={
                         <Stack spacing="1rem" direction={{ base: "column", md: "row" }}>
                             <DateRangePicker onRangeChange={(from, to) => handleFiltering({ from, to })} />
-                            <OptionSelector title="Filter By Status" options={filterOptions} onChange={(status) => handleFiltering({ status })} />
+                            <OptionSelector title={t("delivery.status_filter")} options={filterOptions} onChange={(status) => handleFiltering({ status })} />
                         </Stack>
                     }
                 >
@@ -244,8 +246,8 @@ function Deliveries() {
                                 ? <MemberTable colNames={headers} dataSource={shownDeliveries} />
                                 : <div className="empty">
                                     <Sprite size={196} name="empty" title="illustration of an empty box" />
-                                    <Heading as={"h3"} size={"md"}>no delivery available</Heading>
-                                    <Text>Once a client will request a delivery you will be able to get its informations here</Text>
+                                    <Heading as={"h3"} size={"md"}>{t("delivery.listing_empty_header")}</Heading>
+                                    <Text>{t("delivery.listing_empty_content")}</Text>
                                 </div>
                         )
                     }

@@ -23,6 +23,14 @@
     "password_update_success": "Password updated successfully",
     "password_length": "Password should be at least 8 characters long"
   },
+  "delivery": {
+      "departure": "departure",
+      "destination": "destination",
+      "listing": "Delivery List",
+      "status_filter": "Filter by Status",
+      "listing_empty_header": "",
+      "listing_empty_content": ""
+  },
   "loading": "Loading",
   "next": "Next",
   "of": "Of",
@@ -71,6 +79,7 @@
     "update_profile": "Update profile",
     "list": "List",
     "create": "Create",
+    "deliveries": "Deliveries",
     "view": "View",
     "registrations": "Registrations",
     "settled": "Settled",
@@ -208,5 +217,4 @@
     "terminated_deliveries":"Terminated Deliveries",
     "home":"Home"
   }
-  
 }
