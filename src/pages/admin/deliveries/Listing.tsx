@@ -20,12 +20,12 @@ import {
 } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
-import { AppDispatch, RootState } from "../../store";
-import { applyFilter, fetchDeliveries, listingActions } from "../../store/deliveries/listing.ts";
-import { DELIVERY_STATUS, DELIVERY_SCHEME } from "../../helper/enums.ts";
+import { AppDispatch, RootState } from "../../../store";
+import { applyFilter, fetchDeliveries, listingActions } from "../../../store/deliveries/listing.ts";
+import { DELIVERY_STATUS, DELIVERY_SCHEME } from "../../../helper/enums.ts";
 import { useEffect, useState } from "react";
-import { DeliveryData, DeliveryFilter } from "../../models/delivery.ts";
-import { getFormatter } from "../../helper/utils.ts";
+import { DeliveryData, DeliveryFilter } from "../../../models/delivery.ts";
+import { getFormatter } from "../../../helper/utils.ts";
 import {
     DateRangePicker,
     Location,
@@ -34,7 +34,7 @@ import {
     Ratings,
     Sprite,
     UserAvatar
-} from "../../components/UI";
+} from "../../../components/UI";
 
 const formatter = getFormatter();
 const statusMap = Object.assign({}, DELIVERY_STATUS);
