@@ -169,7 +169,7 @@ function MemberTable(props: any) {
 function Deliveries() {
     const dispatch = useDispatch<AppDispatch>();
     const state = useSelector((rootState: RootState) => rootState.deliveries);
-    const {t} = useTranslation();
+    const { t } = useTranslation();
     const headers = ["client", t("users.status"), t("delivery.departure"), t("delivery.destination"), ""];
     const shownDeliveries = state.deliveries.slice(
         state.pageSize * (state.currentPage - 1),
@@ -179,7 +179,7 @@ function Deliveries() {
         state.currentPage < Math.ceil(state.deliveries.length / state.pageSize)
     );
     useEffect(function() {
-        dispatch(fetchDeliveries({}));
+        dispatch(fetchDeliveries({maxPageSize: state.pageSize}));
         return function() {
             dispatch(listingActions.emptyState());
         }
@@ -195,8 +195,9 @@ function Deliveries() {
         }
         dispatch(applyFilter(filter));
         dispatch(fetchDeliveries({
-            status: filter.status ?? state.filter?.status,
             from: filter.from ?? state.filter?.from,
+            maxPageSize: state.pageSize,
+            status: filter.status ?? state.filter?.status,
             to: filter.to ?? state.filter?.to
         }));
     }
@@ -204,10 +205,11 @@ function Deliveries() {
     function handleNextPage() {
         if (state.deliveries.length === state.pageSize * state.currentPage) {
             dispatch(fetchDeliveries({
-                pageToken: state.pageToken,
-                status: state.filter?.status,
                 from: state.filter?.from,
+                maxPageSize: state.pageSize,
+                pageToken: state.pageToken,
                 skip: state.refreshed ? state.deliveries.length : undefined,
+                status: state.filter?.status,
                 to: state.filter?.to
             }));
         } else {

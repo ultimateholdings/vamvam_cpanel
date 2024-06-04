@@ -32,7 +32,8 @@
         "listing_empty_content": "Once a client will request a delivery you will be able to get its informations here",
         "driver_details": "Driver Details",
         "internal": "internal",
-        "visualize_drivers": "Localize the drivers"
+        "visualize_drivers": "Localize the drivers",
+        "map_heading": "Drivers Location"
     },
     "loading": "Loading",
     "next": "Next",

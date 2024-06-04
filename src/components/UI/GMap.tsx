@@ -5,34 +5,6 @@ import { Sprite, UserAvatar } from "../UI";
 import { useState, useCallback } from "react";
 import UserData from "../../models/auth/user-data";
 const API_KEY = "AIzaSyDWa2O7ZtHX-7R3FGwn_KEAcHe_vW97gBI";
-export const fakeDrivers = [
-    {
-        id: "foo",
-        role: "driver",
-        gender: "M",
-        firstName: "Thomas",
-        lastName: "Noumba",
-        position: { latitude: 4.063221, longitude: 9.733699 }
-    },
-    {
-        id: "foo-2",
-        role: "driver",
-        gender: "F",
-        internal: true,
-        firstName: "Carmella",
-        lastName: "Kouakep",
-        position: { latitude: 4.063414, longitude: 9.733162 }
-    },
-    {
-        active: true,
-        id: "foo-3",
-        role: "driver",
-        gender: "M",
-        firstName: "Abdoulaye",
-        lastName: "Diakité",
-        position: { latitude: 4.063050, longitude: 9.732776 }
-    }
-] as Array<UserData>;
 const bessengue = {latitude: 4.055561, longitude: 9.7067124};
 
 interface MapProps {
@@ -64,7 +36,7 @@ function DriverMarker(props: UserData) {
     return (
         props.position
             ? <AdvancedMarker ref={markerRef} position={formatLocation(props.position)} onClick={handleClick}>
-                <Pin {...markerStyle(props.active)} children={
+                <Pin {...markerStyle(props.available)} children={
                     <Sprite name="scooter" title="an illustration of a scooter" />
                 } glyphColor="#fff" />
 
@@ -78,7 +50,7 @@ function DriverMarker(props: UserData) {
                                     ? <Badge p={".25em"}  colorScheme={"whatsapp"}>{t("delivery.internal")}</Badge>
                                     : <></>
                                 }
-                                <p>{t("users.status")}: <strong>{props.active ? t("available"): t("busy")}</strong></p>
+                                <p>{t("users.status")}: <strong>{props.available ? t("available"): t("busy")}</strong></p>
                                 <p>{t("users.gender")}: <strong>{props.gender === "M" ? t("users.male"): t("users.female")}</strong></p>
                             </Stack>
                         </InfoWindow>

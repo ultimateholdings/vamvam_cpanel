@@ -5,7 +5,7 @@ interface LocationData {
 }
 
 export default interface UserData {
-  active?: boolean;
+  available?: boolean;
   id: string;
   internal?: boolean;
   status: string;
