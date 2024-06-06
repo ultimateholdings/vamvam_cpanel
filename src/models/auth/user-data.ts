@@ -13,6 +13,8 @@ export default interface UserData {
   gender: string;
   email?: string;
   phone?: string;
+  point?: number;
+  bonus?: number;
   points?: string;
   position?: LocationData;
   age?: string;

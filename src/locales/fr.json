@@ -45,6 +45,7 @@
     "cancel": "Annuler",
     "confirm": "Confirmer",
     "close": "Fermer",
+    "no-notification": "Aucune notification pour le moment. Dès que vous aurez une notification, elle apparaîtra ici ",
     "dashboard_home": "Accueil du tableau de bord",
     "appbar": {
         "english": "Anglais",
@@ -52,6 +53,11 @@
         "logout": "Se déconnecter",
         "edit_profile": "Modifier mon profil",
         "change_password": "Changer le mot de passe"
+    },
+    "notifications": {
+        "no_notification" : "Aucune notification pour le moment. Dès que vous aurez une notification, elle apparaîtra ici",
+        "new_registration_title " : " Nouvelle demande d'enregistrement ",
+        "new_registration_description " : "Un nouveau conducteur s'est enregistré sur la plateforme. Veuillez consulter la page d'enregistrement pour plus de détails et valider son compte. "
     },
     "settings": {
         "title": "Paramètres",
@@ -154,6 +160,7 @@
         "edit": "Éditer",
         "update_registration": "Mettre à jour l'inscription",
         "registration_date": "Date d'inscription",
+        "processing_date": "Date de traitement",
         "enter_name": "Entrer le nom",
         "new_registrations": "Nouvelles inscriptions",
         "settled_registrations": "Inscriptions réglées",
