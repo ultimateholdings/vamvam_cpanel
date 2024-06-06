@@ -25,11 +25,15 @@
   },
   "delivery": {
       "departure": "departure",
-      "destination": "destination",
-      "listing": "Delivery List",
-      "status_filter": "Filter by Status",
-      "listing_empty_header": "",
-      "listing_empty_content": ""
+        "destination": "destination",
+        "listing": "Delivery List",
+        "status_filter": "Filter by Status",
+        "listing_empty_header": "no delivery available",
+        "listing_empty_content": "Once a client will request a delivery you will be able to get its informations here",
+        "driver_details": "Driver Details",
+        "internal": "internal",
+        "visualize_drivers": "Localize the drivers",
+        "map_heading": "Drivers Location"
   },
   "loading": "Loading",
   "next": "Next",
@@ -37,7 +41,7 @@
   "previous": "Previous",
   "result": "Result",
   "showing": "Showing",
-  "to": "à",
+  "to": "to",
   "cancel": "Cancel",
   "confirm": "Confirm",
   "close": "Close",
@@ -49,6 +53,11 @@
     "edit_profile": "Edit my profile",
     "change_password": "Change Password"
   },
+    "notifications": {
+      "no_notification": "No notifications for the moment. Once you have a notification, it will appear here.",
+      "new_registration_title": "New registration request",
+      "new_registration_description": "A new driver has registered on the platform. Please check the registration page for more details and validate his account."
+    },
   "settings": {
     "title": "Settings",
     "new": "New",
@@ -150,6 +159,7 @@
     "update_registration": "Update registration",
     "click_to_upload_file": "Click to upload file",
     "registration_date": "Registration date",
+    "processing_date": "Processing date",
     "enter_name": "Enter name",
     "new_registrations": "New registrations",
     "settled_registrations": "Settled registrations",
@@ -216,5 +226,7 @@
     "ongoing_deliveries":"Ongoing Deliveries",
     "terminated_deliveries":"Terminated Deliveries",
     "home":"Home"
-  }
+  },
+  "available": "available",
+  "busy": "busy"
 }
